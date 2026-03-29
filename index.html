@@ -8,11 +8,6 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Workout">
-<meta name="description" content="Track workouts, progression, PRs, history, calendar, and analytics.">
-<link rel="manifest" href="manifest.webmanifest">
-<link rel="apple-touch-icon" href="icons/icon-192.png">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="application-name" content="Workout">
 <style>
   @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans+JP:wght@300;400;600&display=swap');
 
@@ -1112,90 +1107,69 @@
   }
 
 
-  /* ── Install prompt ── */
-  .install-bar {
+  .lang-toggle {
     position: fixed;
-    top: 12px; right: 12px;
+    top: 12px;
+    right: 12px;
     z-index: 150;
-    display: none;
+    background: rgba(19,19,26,0.92);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    display: inline-flex;
+    overflow: hidden;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
   }
-  .install-bar.visible { display: block; }
-  .install-btn {
-    background: linear-gradient(135deg, var(--accent2), var(--accent));
+  .lang-toggle button {
+    background: transparent;
     border: none;
-    color: #fff;
+    color: var(--muted);
+    padding: 8px 12px;
     font-family: 'IBM Plex Mono', monospace;
     font-size: 11px;
     font-weight: 600;
-    letter-spacing: 0.06em;
-    border-radius: 999px;
-    padding: 10px 14px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.25);
     cursor: pointer;
   }
-  .install-note {
-    position: fixed;
-    top: 58px; right: 12px;
-    z-index: 149;
-    display: none;
-    max-width: 280px;
-    background: rgba(19,19,26,0.98);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 12px;
+  .lang-toggle button.active {
     color: var(--text);
-    font-size: 12px;
-    line-height: 1.5;
-  }
-  .install-note.visible { display: block; }
-  .install-note strong {
-    display: block;
-    font-family: 'IBM Plex Mono', monospace;
-    color: var(--accent);
-    font-size: 11px;
-    margin-bottom: 6px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+    background: rgba(0,229,255,0.12);
   }
 
 </style>
 </head>
 <body>
+
+<div class="lang-toggle">
+  <button id="lang-en" class="active" type="button">EN</button>
+  <button id="lang-ja" type="button">日本語</button>
+</div>
+
 <div id="app">
-
-<div id="install-bar" class="install-bar">
-  <button id="install-btn" class="install-btn">Install App</button>
-</div>
-<div id="install-note" class="install-note">
-  <strong>Install on iPhone</strong>
-  Open in Safari, tap Share, then choose “Add to Home Screen”.
-</div>
-
 
   <!-- ══ HOME TAB ══ -->
   <div id="tab-home" class="tab-panel active">
     <div class="page-header">
       <div class="page-header-icon">💪</div>
       <div class="page-header-text">
-        <h1>Workout</h1>
-        <p>Track your training</p>
+        <h1 data-i18n="homeTitle">Workout</h1>
+        <p data-i18n="homeSubtitle">Track your training</p>
       </div>
       <div class="page-header-right" id="home-date"></div>
     </div>
 
     <button class="btn-primary" id="btn-start-blank">
       <div class="shimmer"></div>
-      ▶ Start Empty Workout
+      <span data-i18n="startEmpty">▶ Start Empty Workout</span>
     </button>
 
     <div class="mt16">
-      <div class="section-label">Templates</div>
+      <div class="section-label" data-i18n="templates">Templates</div>
       <div id="template-list"></div>
-      <button class="btn-secondary mt8" id="btn-new-template">+ New Template</button>
+      <button class="btn-secondary mt8" id="btn-new-template">+ <span data-i18n="newTemplate">New Template</span></button>
     </div>
 
     <div class="mt16">
-      <div class="section-label">Recent</div>
+      <div class="section-label" data-i18n="recent">Recent</div>
       <div id="recent-list"></div>
     </div>
   </div>
@@ -1204,24 +1178,24 @@
   <div id="tab-workout" class="tab-panel">
     <div id="workout-empty-state" class="empty-state">
       <div class="empty-state-icon">🏋️</div>
-      <div class="empty-state-title">No active workout</div>
-      <div class="empty-state-text">Start a workout from the Home tab or tap below.</div>
+      <div class="empty-state-title" data-i18n="noActiveWorkout">No active workout</div>
+      <div class="empty-state-text" data-i18n="noActiveWorkoutText">Start a workout from the Home tab or tap below.</div>
       <button class="btn-primary" style="max-width:280px;margin-top:8px" id="btn-start-blank-2">
-        <div class="shimmer"></div>▶ Start Empty Workout
+        <div class="shimmer"></div><span data-i18n="startEmpty">▶ Start Empty Workout</span>
       </button>
     </div>
 
     <div id="workout-active" class="hidden">
       <div class="workout-header">
         <div class="workout-title-wrap">
-          <input type="text" id="workout-title" placeholder="Workout name...">
+          <input type="text" id="workout-title" data-i18n-placeholder="workoutNamePlaceholder" placeholder="Workout name...">
           <div id="workout-timer">0:00</div>
         </div>
-        <button class="btn-finish" id="btn-finish">Finish</button>
+        <button class="btn-finish" id="btn-finish"><span data-i18n="finish">Finish</span></button>
       </div>
       <div id="exercise-list"></div>
-      <button class="btn-secondary mt8" id="btn-add-exercise">+ Add Exercise</button>
-      <button class="btn-danger mt8" id="btn-discard">Discard Workout</button>
+      <button class="btn-secondary mt8" id="btn-add-exercise">+ <span data-i18n="addExercise">Add Exercise</span></button>
+      <button class="btn-danger mt8" id="btn-discard"><span data-i18n="discardWorkout">${state.lang === 'ja' ? '破棄' : 'Discard'} Workout</span></button>
     </div>
   </div>
 
@@ -1230,8 +1204,8 @@
     <div class="page-header">
       <div class="page-header-icon">📋</div>
       <div class="page-header-text">
-        <h1>History</h1>
-        <p>Past workouts</p>
+        <h1 data-i18n="historyTitle">History</h1>
+        <p data-i18n="historySubtitle">Past workouts</p>
       </div>
     </div>
     <div id="history-list"></div>
@@ -1242,8 +1216,8 @@
     <div class="page-header">
       <div class="page-header-icon">📅</div>
       <div class="page-header-text">
-        <h1>Calendar</h1>
-        <p>Workout history</p>
+        <h1 data-i18n="calendarTitle">Calendar</h1>
+        <p data-i18n="calendarSubtitle">Workout history</p>
       </div>
     </div>
     <div class="cal-nav">
@@ -1253,8 +1227,8 @@
     </div>
     <div class="cal-grid" id="cal-grid"></div>
     <div class="cal-actions">
-      <button class="btn-secondary" id="btn-calendar-add">+ Add Missing Workout</button>
-      <button class="btn-ghost" id="btn-calendar-clear">Clear</button>
+      <button class="btn-secondary" id="btn-calendar-add"><span data-i18n="addMissingWorkout">+ Add Missing Workout</span></button>
+      <button class="btn-ghost" id="btn-calendar-clear"><span data-i18n="clear">Clear</span></button>
     </div>
     <div class="cal-helper" id="cal-helper"></div>
     <div class="cal-stats" id="cal-stats"></div>
@@ -1265,12 +1239,12 @@
     <div class="page-header">
       <div class="page-header-icon">📈</div>
       <div class="page-header-text">
-        <h1>Analytics</h1>
-        <p>Progress and lifetime stats</p>
+        <h1 data-i18n="analyticsTitle">Analytics</h1>
+        <p data-i18n="analyticsSubtitle">Progress and lifetime stats</p>
       </div>
     </div>
     <div class="analytics-overview" id="analytics-overview"></div>
-    <div class="section-label">Exercises</div>
+    <div class="section-label" data-i18n="exercises">Exercises</div>
     <div id="analytics-exercise-list"></div>
     <div id="analytics-detail"></div>
   </div>
@@ -1279,23 +1253,23 @@
   <nav class="bottom-nav">
     <button class="active" data-tab="home">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
-      Home
+      <span data-i18n="navHome">Home</span>
     </button>
     <button data-tab="workout">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 4v16M18 4v16M3 8h4M17 8h4M3 16h4M17 16h4"/></svg>
-      Workout
+      <span data-i18n="navWorkout">Workout</span>
     </button>
     <button data-tab="history">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-      History
+      <span data-i18n="navHistory">History</span>
     </button>
     <button data-tab="calendar">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-      Calendar
+      <span data-i18n="navCalendar">Calendar</span>
     </button>
     <button data-tab="analytics">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 19h16"/><path d="M7 16l4-4 3 3 5-7"/></svg>
-      Stats
+      <span data-i18n="navStats">Stats</span>
     </button>
   </nav>
 </div>
@@ -1305,14 +1279,14 @@
   <div class="modal-sheet">
     <div class="modal-handle"></div>
     <div class="modal-header">
-      <span class="modal-title">Add Exercise</span>
+      <span class="modal-title" data-i18n="addExerciseModal">Add Exercise</span>
       <button class="btn-icon" onclick="closeModal('modal-add-exercise')">✕</button>
     </div>
     <div class="modal-body">
-      <input type="search" class="search-input" id="ex-search" placeholder="Search exercises..." autocomplete="off">
+      <input type="search" class="search-input" id="ex-search" data-i18n-placeholder="searchExercises" placeholder="Search exercises..." autocomplete="off">
       <div id="ex-list"></div>
       <div class="divider"></div>
-      <button class="btn-secondary" id="btn-create-custom">+ Create Custom Exercise</button>
+      <button class="btn-secondary" id="btn-create-custom"><span data-i18n="createCustomExercise">+ Create Custom Exercise</span></button>
     </div>
   </div>
 </div>
@@ -1322,7 +1296,7 @@
   <div class="modal-sheet">
     <div class="modal-handle"></div>
     <div class="modal-header">
-      <span class="modal-title">Workout Complete 🎉</span>
+      <span class="modal-title" data-i18n="workoutComplete">Workout Complete 🎉</span>
     </div>
     <div class="modal-body" id="summary-body"></div>
   </div>
@@ -1331,11 +1305,11 @@
 <!-- ══ REST TIMER BANNER ══ -->
 <div id="rest-timer-banner" class="rest-timer-banner">
   <div class="rest-timer-time" id="rest-timer-time">1:30</div>
-  <div class="rest-timer-label">Rest<span id="rest-default-label">default: 90s</span></div>
+  <div class="rest-timer-label"><span data-i18n="rest">Rest</span><span id="rest-default-label">default: 90s</span></div>
   <div class="rest-timer-controls">
     <button class="rest-adj-btn" id="rest-minus">−15s</button>
     <button class="rest-adj-btn" id="rest-plus">+15s</button>
-    <button class="rest-skip-btn" id="rest-skip">Skip</button>
+    <button class="rest-skip-btn" id="rest-skip"><span data-i18n="skip">Skip</span></button>
   </div>
 </div>
 
@@ -1348,14 +1322,14 @@
       <button class="btn-icon" onclick="closeModal('modal-template')">✕</button>
     </div>
     <div class="modal-body">
-      <input type="text" class="text-input" id="template-name-input" placeholder="Template name (e.g. Push Day)">
-      <div class="section-label">Exercises</div>
+      <input type="text" class="text-input" id="template-name-input" data-i18n-placeholder="templateNamePlaceholder" placeholder="Template name (e.g. Push Day)">
+      <div class="section-label" data-i18n="exercises">Exercises</div>
       <div id="template-ex-list"></div>
-      <button class="btn-secondary mt8" id="btn-template-add-ex">+ Add Exercise</button>
+      <button class="btn-secondary mt8" id="btn-template-add-ex">+ <span data-i18n="addExercise">Add Exercise</span></button>
       <div class="divider"></div>
-      <button class="btn-primary" id="btn-save-template"><div class="shimmer"></div>Save Template</button>
+      <button class="btn-primary" id="btn-save-template"><div class="shimmer"></div><span data-i18n="saveTemplate">Save Template</span></button>
       <div id="template-delete-wrap" class="hidden mt8">
-        <button class="btn-danger" id="btn-delete-template">Delete Template</button>
+        <button class="btn-danger" id="btn-delete-template"><span data-i18n="deleteTemplate">Delete Template</span></button>
       </div>
     </div>
   </div>
@@ -1366,18 +1340,19 @@
   <div class="modal-sheet">
     <div class="modal-handle"></div>
     <div class="modal-header">
-      <span class="modal-title">Edit History</span>
+      <span class="modal-title" id="history-modal-title">Edit History</span>
       <button class="btn-icon" onclick="closeModal('modal-history-editor')">✕</button>
     </div>
     <div class="modal-body">
-      <input type="text" class="text-input" id="history-edit-name" placeholder="Workout name">
+      <input type="text" class="text-input" id="history-edit-name" data-i18n-placeholder="workoutName" placeholder="Workout name">
       <input type="datetime-local" class="text-input" id="history-edit-date">
-      <div class="section-label">Exercises</div>
+      <div class="section-label" data-i18n="exercises">Exercises</div>
       <div id="history-edit-exercises"></div>
-      <button class="btn-secondary mt8" id="btn-history-add-exercise">+ Add Exercise</button>
+      <button class="btn-secondary mt8" id="btn-history-add-exercise">+ <span data-i18n="addExercise">Add Exercise</span></button>
       <div class="divider"></div>
-      <button class="btn-primary" id="btn-history-save"><div class="shimmer"></div>Save Changes</button>
-      <button class="btn-danger mt8" id="btn-history-delete">Delete Workout</button>
+      <button class="btn-primary" id="btn-history-save"><div class="shimmer"></div><span data-i18n="saveChanges">Save Changes</span></button>
+      <button class="btn-secondary mt8" id="btn-history-save-template"><span data-i18n="saveAsTemplate">Save as Template</span></button>
+      <button class="btn-danger mt8" id="btn-history-delete"><span data-i18n="deleteWorkout">Delete Workout</span></button>
     </div>
   </div>
 </div>
@@ -1497,6 +1472,201 @@ const PRESET_EXERCISES = [
   {id:'p-deadbug',  name:'Dead Bug',                category:'Core'},
   {id:'p-sideplank',name:'Side Plank',              category:'Core'},
 ];
+
+
+// ══════════════════════════════════════════
+//  LANGUAGE
+// ══════════════════════════════════════════
+
+const UI_TEXT = {
+  en: {
+    appTitle: 'Workout Tracker',
+    homeTitle: 'Workout',
+    homeSubtitle: 'Track your training',
+    startEmpty: '▶ Start Empty Workout',
+    templates: 'Templates',
+    newTemplate: 'New Template',
+    recent: 'Recent',
+    noActiveWorkout: 'No active workout',
+    noActiveWorkoutText: 'Start a workout from the Home tab or tap below.',
+    workoutNamePlaceholder: 'Workout name...',
+    finish: 'Finish',
+    addExercise: 'Add Exercise',
+    discardWorkout: 'Discard Workout',
+    historyTitle: 'History',
+    historySubtitle: 'Past workouts',
+    calendarTitle: 'Calendar',
+    calendarSubtitle: 'Workout history',
+    addMissingWorkout: '+ Add Missing Workout',
+    clear: 'Clear',
+    analyticsTitle: 'Analytics',
+    analyticsSubtitle: 'Progress and lifetime stats',
+    exercises: 'Exercises',
+    navHome: 'Home',
+    navWorkout: 'Workout',
+    navHistory: 'History',
+    navCalendar: 'Calendar',
+    navStats: 'Stats',
+    addExerciseModal: 'Add Exercise',
+    searchExercises: 'Search exercises...',
+    createCustomExercise: '+ Create Custom Exercise',
+    workoutComplete: 'Workout Complete 🎉',
+    rest: 'Rest',
+    skip: 'Skip',
+    templateNamePlaceholder: 'Template name (e.g. Push Day)',
+    saveTemplate: 'Save Template',
+    deleteTemplate: 'Delete Template',
+    workoutName: 'Workout name',
+    saveChanges: 'Save Changes',
+    saveAsTemplate: 'Save as Template',
+    deleteWorkout: 'Delete Workout',
+    templateModalNew: 'New Template',
+    templateModalEdit: 'Edit Template',
+    historyModalEdit: 'Edit History',
+    historyModalAdd: 'Add History Workout'
+  },
+  ja: {
+    appTitle: 'ワークアウトトラッカー',
+    homeTitle: 'ワークアウト',
+    homeSubtitle: 'トレーニングを記録',
+    startEmpty: '▶ 空のワークアウトを開始',
+    templates: 'テンプレート',
+    newTemplate: '新規テンプレート',
+    recent: '最近',
+    noActiveWorkout: '進行中のワークアウトはありません',
+    noActiveWorkoutText: 'ホームから始めるか、下のボタンをタップしてください。',
+    workoutNamePlaceholder: 'ワークアウト名...',
+    finish: '終了',
+    addExercise: '種目を追加',
+    discardWorkout: 'ワークアウトを破棄',
+    historyTitle: '履歴',
+    historySubtitle: '過去のワークアウト',
+    calendarTitle: 'カレンダー',
+    calendarSubtitle: 'ワークアウト履歴',
+    addMissingWorkout: '+ 過去のワークアウトを追加',
+    clear: 'クリア',
+    analyticsTitle: '分析',
+    analyticsSubtitle: '進捗と累計データ',
+    exercises: '種目',
+    navHome: 'ホーム',
+    navWorkout: '記録',
+    navHistory: '履歴',
+    navCalendar: '日付',
+    navStats: '分析',
+    addExerciseModal: '種目を追加',
+    searchExercises: '種目を検索...',
+    createCustomExercise: '+ カスタム種目を作成',
+    workoutComplete: 'ワークアウト完了 🎉',
+    rest: '休憩',
+    skip: 'スキップ',
+    templateNamePlaceholder: 'テンプレート名（例: プッシュデー）',
+    saveTemplate: 'テンプレート保存',
+    deleteTemplate: 'テンプレート削除',
+    workoutName: 'ワークアウト名',
+    saveChanges: '変更を保存',
+    saveAsTemplate: 'テンプレートとして保存',
+    deleteWorkout: 'ワークアウト削除',
+    templateModalNew: '新規テンプレート',
+    templateModalEdit: 'テンプレート編集',
+    historyModalEdit: '履歴を編集',
+    historyModalAdd: '履歴を追加'
+  }
+};
+
+const CATEGORY_JA = {
+  Chest: '胸',
+  Back: '背中',
+  Legs: '脚',
+  Shoulders: '肩',
+  Arms: '腕',
+  Core: '体幹',
+  Other: 'その他'
+};
+
+const EXERCISE_JA_BY_ID = {
+  'p-bench':'ベンチプレス','p-incbench':'インクラインベンチ','p-dip':'ディップス','p-cablefly':'ケーブルフライ',
+  'p-decbench':'デクラインベンチプレス','p-pushup':'プッシュアップ','p-chestm':'チェストプレスマシン','p-pecdeck':'ペックデック',
+  'p-dbfly':'ダンベルフライ','p-dbbench':'ダンベルベンチプレス','p-incdbp':'インクラインダンベルプレス','p-decdbp':'デクラインダンベルプレス',
+  'p-pullover':'ダンベルプルオーバー','p-landmine':'ランドマインプレス','p-smibench':'スミスマシンベンチ','p-locabfly':'ローケーブルフライ','p-inccabfly':'インクラインケーブルフライ',
+  'p-deadlift':'デッドリフト','p-bbrow':'バーベルロー','p-pullup':'懸垂','p-latpull':'ラットプルダウン','p-cablerow':'ケーブルロー',
+  'p-tbrow':'Tバーロー','p-dbrow':'ダンベルロー','p-strpull':'ストレートアームプルダウン','p-rackpull':'ラックプル','p-sumodl':'相撲デッドリフト',
+  'p-chinup':'チンアップ','p-invrow':'インバーテッドロー','p-machrow':'マシンロー','p-goodmorn':'グッドモーニング','p-backext':'バックエクステンション',
+  'p-meadrow':'メドウズロー','p-pendrow':'ペンドレイロー','p-krocrow':'クロックロー','p-wgpull':'ワイドグリッププルダウン','p-rgrow':'リバースグリップロー',
+  'p-squat':'スクワット','p-fsquat':'フロントスクワット','p-legpress':'レッグプレス','p-rdl':'ルーマニアンデッドリフト','p-legcurl':'レッグカール',
+  'p-legext':'レッグエクステンション','p-calf':'カーフレイズ','p-hipth':'ヒップスラスト','p-bss':'ブルガリアンスクワット','p-lunge':'ランジ',
+  'p-stepup':'ステップアップ','p-hacksq':'ハックスクワット','p-gkick':'グルートキックバック','p-sumosq':'相撲スクワット','p-seatlcurl':'シーテッドレッグカール',
+  'p-nordic':'ノルディックカール','p-walklunge':'ウォーキングランジ','p-goblet':'ゴブレットスクワット','p-boxjump':'ボックスジャンプ','p-sissysq':'シシースクワット',
+  'p-ohp':'オーバーヘッドプレス','p-arnold':'アーノルドプレス','p-lateral':'サイドレイズ','p-facepull':'フェイスプル','p-dbshp':'ダンベルショルダープレス',
+  'p-frontr':'フロントレイズ','p-upright':'アップライトロー','p-bbshrug':'バーベルシュラッグ','p-cablat':'ケーブルサイドレイズ','p-revpec':'リアペックデック',
+  'p-machsh':'マシンショルダープレス','p-rearfly':'リアデルトフライ','p-cabfront':'ケーブルフロントレイズ','p-dbshrug':'ダンベルシュラッグ','p-seatdbp':'シーテッドダンベルプレス','p-lmlat':'ランドマインサイドレイズ',
+  'p-curl':'バイセップカール','p-hammer':'ハンマーカール','p-tricep':'トライセプスプッシュダウン','p-cgbench':'クローズグリップベンチ','p-preach':'プリーチャーカール',
+  'p-conccurl':'コンセントレーションカール','p-cabcurl':'ケーブルカール','p-ezcurl':'EZバーカール','p-inccurl':'インクラインダンベルカール','p-revcurl':'リバースカール',
+  'p-triover':'オーバーヘッドトライセプスエクステンション','p-skull':'スカルクラッシャー','p-trikick':'トライセプスキックバック','p-cabover':'ケーブルオーバーヘッドエクステンション','p-spider':'スパイダーカール','p-ropepush':'ローププッシュダウン',
+  'p-plank':'プランク','p-hanglr':'ハンギングレッグレイズ','p-crunch':'クランチ','p-situp':'シットアップ','p-rustwist':'ロシアンツイスト',
+  'p-abwheel':'アブホイール','p-cabcrunch':'ケーブルクランチ','p-legraise':'レッグレイズ','p-mtncl':'マウンテンクライマー','p-deadbug':'デッドバグ','p-sideplank':'サイドプランク'
+};
+const EXERCISE_JA_BY_NAME = Object.fromEntries(PRESET_EXERCISES.map(ex => [ex.name, EXERCISE_JA_BY_ID[ex.id] || ex.name]));
+
+function getLang() { return localStorage.getItem('wt_lang') || 'en'; }
+function setLang(lang) {
+  state.lang = lang;
+  localStorage.setItem('wt_lang', lang);
+  document.documentElement.lang = lang === 'ja' ? 'ja' : 'en';
+  applyTranslations();
+  renderCurrentView();
+}
+function t(key) {
+  return (UI_TEXT[state.lang] && UI_TEXT[state.lang][key]) || UI_TEXT.en[key] || key;
+}
+function trCategory(cat) {
+  return state.lang === 'ja' ? (CATEGORY_JA[cat] || cat) : cat;
+}
+function trExercise(name, exerciseId = null) {
+  if (state.lang !== 'ja') return name;
+  return (exerciseId && EXERCISE_JA_BY_ID[exerciseId]) || EXERCISE_JA_BY_NAME[name] || name;
+}
+function exerciseSearchText(ex) {
+  return `${ex.name} ${(EXERCISE_JA_BY_ID[ex.id] || EXERCISE_JA_BY_NAME[ex.name] || '')}`.toLowerCase();
+}
+function formatLocalDate(dateLike, opts = {}) {
+  const locale = state.lang === 'ja' ? 'ja-JP' : 'en-US';
+  const date = dateLike instanceof Date ? dateLike : new Date(dateLike);
+  return date.toLocaleDateString(locale, opts);
+}
+function applyTranslations() {
+  document.title = t('appTitle');
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    el.textContent = t(el.dataset.i18n);
+  });
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+    el.placeholder = t(el.dataset.i18nPlaceholder);
+  });
+  const btnEn = document.getElementById('lang-en');
+  const btnJa = document.getElementById('lang-ja');
+  if (btnEn) btnEn.classList.toggle('active', state.lang === 'en');
+  if (btnJa) btnJa.classList.toggle('active', state.lang === 'ja');
+  const restLbl = document.getElementById('rest-default-label');
+  if (restLbl) {
+    const d = getRestDuration();
+    restLbl.textContent = state.lang === 'ja'
+      ? `標準: ${d >= 60 ? Math.floor(d/60)+'分'+(d%60?String(d%60).padStart(2,'0')+'秒':'') : d+'秒'}`
+      : `default: ${d >= 60 ? Math.floor(d/60)+'m'+(d%60?String(d%60).padStart(2,'0')+'s':'') : d+'s'}`;
+  }
+}
+function renderCurrentView() {
+  if (state.activeTab === 'home') renderHomeTab();
+  if (state.activeTab === 'workout') renderWorkoutTab();
+  if (state.activeTab === 'history') renderHistoryTab();
+  if (state.activeTab === 'calendar') renderCalendarTab();
+  if (state.activeTab === 'analytics') renderAnalyticsTab();
+  if (document.getElementById('modal-template')?.classList.contains('open')) openTemplateEditor(state.editingTemplateId, false);
+  if (document.getElementById('modal-add-exercise')?.classList.contains('open')) renderAddExerciseList(document.getElementById('ex-search')?.value || '');
+  if (document.getElementById('modal-history-editor')?.classList.contains('open')) {
+    const titleEl = document.getElementById('history-modal-title');
+    if (titleEl) titleEl.textContent = state.editingHistoryId ? t('historyModalEdit') : t('historyModalAdd');
+    renderHistoryEditorExercises();
+  }
+}
 
 // ══════════════════════════════════════════
 //  DATA LAYER
@@ -1838,7 +2008,7 @@ function openHistoryEditor(sessionId) {
   document.getElementById('history-edit-name').value = clone.name || '';
   document.getElementById('history-edit-date').value = new Date(clone.startTime).toISOString().slice(0,16);
   document.getElementById('btn-history-delete').classList.remove('hidden');
-  document.querySelector('#modal-history-editor .modal-title').textContent = 'Edit History';
+  document.querySelector('#modal-history-editor .modal-title').textContent = t('historyModalEdit');
   renderHistoryEditorExercises();
   openModal('modal-history-editor');
 }
@@ -1848,15 +2018,15 @@ function openNewHistoryEditor(dateKey = null) {
   const startValue = getDefaultHistoryDateValue(dateKey);
   window.__historyDraft = {
     id: generateId(),
-    name: 'Workout',
+    name: state.lang === 'ja' ? 'ワークアウト' : 'Workout',
     startTime: new Date(startValue).toISOString(),
     endTime: new Date(new Date(startValue).getTime() + (60 * 60 * 1000)).toISOString(),
     exercises: []
   };
-  document.getElementById('history-edit-name').value = 'Workout';
+  document.getElementById('history-edit-name').value = state.lang === 'ja' ? 'ワークアウト' : 'Workout';
   document.getElementById('history-edit-date').value = startValue;
   document.getElementById('btn-history-delete').classList.add('hidden');
-  document.querySelector('#modal-history-editor .modal-title').textContent = 'Add History Workout';
+  document.querySelector('#modal-history-editor .modal-title').textContent = t('historyModalAdd');
   renderHistoryEditorExercises();
   openModal('modal-history-editor');
 }
@@ -1978,7 +2148,7 @@ function renderHistoryEditorExercises() {
 
     const addSetBtn = document.createElement('button');
     addSetBtn.className = 'btn-mini';
-    addSetBtn.textContent = '+ Add Set';
+    addSetBtn.textContent = state.lang === 'ja' ? '+ セット追加' : '+ Add Set';
     addSetBtn.addEventListener('click', () => {
       ex.sets = ex.sets || [];
       ex.sets.push({ weight: 0, reps: 0, done: true });
@@ -2048,6 +2218,63 @@ function deleteHistoryWorkout() {
   renderHomeTab();
   renderAnalyticsTab();
 }
+function ensureExercisesExistForTemplate(sessionLike) {
+  const existingExercises = getExercises();
+  const existingMap = getAllExerciseMap();
+  let changed = false;
+  const exerciseIds = (sessionLike.exercises || []).map(ex => {
+    let exId = ex.exerciseId || ex.id;
+    if (exId && existingMap.has(exId)) return exId;
+    const match = [...existingMap.values()].find(item => (item.name || '').toLowerCase() === (ex.name || '').toLowerCase());
+    if (match) return match.id;
+    exId = exId || generateId();
+    const custom = { id: exId, name: ex.name || 'Custom Exercise', category: ex.category || 'Other' };
+    existingExercises.push(custom);
+    existingMap.set(custom.id, custom);
+    changed = true;
+    return custom.id;
+  });
+  if (changed) saveExercises(existingExercises);
+  return exerciseIds;
+}
+
+function saveSessionAsTemplate(sessionLike) {
+  if (!sessionLike || !(sessionLike.exercises || []).length) {
+    alert('Add at least one exercise before saving as a template.');
+    return;
+  }
+  const defaultName = (sessionLike.name || 'Workout').trim() || 'Workout';
+  const templateName = prompt('Template name:', defaultName);
+  if (!templateName || !templateName.trim()) return;
+  const exerciseIds = ensureExercisesExistForTemplate(sessionLike).filter(Boolean);
+  if (!exerciseIds.length) {
+    alert('Could not build a template from this workout.');
+    return;
+  }
+  const templates = getTemplates();
+  const cleanName = templateName.trim();
+  const existingIdx = templates.findIndex(t => (t.name || '').toLowerCase() === cleanName.toLowerCase());
+  if (existingIdx >= 0) {
+    if (!confirm(`A template named "${cleanName}" already exists. Replace it?`)) return;
+    templates[existingIdx] = { ...templates[existingIdx], name: cleanName, exerciseIds };
+  } else {
+    templates.push({ id: generateId(), name: cleanName, exerciseIds });
+  }
+  saveTemplates(templates);
+  renderHomeTab();
+  alert(`Saved template: ${cleanName}`);
+}
+
+function saveHistoryEditorAsTemplate() {
+  const draft = window.__historyDraft;
+  if (!draft) return;
+  syncHistoryDraftMetaFromInputs();
+  const cleaned = JSON.parse(JSON.stringify(draft));
+  cleaned.name = document.getElementById('history-edit-name').value.trim() || cleaned.name || 'Workout';
+  cleaned.exercises = (cleaned.exercises || []).filter(ex => (ex.name || '').trim());
+  saveSessionAsTemplate(cleaned);
+}
+
 
 
 function detectPRsAgainstSessions(active, sessions) {
@@ -2136,6 +2363,8 @@ function getAnalyticsData() {
         });
       }
       const item = map.get(key);
+      item.name = ex.name;
+      item.exerciseId = ex.exerciseId || item.exerciseId || null;
       item.sessionsCount += 1;
       let exVol = 0;
       let exSets = 0;
@@ -2270,11 +2499,11 @@ function sparklineSvg(points) {
 function startWorkout(templateId = null) {
   const existing = getActive();
   if (existing) {
-    if (!confirm('You have an active workout. Discard it and start a new one?')) return;
+    if (!confirm(state.lang === 'ja' ? '進行中のワークアウトがあります。破棄して新しく始めますか？' : 'You have an active workout. Discard it and start a new one?')) return;
     stopTimer();
   }
   const exMap = getAllExerciseMap();
-  let name = 'Workout';
+  let name = state.lang === 'ja' ? 'ワークアウト' : 'Workout';
   let exercises = [];
 
   if (templateId) {
@@ -2295,7 +2524,7 @@ function startWorkout(templateId = null) {
 }
 
 function discardWorkout() {
-  if (!confirm('Discard this workout? All progress will be lost.')) return;
+  if (!confirm(state.lang === 'ja' ? 'このワークアウトを破棄しますか？進行中の内容は失われます。' : 'Discard this workout? All progress will be lost.')) return;
   saveActive(null);
   stopTimer();
   renderWorkoutTab();
@@ -2452,28 +2681,28 @@ function showTab(name) {
 function renderHomeTab() {
   // Date
   const now = new Date();
-  const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const days = state.lang === 'ja' ? ['日','月','火','水','木','金','土'] : ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
   const el = document.getElementById('home-date');
-  if (el) el.textContent = `${days[now.getDay()]} ${now.getMonth()+1}/${now.getDate()}`;
+  if (el) el.textContent = state.lang === 'ja' ? `${now.getMonth()+1}/${now.getDate()} (${days[now.getDay()]})` : `${days[now.getDay()]} ${now.getMonth()+1}/${now.getDate()}`;
 
   // Templates
   const templates = getTemplates();
   const tList = document.getElementById('template-list');
   if (tList) {
     if (templates.length === 0) {
-      tList.innerHTML = '<p style="font-size:12px;color:var(--muted);padding:4px 0 8px;">No templates yet. Create one below.</p>';
+      tList.innerHTML = `<p style="font-size:12px;color:var(--muted);padding:4px 0 8px;">${state.lang === 'ja' ? 'まだテンプレートがありません。下から作成してください。' : 'No templates yet. Create one below.'}</p>`;
     } else {
       tList.innerHTML = '';
       templates.forEach(tmpl => {
         const exMap = getAllExerciseMap();
-        const exNames = (tmpl.exerciseIds || []).map(id => exMap.get(id)?.name || id);
+        const exNames = (tmpl.exerciseIds || []).map(id => trExercise(exMap.get(id)?.name || id, id));
         const card = document.createElement('div');
         card.className = 'template-card';
         card.innerHTML = `
           <div class="template-card-icon">📋</div>
           <div class="template-card-body">
             <div class="template-card-name">${esc(tmpl.name)}</div>
-            <div class="template-card-meta">${exNames.length} exercise${exNames.length!==1?'s':''} · ${exNames.slice(0,3).map(esc).join(', ')}${exNames.length>3?'…':''}</div>
+            <div class="template-card-meta">${exNames.length} ${state.lang === 'ja' ? '種目' : 'exercise' + (exNames.length!==1?'s':'')} · ${exNames.slice(0,3).map(esc).join(', ')}${exNames.length>3?'…':''}</div>
           </div>
           <div class="template-card-actions">
             <button class="btn-icon" title="Edit" data-edit-tmpl="${tmpl.id}">✏️</button>
@@ -2495,7 +2724,7 @@ function renderHomeTab() {
   const rList = document.getElementById('recent-list');
   if (rList) {
     if (sessions.length === 0) {
-      rList.innerHTML = '<p style="font-size:12px;color:var(--muted);padding:4px 0;">No workouts yet.</p>';
+      rList.innerHTML = `<p style="font-size:12px;color:var(--muted);padding:4px 0;">${state.lang === 'ja' ? 'まだワークアウトがありません。' : 'No workouts yet.'}</p>`;
     } else {
       rList.innerHTML = '';
       sessions.slice(0, 3).forEach(sess => {
@@ -2552,12 +2781,12 @@ function buildExerciseCard(exerciseIdx, active) {
   const header = document.createElement('div');
   header.className = 'exercise-card-header';
   header.innerHTML = `
-    <span class="exercise-card-name">${esc(ex.name)}</span>
+    <span class="exercise-card-name">${esc(trExercise(ex.name, ex.exerciseId))}</span>
     <span class="exercise-card-meta">${doneSets}/${ex.sets.length} sets</span>
     <button class="btn-icon" data-remove-ex="${exerciseIdx}" title="Remove" style="margin-left:4px">✕</button>`;
   header.addEventListener('click', e => {
     if (e.target.closest('[data-remove-ex]')) {
-      if (confirm(`Remove ${ex.name}?`)) removeExerciseFromWorkout(exerciseIdx);
+      if (confirm(state.lang === 'ja' ? `${trExercise(ex.name, ex.exerciseId)} を削除しますか？` : `Remove ${ex.name}?`)) removeExerciseFromWorkout(exerciseIdx);
       return;
     }
     if (state.expandedExercises.has(exerciseIdx)) {
@@ -2598,7 +2827,7 @@ function buildExerciseCard(exerciseIdx, active) {
   // Column headers
   const colHeaders = document.createElement('div');
   colHeaders.className = 'set-col-headers';
-  colHeaders.innerHTML = '<span>#</span><span>KG</span><span>REPS</span><span></span>';
+  colHeaders.innerHTML = `<span>#</span><span>KG</span><span>${state.lang === 'ja' ? '回数' : 'REPS'}</span><span></span>`;
   body.appendChild(colHeaders);
 
   // Set rows
@@ -2609,7 +2838,7 @@ function buildExerciseCard(exerciseIdx, active) {
   // Add set button
   const addSetBtn = document.createElement('button');
   addSetBtn.className = 'btn-add-set';
-  addSetBtn.textContent = '+ Add Set';
+  addSetBtn.textContent = state.lang === 'ja' ? '+ セット追加' : '+ Add Set';
   addSetBtn.addEventListener('click', () => addSet(exerciseIdx));
   body.appendChild(addSetBtn);
 
@@ -2642,7 +2871,7 @@ function buildSetRow(set, setIdx, exerciseIdx, previousSet = null) {
   let pressTimer = null;
   row.addEventListener('touchstart', () => {
     pressTimer = setTimeout(() => {
-      if (confirm('Delete this set?')) deleteSet(exerciseIdx, setIdx);
+      if (confirm(state.lang === 'ja' ? 'このセットを削除しますか？' : 'Delete this set?')) deleteSet(exerciseIdx, setIdx);
     }, 600);
   }, { passive: true });
   row.addEventListener('touchend', () => clearTimeout(pressTimer));
@@ -2667,7 +2896,7 @@ function buildSetRow(set, setIdx, exerciseIdx, previousSet = null) {
   rInput.step = '1';
   rInput.className = 'set-input';
   rInput.value = set.reps || '';
-  rInput.placeholder = 'reps';
+  rInput.placeholder = state.lang === 'ja' ? '回数' : 'reps';
   rInput.addEventListener('blur', () => updateSetField(exerciseIdx, setIdx, 'reps', rInput.value));
 
   const checkBtn = document.createElement('button');
@@ -2710,7 +2939,7 @@ function renderHistoryTab() {
   if (state.historyFilterDate) {
     const banner = document.createElement('div');
     banner.className = 'history-filter-banner';
-    banner.innerHTML = `<span>Showing ${formatFriendlyDateFromKey(state.historyFilterDate)}</span><button id="clear-history-filter">Show all</button>`;
+    banner.innerHTML = `<span>${state.lang === 'ja' ? '表示中' : 'Showing'} ${formatFriendlyDateFromKey(state.historyFilterDate)}</span><button id="clear-history-filter">${state.lang === 'ja' ? 'すべて表示' : 'Show all'}</button>`;
     list.appendChild(banner);
     banner.querySelector('#clear-history-filter').addEventListener('click', () => {
       state.historyFilterDate = null;
@@ -2718,7 +2947,7 @@ function renderHistoryTab() {
     });
   }
   if (sessions.length === 0) {
-    list.innerHTML += '<div class="empty-state"><div class="empty-state-icon">📭</div><div class="empty-state-title">No history yet</div><div class="empty-state-text">Completed workouts will appear here.</div></div>';
+    list.innerHTML += `<div class="empty-state"><div class="empty-state-icon">📭</div><div class="empty-state-title">${state.lang === 'ja' ? 'まだ履歴がありません' : 'No history yet'}</div><div class="empty-state-text">${state.lang === 'ja' ? '完了したワークアウトがここに表示されます。' : 'Completed workouts will appear here.'}</div></div>`;
     return;
   }
   sessions.forEach(sess => list.appendChild(buildSessionCard(sess, false)));
@@ -2730,7 +2959,7 @@ function buildSessionCard(sess, compact) {
   card.dataset.sessId = sess.id;
 
   const d = new Date(sess.startTime);
-  const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const days = state.lang === 'ja' ? ['日','月','火','水','木','金','土'] : ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
   const dateStr = `${d.getMonth()+1}/${d.getDate()}`;
   const dayStr = days[d.getDay()];
 
@@ -2748,7 +2977,7 @@ function buildSessionCard(sess, compact) {
     <span class="session-date">${dateStr}<br><span style="color:var(--muted);font-size:9px">${dayStr}</span></span>
     <div class="session-info">
       <div class="session-name">${esc(sess.name)}</div>
-      <div class="session-meta">${duration ? duration + ' · ' : ''}${totalSets} sets · ${totalVolume.toLocaleString()} kg · ${prCount} PR${prCount !== 1 ? 's' : ''}</div>
+      <div class="session-meta">${duration ? duration + ' · ' : ''}${totalSets} ${state.lang === 'ja' ? 'セット' : 'sets'} · ${totalVolume.toLocaleString()} kg · ${prCount} ${state.lang === 'ja' ? 'PR' : 'PR' + (prCount !== 1 ? 's' : '')}</div>
     </div>
     <span class="session-chevron">›</span>`;
 
@@ -2775,7 +3004,7 @@ function buildSessionCard(sess, compact) {
     row.className = 'session-exercise-row';
     const doneSets = (ex.sets || []).filter(s => s.done);
     const setChips = doneSets.map(s => `<span class="session-set-chip">${s.weight}×${s.reps}</span>`).join('');
-    row.innerHTML = `<div class="session-exercise-name">${esc(ex.name)}</div><div class="session-sets">${setChips || '<span style="font-size:11px;color:var(--muted)">No completed sets</span>'}</div>`;
+    row.innerHTML = `<div class="session-exercise-name">${esc(trExercise(ex.name, ex.exerciseId))}</div><div class="session-sets">${setChips || `<span style="font-size:11px;color:var(--muted)">${state.lang === 'ja' ? '完了セットなし' : (state.lang === 'ja' ? '完了セットなし' : 'No completed sets')}</span>`}</div>`;
     detail.appendChild(row);
   });
 
@@ -2788,6 +3017,10 @@ function buildSessionCard(sess, compact) {
   editBtn.className = 'btn-mini';
   editBtn.textContent = 'Edit';
   editBtn.addEventListener('click', () => openHistoryEditor(sess.id));
+  const templateBtn = document.createElement('button');
+  templateBtn.className = 'btn-mini';
+  templateBtn.textContent = 'Save as Template';
+  templateBtn.addEventListener('click', () => saveSessionAsTemplate(sess));
   const deleteBtn = document.createElement('button');
   deleteBtn.className = 'btn-mini';
   deleteBtn.textContent = 'Delete';
@@ -2799,6 +3032,7 @@ function buildSessionCard(sess, compact) {
     renderHomeTab();
   });
   actions.appendChild(editBtn);
+  actions.appendChild(templateBtn);
   actions.appendChild(deleteBtn);
   card.appendChild(actions);
   return card;
@@ -2810,7 +3044,7 @@ function buildSessionCard(sess, compact) {
 
 function renderCalendarTab() {
   const y = state.calYear, m = state.calMonth;
-  const monthNames = ['January','February','March','April','May','June',
+  const monthNames = state.lang === 'ja' ? ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'] : ['January','February','March','April','May','June',
                       'July','August','September','October','November','December'];
 
   const titleEl = document.getElementById('cal-month-title');
@@ -2829,7 +3063,7 @@ function renderCalendarTab() {
   if (!grid) return;
   grid.innerHTML = '';
 
-  ['Su','Mo','Tu','We','Th','Fr','Sa'].forEach(d => {
+  (state.lang === 'ja' ? ['日','月','火','水','木','金','土'] : ['Su','Mo','Tu','We','Th','Fr','Sa']).forEach(d => {
     const el = document.createElement('div');
     el.className = 'cal-dow';
     el.textContent = d;
@@ -2881,25 +3115,33 @@ function renderCalendarTab() {
   const helper = document.getElementById('cal-helper');
   if (helper) {
     if (state.calendarAddMode) {
-      helper.innerHTML = `Add mode is on. <strong>Tap any day</strong> to create a workout for that date.`;
+      helper.innerHTML = state.lang === 'ja'
+        ? `追加モード中です。<strong>日付をタップ</strong>してその日のワークアウトを作成します。`
+        : `Add mode is on. <strong>Tap any day</strong> to create a workout for that date.`;
     } else if (selectedDay) {
       const count = sessions.filter(s => formatDayKeyFromDate(new Date(s.startTime)) === selectedDay).length;
       helper.innerHTML = count
-        ? `<strong>${selectedDay}</strong> has ${count} workout${count !== 1 ? 's' : ''}. Tap the day again to open it in History.`
-        : `<strong>${selectedDay}</strong> has no saved workout. Tap it again or use Add Missing Workout.`;
+        ? (state.lang === 'ja'
+            ? `<strong>${selectedDay}</strong> に ${count} 件のワークアウトがあります。もう一度タップすると履歴を開きます。`
+            : `<strong>${selectedDay}</strong> has ${count} workout${count !== 1 ? 's' : ''}. Tap the day again to open it in History.`)
+        : (state.lang === 'ja'
+            ? `<strong>${selectedDay}</strong> に保存済みワークアウトはありません。もう一度タップするか、過去のワークアウト追加を使ってください。`
+            : `<strong>${selectedDay}</strong> has no saved workout. Tap it again or use Add Missing Workout.`);
     } else {
-      helper.innerHTML = 'Tap a workout day to open its history. Tap an empty day to add a missed workout.';
+      helper.innerHTML = state.lang === 'ja'
+        ? 'ワークアウトがある日をタップすると履歴を開きます。空の日をタップすると後から追加できます。'
+        : 'Tap a workout day to open its history. Tap an empty day to add a missed workout.';
     }
   }
 
   const addBtn = document.getElementById('btn-calendar-add');
   if (addBtn) {
-    addBtn.textContent = state.calendarAddMode ? 'Cancel Add Mode' : '+ Add Missing Workout';
+    addBtn.textContent = state.calendarAddMode ? (state.lang === 'ja' ? '追加モードを終了' : 'Cancel Add Mode') : t('addMissingWorkout');
     addBtn.className = state.calendarAddMode ? 'btn-primary' : 'btn-secondary';
   }
 
   const clearBtn = document.getElementById('btn-calendar-clear');
-  if (clearBtn) clearBtn.textContent = selectedDay ? 'Clear Selected Day' : 'Clear';
+  if (clearBtn) clearBtn.textContent = selectedDay ? (state.lang === 'ja' ? '選択日をクリア' : 'Clear Selected Day') : t('clear');
 
   const monthCount = sessions.filter(s => {
     const d = new Date(s.startTime);
@@ -2922,11 +3164,11 @@ function renderCalendarTab() {
     statsEl.innerHTML = `
       <div class="cal-stat">
         <div class="cal-stat-value">${monthCount}</div>
-        <div class="cal-stat-label">This Month</div>
+        <div class="cal-stat-label">${state.lang === 'ja' ? '今月' : 'This Month'}</div>
       </div>
       <div class="cal-stat">
         <div class="cal-stat-value">${streak}</div>
-        <div class="cal-stat-label">Day Streak</div>
+        <div class="cal-stat-label">${state.lang === 'ja' ? '連続日数' : 'Day Streak'}</div>
       </div>`;
   }
 }
@@ -2940,13 +3182,13 @@ function renderAnalyticsTab() {
   if (!overview || !list || !detail) return;
 
   overview.innerHTML = `
-    <div class="analytics-card"><div class="analytics-value">${data.totalWorkouts}</div><div class="analytics-label">Workouts</div></div>
-    <div class="analytics-card"><div class="analytics-value">${Math.round(data.totalVolume).toLocaleString()}</div><div class="analytics-label">Lifetime Volume (kg)</div></div>
-    <div class="analytics-card"><div class="analytics-value">${data.totalSets}</div><div class="analytics-label">Completed Sets</div></div>
-    <div class="analytics-card"><div class="analytics-value">${data.totalPrs}</div><div class="analytics-label">PRs Logged</div></div>`;
+    <div class="analytics-card"><div class="analytics-value">${data.totalWorkouts}</div><div class="analytics-label">${state.lang === 'ja' ? 'ワークアウト数' : 'Workouts'}</div></div>
+    <div class="analytics-card"><div class="analytics-value">${Math.round(data.totalVolume).toLocaleString()}</div><div class="analytics-label">${state.lang === 'ja' ? '累計ボリューム (kg)' : 'Lifetime Volume (kg)'}</div></div>
+    <div class="analytics-card"><div class="analytics-value">${data.totalSets}</div><div class="analytics-label">${state.lang === 'ja' ? '完了セット数' : 'Completed Sets'}</div></div>
+    <div class="analytics-card"><div class="analytics-value">${data.totalPrs}</div><div class="analytics-label">${state.lang === 'ja' ? '記録PR数' : 'PRs Logged'}</div></div>`;
 
   if (!data.exercises.length) {
-    list.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📈</div><div class="empty-state-title">No analytics yet</div><div class="empty-state-text">Complete some workouts and your stats will show up here.</div></div>';
+    list.innerHTML = `<div class="empty-state"><div class="empty-state-icon">📈</div><div class="empty-state-title">${state.lang === 'ja' ? 'まだ分析データがありません' : 'No analytics yet'}</div><div class="empty-state-text">${state.lang === 'ja' ? 'ワークアウトを完了すると統計がここに表示されます。' : 'Complete some workouts and your stats will show up here.'}</div></div>`;
     detail.innerHTML = '';
     return;
   }
@@ -2962,10 +3204,10 @@ function renderAnalyticsTab() {
     item.innerHTML = `
       <div class="analytics-ex-rank">${idx + 1}</div>
       <div class="analytics-ex-main">
-        <div class="analytics-ex-name">${esc(ex.name)}</div>
-        <div class="analytics-ex-meta">${ex.sessionsCount} workouts · ${Math.round(ex.totalVolume).toLocaleString()} kg volume</div>
+        <div class="analytics-ex-name">${esc(trExercise(ex.name, ex.exerciseId))}</div>
+        <div class="analytics-ex-meta">${ex.sessionsCount} ${state.lang === 'ja' ? '回' : 'workouts'} · ${Math.round(ex.totalVolume).toLocaleString()} kg ${state.lang === 'ja' ? 'ボリューム' : 'volume'}</div>
       </div>
-      <div class="analytics-ex-right">Best<br>${ex.bestSetText}</div>`;
+      <div class="analytics-ex-right">${state.lang === 'ja' ? '最高' : 'Best'}<br>${ex.bestSetText}</div>`;
     item.addEventListener('click', () => {
       state.selectedAnalyticsExercise = ex.key;
       renderAnalyticsTab();
@@ -2979,22 +3221,22 @@ function renderAnalyticsTab() {
     <div class="analytics-detail">
       <div class="analytics-detail-head">
         <div>
-          <div class="analytics-detail-title">${esc(selected.name)}</div>
-          <div class="analytics-detail-sub">${selected.sessionsCount} workouts logged · Last trained ${lastEntry ? new Date(lastEntry.date).toLocaleDateString() : '—'}</div>
+          <div class="analytics-detail-title">${esc(trExercise(selected.name, selected.exerciseId))}</div>
+          <div class="analytics-detail-sub">${selected.sessionsCount} ${state.lang === 'ja' ? '回記録' : 'workouts logged'} · ${state.lang === 'ja' ? '前回' : 'Last trained'} ${lastEntry ? formatLocalDate(lastEntry.date) : '—'}</div>
         </div>
-        <button class="btn-mini accent" id="analytics-jump-history">View history day</button>
+        <button class="btn-mini accent" id="analytics-jump-history">${state.lang === 'ja' ? 'その日の履歴へ' : 'View history day'}</button>
       </div>
       <div class="analytics-stat-grid">
-        <div class="analytics-mini"><div class="analytics-mini-value">${selected.bestSetText}</div><div class="analytics-mini-label">Best Set</div></div>
-        <div class="analytics-mini"><div class="analytics-mini-value">${Math.round(selected.best1RM || 0)}</div><div class="analytics-mini-label">Best Est. 1RM</div></div>
-        <div class="analytics-mini"><div class="analytics-mini-value">${Math.round(selected.totalVolume).toLocaleString()}</div><div class="analytics-mini-label">Lifetime Volume</div></div>
-        <div class="analytics-mini"><div class="analytics-mini-value">${selected.totalSets}</div><div class="analytics-mini-label">Completed Sets</div></div>
+        <div class="analytics-mini"><div class="analytics-mini-value">${selected.bestSetText}</div><div class="analytics-mini-label">${state.lang === 'ja' ? '最高セット' : 'Best Set'}</div></div>
+        <div class="analytics-mini"><div class="analytics-mini-value">${Math.round(selected.best1RM || 0)}</div><div class="analytics-mini-label">${state.lang === 'ja' ? '最高推定1RM' : 'Best Est. 1RM'}</div></div>
+        <div class="analytics-mini"><div class="analytics-mini-value">${Math.round(selected.totalVolume).toLocaleString()}</div><div class="analytics-mini-label">${state.lang === 'ja' ? '累計ボリューム' : 'Lifetime Volume'}</div></div>
+        <div class="analytics-mini"><div class="analytics-mini-value">${selected.totalSets}</div><div class="analytics-mini-label">${state.lang === 'ja' ? '完了セット数' : 'Completed Sets'}</div></div>
       </div>
       ${sparklineSvg(selected.history)}
-      <div class="section-label">Recent Sessions</div>
+      <div class="section-label">${state.lang === 'ja' ? '最近のセッション' : 'Recent Sessions'}</div>
       ${selected.history.slice().reverse().slice(0, 8).map(h => `
         <div class="analytics-list-row">
-          <div class="analytics-list-left">${new Date(h.date).toLocaleDateString()} · ${esc(h.sessionName)}</div>
+          <div class="analytics-list-left">${formatLocalDate(h.date)} · ${esc(h.sessionName)}</div>
           <div class="analytics-list-right">${h.bestSetText} · ${Math.round(h.volume).toLocaleString()} kg</div>
         </div>`).join('')}
     </div>`;
@@ -3049,33 +3291,33 @@ function renderSummaryModal(active, prs) {
 
   let html = `
     <div class="summary-hero">
-      <div class="summary-kicker">Session complete</div>
-      <div class="summary-headline">${prs.length > 0 ? 'PRs on the board' : improvedExercises > 0 ? 'Progress made today' : 'Workout logged'}</div>
+      <div class="summary-kicker">${state.lang === 'ja' ? 'セッション完了' : 'Session complete'}</div>
+      <div class="summary-headline">${prs.length > 0 ? (state.lang === 'ja' ? 'PRを更新' : 'PRs on the board') : improvedExercises > 0 ? (state.lang === 'ja' ? '今日の進歩あり' : 'Progress made today') : (state.lang === 'ja' ? 'ワークアウトを記録' : 'Workout logged')}</div>
       <div class="summary-subline">${summaryTone}</div>
     </div>
 
     <div class="summary-stat-row">
       <div class="summary-stat">
         <div class="summary-stat-value">${duration}</div>
-        <div class="summary-stat-label">Duration</div>
+        <div class="summary-stat-label">${state.lang === 'ja' ? '時間' : 'Duration'}</div>
       </div>
       <div class="summary-stat">
         <div class="summary-stat-value">${Math.round(totalVolume).toLocaleString()}</div>
-        <div class="summary-stat-label">Volume (kg)</div>
+        <div class="summary-stat-label">${state.lang === 'ja' ? 'ボリューム (kg)' : 'Volume (kg)'}</div>
       </div>
       <div class="summary-stat">
         <div class="summary-stat-value">${totalSets}</div>
-        <div class="summary-stat-label">Sets Done</div>
+        <div class="summary-stat-label">${state.lang === 'ja' ? '完了セット' : 'Sets Done'}</div>
       </div>
     </div>
 
     <div class="summary-highlight-row">
       <div class="summary-highlight">
-        <div class="summary-highlight-label">Best lift</div>
-        <div class="summary-highlight-value">${bestLift ? `${esc(bestLift.name)} ${bestLift.weight}×${bestLift.reps}` : 'No completed lifts'}</div>
+        <div class="summary-highlight-label">${state.lang === 'ja' ? 'ベストリフト' : 'Best lift'}</div>
+        <div class="summary-highlight-value">${bestLift ? `${esc(trExercise(bestLift.name))} ${bestLift.weight}×${bestLift.reps}` : (state.lang === 'ja' ? '完了リフトなし' : 'No completed lifts')}</div>
       </div>
       <div class="summary-highlight">
-        <div class="summary-highlight-label">Improved exercises</div>
+        <div class="summary-highlight-label">${state.lang === 'ja' ? '改善した種目' : 'Improved exercises'}</div>
         <div class="summary-highlight-value accent">${improvedExercises}/${completedExercises || active.exercises.length || 0}</div>
       </div>
     </div>`;
@@ -3083,40 +3325,40 @@ function renderSummaryModal(active, prs) {
   if (bestLift) {
     html += `
       <div class="summary-highlight" style="margin-bottom:14px">
-        <div class="summary-highlight-label">Strength spotlight</div>
-        <div class="summary-highlight-value">Estimated 1RM: ${Math.round(bestLift.est1RM)} kg · based on ${esc(bestLift.name)} ${bestLift.weight}×${bestLift.reps}</div>
+        <div class="summary-highlight-label">${state.lang === 'ja' ? '強さハイライト' : 'Strength spotlight'}</div>
+        <div class="summary-highlight-value">${state.lang === 'ja' ? '推定1RM' : 'Estimated 1RM'}: ${Math.round(bestLift.est1RM)} kg · ${state.lang === 'ja' ? `${esc(trExercise(bestLift.name))} ${bestLift.weight}×${bestLift.reps} に基づく` : `based on ${esc(trExercise(bestLift.name))} ${bestLift.weight}×${bestLift.reps}` }</div>
       </div>`;
   }
 
   if (prs.length > 0) {
-    html += `<div style="margin-bottom:14px"><div class="section-label" style="--accent:#fbbf24;color:#fbbf24"><span style="width:3px;height:12px;background:#fbbf24;border-radius:2px;display:block"></span>Personal Records 🏆</div>`;
+    html += `<div style="margin-bottom:14px"><div class="section-label" style="--accent:#fbbf24;color:#fbbf24"><span style="width:3px;height:12px;background:#fbbf24;border-radius:2px;display:block"></span>${state.lang === 'ja' ? '自己ベスト 🏆' : 'Personal Records 🏆'}</div>`;
     prs.forEach(pr => {
       html += `<span class="pr-badge">🏆 ${esc(pr.name)} ${pr.weight}×${pr.reps}</span>`;
     });
     html += '</div>';
   }
 
-  html += '<div class="section-label">Exercises</div>';
+  html += '<div class="section-label" data-i18n="exercises">Exercises</div>';
   active.exercises.forEach(ex => {
     const doneSets = ex.sets.filter(s => s.done);
     const progress = getExerciseProgressData(ex.exerciseId, ex.name, ex.sets);
     html += `<div class="summary-exercise">
-      <div class="summary-exercise-name">${esc(ex.name)}</div>
-      <div class="summary-set-list">${doneSets.length ? doneSets.map((s,i) => `Set ${i+1}: ${s.weight} kg × ${s.reps}`).join('<br>') : 'No completed sets'}</div>
+      <div class="summary-exercise-name">${esc(trExercise(ex.name, ex.exerciseId))}</div>
+      <div class="summary-set-list">${doneSets.length ? doneSets.map((s,i) => `${state.lang === 'ja' ? 'セット' : 'Set'} ${i+1}: ${s.weight} kg × ${s.reps}`).join('<br>') : (state.lang === 'ja' ? '完了セットなし' : 'No completed sets')}</div>
       ${progress.prevSets.length ? `<div class="summary-set-list" style="margin-top:5px;color:${progress.allMatched ? 'var(--success)' : 'var(--muted)'}">${esc(progress.hintText)}</div>` : ''}
     </div>`;
   });
 
   html += `
     <div class="divider"></div>
-    <button class="btn-primary" id="btn-save-workout"><div class="shimmer"></div>Save Workout</button>
-    <button class="btn-danger mt8" id="btn-discard-after-summary">Discard</button>`;
+    <button class="btn-primary" id="btn-save-workout"><div class="shimmer"></div>${state.lang === 'ja' ? 'ワークアウト保存' : 'Save Workout'}</button>
+    <button class="btn-danger mt8" id="btn-discard-after-summary">${state.lang === 'ja' ? '破棄' : 'Discard'}</button>`;
 
   body.innerHTML = html;
 
   document.getElementById('btn-save-workout').addEventListener('click', () => saveWorkout(active));
   document.getElementById('btn-discard-after-summary').addEventListener('click', () => {
-    if (confirm('Discard this workout?')) {
+    if (confirm(state.lang === 'ja' ? 'このワークアウトを破棄しますか？' : 'Discard this workout?')) {
       saveActive(null);
       stopTimer();
       closeModal('modal-summary');
@@ -3141,7 +3383,7 @@ function openAddExercise(context) {
 function renderAddExerciseList(query) {
   const allExercises = [...PRESET_EXERCISES, ...getExercises()];
   const q = query.toLowerCase().trim();
-  const filtered = q ? allExercises.filter(e => e.name.toLowerCase().includes(q)) : allExercises;
+  const filtered = q ? allExercises.filter(e => exerciseSearchText(e).includes(q)) : allExercises;
 
   // Filter out already-added exercises when appropriate
   let alreadyAdded = new Set();
@@ -3160,7 +3402,7 @@ function renderAddExerciseList(query) {
   container.innerHTML = '';
 
   if (filtered.length === 0) {
-    container.innerHTML = '<p style="font-size:12px;color:var(--muted);padding:8px 0">No exercises found.</p>';
+    container.innerHTML = `<p style="font-size:12px;color:var(--muted);padding:8px 0">${state.lang === 'ja' ? '種目が見つかりません。' : 'No exercises found.'}</p>`;
     return;
   }
 
@@ -3174,13 +3416,13 @@ function renderAddExerciseList(query) {
     if (!grouped[cat] || grouped[cat].length === 0) return;
     const label = document.createElement('div');
     label.className = 'ex-category-label';
-    label.textContent = cat;
+    label.textContent = trCategory(cat);
     container.appendChild(label);
 
     grouped[cat].forEach(ex => {
       const item = document.createElement('div');
       item.className = 'ex-item';
-      item.innerHTML = `<span class="ex-item-name">${esc(ex.name)}${alreadyAdded.has(ex.id) ? ' <span style="color:var(--muted);font-size:11px">(added)</span>' : ''}</span><span class="ex-item-add">+</span>`;
+      item.innerHTML = `<span class="ex-item-name">${esc(trExercise(ex.name, ex.exerciseId))}${alreadyAdded.has(ex.id) ? ' <span style="color:var(--muted);font-size:11px">(added)</span>' : ''}</span><span class="ex-item-add">+</span>`;
       item.addEventListener('click', () => {
         if (state.addExerciseContext === 'workout') {
           addExerciseToWorkout(ex.id);
@@ -3212,7 +3454,7 @@ function openTemplateEditor(templateId = null, resetExercises = true) {
     state.templateExerciseIds = existing ? [...(existing.exerciseIds || [])] : [];
   }
 
-  document.getElementById('template-modal-title').textContent = existing ? 'Edit Template' : 'New Template';
+  document.getElementById('template-modal-title').textContent = existing ? t('templateModalEdit') : t('templateModalNew');
   document.getElementById('template-name-input').value = existing ? existing.name : '';
 
   const exMap = getAllExerciseMap();
@@ -3222,7 +3464,7 @@ function openTemplateEditor(templateId = null, resetExercises = true) {
     const ex = exMap.get(eid);
     const item = document.createElement('div');
     item.className = 'template-ex-item';
-    item.innerHTML = `<span class="template-ex-name">${esc(ex ? ex.name : eid)}</span>`;
+    item.innerHTML = `<span class="template-ex-name">${esc(ex ? trExercise(ex.name, eid) : eid)}</span>`;
     const removeBtn = document.createElement('button');
     removeBtn.className = 'btn-icon';
     removeBtn.textContent = '✕';
@@ -3243,7 +3485,7 @@ function openTemplateEditor(templateId = null, resetExercises = true) {
 
 function saveTemplate() {
   const name = document.getElementById('template-name-input').value.trim();
-  if (!name) { alert('Please enter a template name.'); return; }
+  if (!name) { alert(state.lang === 'ja' ? 'テンプレート名を入力してください。' : 'Please enter a template name.'); return; }
   const templates = getTemplates();
   if (state.editingTemplateId) {
     const idx = templates.findIndex(t => t.id === state.editingTemplateId);
@@ -3257,7 +3499,7 @@ function saveTemplate() {
 }
 
 function deleteTemplate(id) {
-  if (!confirm('Delete this template?')) return;
+  if (!confirm(state.lang === 'ja' ? 'このテンプレートを削除しますか？' : 'Delete this template?')) return;
   const templates = getTemplates().filter(t => t.id !== id);
   saveTemplates(templates);
   closeModal('modal-template');
@@ -3292,6 +3534,9 @@ function esc(str) {
 
 document.addEventListener('DOMContentLoaded', () => {
   migrateSessionMetadata();
+  applyTranslations();
+  document.getElementById('lang-en')?.addEventListener('click', () => setLang('en'));
+  document.getElementById('lang-ja')?.addEventListener('click', () => setLang('ja'));
 
   // Bottom nav
   document.querySelectorAll('.bottom-nav button[data-tab]').forEach(btn => {
@@ -3326,10 +3571,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Create custom exercise
   document.getElementById('btn-create-custom').addEventListener('click', () => {
-    const name = prompt('Exercise name:');
+    const name = prompt(state.lang === 'ja' ? '種目名:' : 'Exercise name:');
     if (!name || !name.trim()) return;
-    const catOptions = CATEGORIES.join(', ');
-    let cat = prompt(`Category (${catOptions}):`);
+    const catOptions = (state.lang === 'ja' ? CATEGORIES.map(trCategory) : CATEGORIES).join(', ');
+    let cat = prompt(state.lang === 'ja' ? `カテゴリー (${catOptions}):` : `Category (${catOptions}):`);
+    if (state.lang === 'ja') {
+      const reverseCat = Object.fromEntries(Object.entries(CATEGORY_JA).map(([k,v]) => [v,k]));
+      cat = reverseCat[cat] || cat;
+    }
     if (!cat || !CATEGORIES.includes(cat)) cat = 'Other';
     const ex = { id: generateId(), name: name.trim(), category: cat };
     const exercises = getExercises();
@@ -3391,6 +3640,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // History editor
   document.getElementById('btn-history-add-exercise').addEventListener('click', openHistoryExercisePicker);
   document.getElementById('btn-history-save').addEventListener('click', saveHistoryEditorChanges);
+  document.getElementById('btn-history-save-template').addEventListener('click', saveHistoryEditorAsTemplate);
   document.getElementById('btn-history-delete').addEventListener('click', deleteHistoryWorkout);
 
   // Resume active workout if exists
@@ -3400,66 +3650,10 @@ document.addEventListener('DOMContentLoaded', () => {
     active.exercises.forEach((_, i) => state.expandedExercises.add(i));
   }
 
-  setupInstallUI();
-
   // Initial render
   renderHomeTab();
+  applyTranslations();
 });
-
-// ══════════════════════════════════════════
-//  PWA INSTALL / SERVICE WORKER
-// ══════════════════════════════════════════
-
-let deferredInstallPrompt = null;
-
-function isIOS() {
-  return /iphone|ipad|ipod/i.test(window.navigator.userAgent);
-}
-function isInStandaloneMode() {
-  return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
-}
-function setupInstallUI() {
-  const bar = document.getElementById('install-bar');
-  const note = document.getElementById('install-note');
-  const btn = document.getElementById('install-btn');
-  if (!bar || !note || !btn) return;
-
-  if (isInStandaloneMode()) return;
-
-  if (isIOS()) {
-    note.classList.add('visible');
-    return;
-  }
-
-  btn.addEventListener('click', async () => {
-    if (!deferredInstallPrompt) return;
-    deferredInstallPrompt.prompt();
-    await deferredInstallPrompt.userChoice;
-    deferredInstallPrompt = null;
-    bar.classList.remove('visible');
-  });
-}
-
-window.addEventListener('beforeinstallprompt', (e) => {
-  e.preventDefault();
-  deferredInstallPrompt = e;
-  const bar = document.getElementById('install-bar');
-  if (bar && !isInStandaloneMode()) bar.classList.add('visible');
-});
-
-window.addEventListener('appinstalled', () => {
-  const bar = document.getElementById('install-bar');
-  if (bar) bar.classList.remove('visible');
-});
-
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./service-worker.js').catch(err => {
-      console.warn('Service worker registration failed:', err);
-    });
-  });
-}
-
 </script>
 </body>
 </html>
