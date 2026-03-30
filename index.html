@@ -107,6 +107,93 @@
     display: flex; align-items: center; justify-content: center;
     font-size: 18px; flex-shrink: 0;
   }
+
+
+  .neon-icon {
+    width: 18px;
+    height: 18px;
+    stroke: var(--accent);
+    fill: none;
+    filter: drop-shadow(0 0 6px rgba(0,229,255,0.55)) drop-shadow(0 0 16px rgba(0,229,255,0.28));
+  }
+  .neon-icon.lg {
+    width: 22px;
+    height: 22px;
+  }
+  .page-header-icon,
+  .template-card-icon,
+  .empty-state-icon {
+    position: relative;
+    overflow: hidden;
+  }
+  .page-header-icon {
+    box-shadow: 0 0 0 1px rgba(0,229,255,0.18), 0 0 16px rgba(0,229,255,0.18), inset 0 0 14px rgba(124,58,237,0.18);
+  }
+  .page-header-icon::after,
+  .template-card-icon::after,
+  .empty-state-icon::after {
+    content: '';
+    position: absolute;
+    inset: auto -35% -35% auto;
+    width: 42px;
+    height: 42px;
+    background: radial-gradient(circle, rgba(0,229,255,0.18), transparent 68%);
+    pointer-events: none;
+  }
+  .template-card-icon {
+    background: linear-gradient(135deg, rgba(124,58,237,0.16), rgba(0,229,255,0.10));
+    border-color: rgba(0,229,255,0.22);
+    box-shadow: inset 0 0 18px rgba(0,229,255,0.08), 0 0 16px rgba(0,229,255,0.08);
+  }
+  .empty-state-icon {
+    width: 72px;
+    height: 72px;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba(124,58,237,0.16), rgba(0,229,255,0.08));
+    border: 1px solid rgba(0,229,255,0.22);
+    box-shadow: inset 0 0 24px rgba(0,229,255,0.08), 0 0 18px rgba(0,229,255,0.08);
+    opacity: 1;
+    font-size: 0;
+  }
+  .empty-state-icon .neon-icon {
+    width: 34px;
+    height: 34px;
+  }
+  .bottom-nav button.active,
+  .cal-day.selected,
+  .cal-day.worked-out,
+  .analytics-ex-item.active,
+  .btn-mini.accent,
+  .lang-toggle button.active {
+    box-shadow: 0 0 0 1px rgba(0,229,255,0.24), 0 0 16px rgba(0,229,255,0.16), inset 0 0 14px rgba(0,229,255,0.08);
+  }
+  .cal-day.today,
+  .page-header-icon,
+  .btn-finish,
+  .btn-primary,
+  .btn-secondary:focus-visible,
+  .btn-danger:focus-visible,
+  .btn-mini:focus-visible,
+  .btn-icon:focus-visible {
+    box-shadow: 0 0 0 1px rgba(0,229,255,0.22), 0 0 16px rgba(0,229,255,0.14);
+  }
+  .set-row.done {
+    background: linear-gradient(90deg, rgba(0,200,150,0.09), rgba(0,229,255,0.03));
+    opacity: 0.78;
+  }
+  .set-row.done .set-number,
+  .set-row.done input.set-input {
+    text-decoration: line-through;
+    text-decoration-thickness: 1.5px;
+    text-decoration-color: rgba(0,229,255,0.45);
+  }
+  .set-row.done .btn-check {
+    box-shadow: 0 0 12px rgba(0,200,150,0.16);
+  }
+
   .page-header-text h1 {
     font-family: 'IBM Plex Mono', monospace;
     font-size: 14px; font-weight: 600;
@@ -1220,9 +1307,9 @@
   <!-- ══ HOME TAB ══ -->
   <div id="tab-home" class="tab-panel active">
     <div class="page-header">
-      <div class="page-header-icon">💪</div>
+      <div class="page-header-icon" data-icon="home"></div>
       <div class="page-header-text">
-        <h1 data-i18n="homeTitle">Workout</h1>
+        <h1 data-i18n="homeTitle">Bare Metal</h1>
         <p data-i18n="homeSubtitle">Track your training</p>
       </div>
       <div class="page-header-right" id="home-date"></div>
@@ -1248,7 +1335,7 @@
   <!-- ══ WORKOUT TAB ══ -->
   <div id="tab-workout" class="tab-panel">
     <div id="workout-empty-state" class="empty-state">
-      <div class="empty-state-icon">🏋️</div>
+      <div class="empty-state-icon" data-icon="workout"></div>
       <div class="empty-state-title" data-i18n="noActiveWorkout">No active workout</div>
       <div class="empty-state-text" data-i18n="noActiveWorkoutText">Start a workout from the Home tab or tap below.</div>
       <button class="btn-primary" style="max-width:280px;margin-top:8px" id="btn-start-blank-2">
@@ -1273,7 +1360,7 @@
   <!-- ══ HISTORY TAB ══ -->
   <div id="tab-history" class="tab-panel">
     <div class="page-header">
-      <div class="page-header-icon">📋</div>
+      <div class="page-header-icon" data-icon="history"></div>
       <div class="page-header-text">
         <h1 data-i18n="historyTitle">History</h1>
         <p data-i18n="historySubtitle">Past workouts</p>
@@ -1285,7 +1372,7 @@
   <!-- ══ CALENDAR TAB ══ -->
   <div id="tab-calendar" class="tab-panel">
     <div class="page-header">
-      <div class="page-header-icon">📅</div>
+      <div class="page-header-icon" data-icon="calendar"></div>
       <div class="page-header-text">
         <h1 data-i18n="calendarTitle">Calendar</h1>
         <p data-i18n="calendarSubtitle">Workout history</p>
@@ -1308,7 +1395,7 @@
   <!-- ══ ANALYTICS TAB ══ -->
   <div id="tab-analytics" class="tab-panel">
     <div class="page-header">
-      <div class="page-header-icon">📈</div>
+      <div class="page-header-icon" data-icon="analytics"></div>
       <div class="page-header-text">
         <h1 data-i18n="analyticsTitle">Analytics</h1>
         <p data-i18n="analyticsSubtitle">Progress and lifetime stats</p>
@@ -1324,7 +1411,7 @@
   <!-- ══ SETTINGS TAB ══ -->
   <div id="tab-settings" class="tab-panel">
     <div class="page-header">
-      <div class="page-header-icon">⚙️</div>
+      <div class="page-header-icon" data-icon="settings"></div>
       <div class="page-header-text">
         <h1 data-i18n="settingsTitle">Settings</h1>
         <p data-i18n="settingsSubtitle">Personalize your app</p>
@@ -1623,6 +1710,10 @@ const BACKUP_STORAGE_KEYS = [
   'wt_rest_duration',
   'wt_lang'
 ];
+const GDRIVE_WAS_CONNECTED_KEY = 'wt_gdrive_was_connected';
+const GDRIVE_LAST_BACKUP_AT_KEY = 'wt_gdrive_last_backup_at';
+const SMART_BACKUP_MAX_AGE_MS = 24 * 60 * 60 * 1000;
+
 
 // ══════════════════════════════════════════
 //  LANGUAGE
@@ -1630,8 +1721,8 @@ const BACKUP_STORAGE_KEYS = [
 
 const UI_TEXT = {
   en: {
-    appTitle: 'Workout Tracker',
-    homeTitle: 'Workout',
+    appTitle: 'Bare Metal',
+    homeTitle: 'Bare Metal',
     homeSubtitle: 'Track your training',
     startEmpty: '▶ Start Empty Workout',
     templates: 'Templates',
@@ -1681,6 +1772,8 @@ const UI_TEXT = {
     driveConfirmRestore: 'Restore the latest Google Drive backup and replace local data on this device?',
     drivePermissionDenied: 'Google Drive permission was not granted.',
     driveSignedInAs: 'Signed in as',
+    driveStatusReconnecting: 'Reconnecting to Google Drive…',
+    driveStatusAutoBackup: 'Smart auto backup is running…',
     exercises: 'Exercises',
     navHome: 'Home',
     navWorkout: 'Workout',
@@ -1707,8 +1800,8 @@ const UI_TEXT = {
     historyModalAdd: 'Add History Workout'
   },
   ja: {
-    appTitle: 'ワークアウトトラッカー',
-    homeTitle: 'ワークアウト',
+    appTitle: 'Bare Metal',
+    homeTitle: 'Bare Metal',
     homeSubtitle: 'トレーニングを記録',
     startEmpty: '▶ 空のワークアウトを開始',
     templates: 'テンプレート',
@@ -1758,6 +1851,8 @@ const UI_TEXT = {
     driveConfirmRestore: 'Google Drive の最新バックアップで、この端末のローカルデータを上書きしますか？',
     drivePermissionDenied: 'Google Drive の権限が許可されませんでした。',
     driveSignedInAs: 'ログイン中',
+    driveStatusReconnecting: 'Google Drive に再接続中…',
+    driveStatusAutoBackup: 'スマート自動バックアップを実行中…',
     exercises: '種目',
     navHome: 'ホーム',
     navWorkout: '記録',
@@ -1826,6 +1921,7 @@ function setLang(lang) {
   document.documentElement.lang = lang === 'ja' ? 'ja' : 'en';
   applyTranslations();
   renderCurrentView();
+  if (payload.exportedAt) markBackupTimestamp(new Date(payload.exportedAt).getTime() || Date.now());
 }
 function t(key) {
   return (UI_TEXT[state.lang] && UI_TEXT[state.lang][key]) || UI_TEXT.en[key] || key;
@@ -1866,6 +1962,7 @@ function applyTranslations() {
   }
 }
 function renderCurrentView() {
+  decorateBareMetalIcons();
   if (state.activeTab === 'home') renderHomeTab();
   if (state.activeTab === 'workout') renderWorkoutTab();
   if (state.activeTab === 'history') renderHistoryTab();
@@ -1879,6 +1976,7 @@ function renderCurrentView() {
     if (titleEl) titleEl.textContent = state.editingHistoryId ? t('historyModalEdit') : t('historyModalAdd');
     renderHistoryEditorExercises();
   }
+  decorateBareMetalIcons();
 }
 
 function renderSettingsTab() {
@@ -1888,6 +1986,77 @@ function renderSettingsTab() {
 // ══════════════════════════════════════════
 //  GOOGLE DRIVE BACKUP
 // ══════════════════════════════════════════
+
+
+function setDriveRemembered(value) {
+  if (value) localStorage.setItem(GDRIVE_WAS_CONNECTED_KEY, '1');
+  else localStorage.removeItem(GDRIVE_WAS_CONNECTED_KEY);
+}
+
+function wasDriveConnectedBefore() {
+  return localStorage.getItem(GDRIVE_WAS_CONNECTED_KEY) === '1';
+}
+
+function getLastBackupAt() {
+  return Number(localStorage.getItem(GDRIVE_LAST_BACKUP_AT_KEY) || '0');
+}
+
+function markBackupTimestamp(ts = Date.now()) {
+  localStorage.setItem(GDRIVE_LAST_BACKUP_AT_KEY, String(ts));
+}
+
+function shouldRunDailyAutoBackup() {
+  const last = getLastBackupAt();
+  return !last || (Date.now() - last) >= SMART_BACKUP_MAX_AGE_MS;
+}
+
+function getMenuIconSvg(name, extraClass = '') {
+  const cls = ['neon-icon', extraClass].filter(Boolean).join(' ');
+  const map = {
+    home: `<svg class="${cls}" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>`,
+    workout: `<svg class="${cls}" viewBox="0 0 24 24"><path d="M6 4v16M18 4v16M3 8h4M17 8h4M3 16h4M17 16h4"/></svg>`,
+    history: `<svg class="${cls}" viewBox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"/></svg>`,
+    calendar: `<svg class="${cls}" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>`,
+    analytics: `<svg class="${cls}" viewBox="0 0 24 24"><path d="M4 19h16"/><path d="M7 16l4-4 3 3 5-7"/></svg>`,
+    settings: `<svg class="${cls}" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33 1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82 1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>`
+  };
+  return map[name] || map.home;
+}
+
+function decorateBareMetalIcons() {
+  document.querySelectorAll('.page-header-icon[data-icon]').forEach(el => {
+    const name = el.dataset.icon || 'home';
+    el.innerHTML = getMenuIconSvg(name, 'lg');
+  });
+  document.querySelectorAll('.empty-state-icon[data-icon]').forEach(el => {
+    const name = el.dataset.icon || 'workout';
+    el.innerHTML = getMenuIconSvg(name, 'lg');
+  });
+}
+
+async function maybeSilentReconnect() {
+  if (!state.gdriveReady || !state.gdriveTokenClient || state.gdriveAccessToken || state.gdriveReconnectAttempted || !wasDriveConnectedBefore()) return;
+  state.gdriveReconnectAttempted = true;
+  state.gdriveSilentReconnectPending = true;
+  setDriveStatus(t('driveStatusReconnecting'), 'info');
+  try {
+    state.gdriveTokenClient.requestAccessToken({ prompt: '' });
+  } catch (err) {
+    state.gdriveSilentReconnectPending = false;
+    console.warn('silent reconnect failed', err);
+  }
+}
+
+async function maybeSmartAutoBackup(reason = 'manual') {
+  if (!state.gdriveAccessToken) return;
+  if (reason === 'daily' && !shouldRunDailyAutoBackup()) return;
+  try {
+    setDriveStatus(t('driveStatusAutoBackup'), 'info');
+    await uploadBackupToDrive({ silent: true });
+  } catch (err) {
+    console.warn('smart auto backup failed', err);
+  }
+}
 
 function hasRealConfigValue(value, placeholder = '') {
   const normalized = String(value || '').trim();
@@ -1962,6 +2131,8 @@ function gisLoaded() {
           return;
         }
         state.gdriveAccessToken = resp.access_token || '';
+        state.gdriveSilentReconnectPending = false;
+        setDriveRemembered(true);
         gapi.client.setToken({ access_token: state.gdriveAccessToken });
         await hydrateDriveUser();
         maybeDriveReady();
@@ -1979,6 +2150,7 @@ function gisLoaded() {
 function maybeDriveReady() {
   state.gdriveReady = state.gapiInited && state.gisInited;
   updateDriveUiState();
+  if (state.gdriveReady) setTimeout(() => { maybeSilentReconnect(); }, 150);
 }
 
 async function hydrateDriveUser() {
@@ -2015,6 +2187,8 @@ function disconnectGoogleDrive() {
   }
   state.gdriveAccessToken = '';
   state.gdriveUserEmail = '';
+  state.gdriveSilentReconnectPending = false;
+  setDriveRemembered(false);
   gapi.client.setToken(null);
   setDriveStatus(t('driveStatusSignedOut'), 'info');
   updateDriveUiState();
@@ -2062,12 +2236,12 @@ async function findDriveBackupFile() {
   return resp.result.files?.[0] || null;
 }
 
-async function uploadBackupToDrive() {
+async function uploadBackupToDrive(options = {}) {
   if (!state.gdriveAccessToken) {
     connectGoogleDrive();
     return;
   }
-  setDriveStatus(t('driveStatusBackingUp'), 'info');
+  if (!options.silent) setDriveStatus(t('driveStatusBackingUp'), 'info');
   const existing = await findDriveBackupFile();
   const metadata = {
     name: DRIVE_BACKUP_FILE,
@@ -2102,7 +2276,8 @@ async function uploadBackupToDrive() {
     const msg = await resp.text();
     throw new Error(msg || 'Backup failed.');
   }
-  setDriveStatus(t('driveBackupSuccess'), 'ok');
+  markBackupTimestamp();
+  if (!options.silent) setDriveStatus(t('driveBackupSuccess'), 'ok');
 }
 
 async function restoreBackupFromDrive() {
@@ -2193,6 +2368,14 @@ const state = {
   calendarAddMode: false,
   selectedCalendarDate: null,
   lang: getLang(),
+  gapiInited: false,
+  gisInited: false,
+  gdriveReady: false,
+  gdriveAccessToken: '',
+  gdriveUserEmail: '',
+  gdriveTokenClient: null,
+  gdriveReconnectAttempted: false,
+  gdriveSilentReconnectPending: false,
   gapiInited: false,
   gisInited: false,
   gdriveReady: false,
@@ -3031,6 +3214,7 @@ function saveWorkout(active) {
   closeModal('modal-summary');
   state.expandedHistorySessions.clear();
   showTab('history');
+  maybeSmartAutoBackup('workout');
 }
 
 // ══════════════════════════════════════════
@@ -3177,13 +3361,13 @@ function renderHomeTab() {
         const card = document.createElement('div');
         card.className = 'template-card';
         card.innerHTML = `
-          <div class="template-card-icon">📋</div>
+          <div class="template-card-icon">${getMenuIconSvg('workout')}</div>
           <div class="template-card-body">
             <div class="template-card-name">${esc(tmpl.name)}</div>
             <div class="template-card-meta">${exNames.length} ${state.lang === 'ja' ? '種目' : 'exercise' + (exNames.length!==1?'s':'')} · ${exNames.slice(0,3).map(esc).join(', ')}${exNames.length>3?'…':''}</div>
           </div>
           <div class="template-card-actions">
-            <button class="btn-icon" title="Edit" data-edit-tmpl="${tmpl.id}">✏️</button>
+            <button class="btn-icon" title="Edit" data-edit-tmpl="${tmpl.id}">✎</button>
           </div>`;
         card.addEventListener('click', e => {
           if (e.target.closest('[data-edit-tmpl]')) {
@@ -3425,7 +3609,7 @@ function renderHistoryTab() {
     });
   }
   if (sessions.length === 0) {
-    list.innerHTML += `<div class="empty-state"><div class="empty-state-icon">📭</div><div class="empty-state-title">${state.lang === 'ja' ? 'まだ履歴がありません' : 'No history yet'}</div><div class="empty-state-text">${state.lang === 'ja' ? '完了したワークアウトがここに表示されます。' : 'Completed workouts will appear here.'}</div></div>`;
+    list.innerHTML += `<div class="empty-state"><div class="empty-state-icon" data-icon="history"></div><div class="empty-state-title">${state.lang === 'ja' ? 'まだ履歴がありません' : 'No history yet'}</div><div class="empty-state-text">${state.lang === 'ja' ? '完了したワークアウトがここに表示されます。' : 'Completed workouts will appear here.'}</div></div>`;
     return;
   }
   sessions.forEach(sess => list.appendChild(buildSessionCard(sess, false)));
@@ -3666,7 +3850,7 @@ function renderAnalyticsTab() {
     <div class="analytics-card"><div class="analytics-value">${data.totalPrs}</div><div class="analytics-label">${state.lang === 'ja' ? '記録PR数' : 'PRs Logged'}</div></div>`;
 
   if (!data.exercises.length) {
-    list.innerHTML = `<div class="empty-state"><div class="empty-state-icon">📈</div><div class="empty-state-title">${state.lang === 'ja' ? 'まだ分析データがありません' : 'No analytics yet'}</div><div class="empty-state-text">${state.lang === 'ja' ? 'ワークアウトを完了すると統計がここに表示されます。' : 'Complete some workouts and your stats will show up here.'}</div></div>`;
+    list.innerHTML = `<div class="empty-state"><div class="empty-state-icon" data-icon="analytics"></div><div class="empty-state-title">${state.lang === 'ja' ? 'まだ分析データがありません' : 'No analytics yet'}</div><div class="empty-state-text">${state.lang === 'ja' ? 'ワークアウトを完了すると統計がここに表示されます。' : 'Complete some workouts and your stats will show up here.'}</div></div>`;
     detail.innerHTML = '';
     return;
   }
@@ -4038,6 +4222,8 @@ document.addEventListener('DOMContentLoaded', () => {
     else gisScript.addEventListener('load', gisLoaded, { once: true });
   }
 
+  decorateBareMetalIcons();
+  setTimeout(() => { maybeSmartAutoBackup('daily'); }, 2500);
 
   // Bottom nav
   document.querySelectorAll('.bottom-nav button[data-tab]').forEach(btn => {
