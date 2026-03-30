@@ -2243,34 +2243,43 @@ async function uploadBackupToDrive(options = {}) {
   }
   if (!options.silent) setDriveStatus(t('driveStatusBackingUp'), 'info');
   const existing = await findDriveBackupFile();
-  const metadata = {
-    name: DRIVE_BACKUP_FILE,
-    parents: ['appDataFolder'],
-    mimeType: 'application/json'
-  };
-  const boundary = 'workouttrackerboundary';
-  const body =
-    `--${boundary}\r\n` +
-    'Content-Type: application/json; charset=UTF-8\r\n\r\n' +
-    `${JSON.stringify(metadata)}\r\n` +
-    `--${boundary}\r\n` +
-    'Content-Type: application/json\r\n\r\n' +
-    `${JSON.stringify(getBackupPayload())}\r\n` +
-    `--${boundary}--`;
+  const payloadJson = JSON.stringify(getBackupPayload());
 
-  const url = existing
-    ? `https://www.googleapis.com/upload/drive/v3/files/${existing.id}?uploadType=multipart`
-    : 'https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart';
-  const method = existing ? 'PATCH' : 'POST';
+  let resp;
+  if (existing) {
+    resp = await fetch(`https://www.googleapis.com/upload/drive/v3/files/${existing.id}?uploadType=media`, {
+      method: 'PATCH',
+      headers: {
+        Authorization: `Bearer ${state.gdriveAccessToken}`,
+        'Content-Type': 'application/json'
+      },
+      body: payloadJson
+    });
+  } else {
+    const metadata = {
+      name: DRIVE_BACKUP_FILE,
+      parents: ['appDataFolder'],
+      mimeType: 'application/json'
+    };
+    const boundary = 'workouttrackerboundary';
+    const body =
+      `--${boundary}\r\n` +
+      'Content-Type: application/json; charset=UTF-8\r\n\r\n' +
+      `${JSON.stringify(metadata)}\r\n` +
+      `--${boundary}\r\n` +
+      'Content-Type: application/json\r\n\r\n' +
+      `${payloadJson}\r\n` +
+      `--${boundary}--`;
 
-  const resp = await fetch(url, {
-    method,
-    headers: {
-      Authorization: `Bearer ${state.gdriveAccessToken}`,
-      'Content-Type': `multipart/related; boundary=${boundary}`
-    },
-    body
-  });
+    resp = await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${state.gdriveAccessToken}`,
+        'Content-Type': `multipart/related; boundary=${boundary}`
+      },
+      body
+    });
+  }
 
   if (!resp.ok) {
     const msg = await resp.text();
