@@ -1356,12 +1356,6 @@
           </button>
         </div>
         <div class="settings-help" data-i18n="driveBackupHelp">Back up your workout data to your private app storage in Google Drive and restore the latest backup anytime.</div>
-        <div class="settings-help">
-          <span data-i18n="driveClientIdLabel">Client ID</span>:
-          <span class="settings-token">YOUR_GOOGLE_CLIENT_ID_HERE</span><br>
-          <span data-i18n="driveApiKeyLabel">API Key</span>:
-          <span class="settings-token">YOUR_GOOGLE_API_KEY_HERE</span>
-        </div>
         <div class="settings-actions">
           <button class="btn-secondary" id="btn-gdrive-backup" type="button">
             <span data-i18n="driveBackupNow">Backup Now</span>
@@ -1616,6 +1610,8 @@ const PRESET_EXERCISES = [
 
 const GOOGLE_CLIENT_ID = '910100038770-e5fm2ohupc4e5s5dalk0offsfk7jstlg.apps.googleusercontent.com';
 const GOOGLE_API_KEY = 'AIzaSyBghYlbQiC303ScE4BnyfiREzDf6Zcci8w';
+const GOOGLE_CLIENT_ID_PLACEHOLDER = 'YOUR_GOOGLE_CLIENT_ID_HERE';
+const GOOGLE_API_KEY_PLACEHOLDER = 'YOUR_GOOGLE_API_KEY_HERE';
 const GOOGLE_DISCOVERY_DOC = 'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest';
 const GOOGLE_DRIVE_SCOPES = 'https://www.googleapis.com/auth/drive.appdata';
 const DRIVE_BACKUP_FILE = 'workout-tracker-backup.json';
@@ -1893,8 +1889,17 @@ function renderSettingsTab() {
 //  GOOGLE DRIVE BACKUP
 // ══════════════════════════════════════════
 
+function hasRealConfigValue(value, placeholder = '') {
+  const normalized = String(value || '').trim();
+  return !!normalized && normalized !== placeholder;
+}
+
 function isGoogleDriveConfigured() {
-  return GOOGLE_CLIENT_ID && GOOGLE_CLIENT_ID !== '910100038770-e5fm2ohupc4e5s5dalk0offsfk7jstlg.apps.googleusercontent.com';
+  return hasRealConfigValue(GOOGLE_CLIENT_ID, GOOGLE_CLIENT_ID_PLACEHOLDER);
+}
+
+function hasGoogleApiKey() {
+  return hasRealConfigValue(GOOGLE_API_KEY, GOOGLE_API_KEY_PLACEHOLDER);
 }
 
 function setDriveStatus(message, type = 'info') {
@@ -1927,7 +1932,7 @@ function gapiLoaded() {
   gapi.load('client', async () => {
     try {
       await gapi.client.init({
-        apiKey: GOOGLE_API_KEY === 'AIzaSyBghYlbQiC303ScE4BnyfiREzDf6Zcci8w' ? undefined : GOOGLE_API_KEY,
+        apiKey: hasGoogleApiKey() ? GOOGLE_API_KEY : undefined,
         discoveryDocs: [GOOGLE_DISCOVERY_DOC]
       });
       state.gapiInited = true;
