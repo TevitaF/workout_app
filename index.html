@@ -1156,7 +1156,62 @@
     margin-top: 8px;
   }
 
+
+  .settings-stack {
+    display: grid;
+    gap: 10px;
+  }
+  .settings-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    margin-top: 12px;
+  }
+  .settings-actions .btn-secondary,
+  .settings-actions .btn-danger {
+    width: 100%;
+  }
+  .settings-status {
+    margin-top: 12px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: rgba(255,255,255,0.03);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    line-height: 1.5;
+    color: var(--muted);
+    word-break: break-word;
+  }
+  .settings-status.ok {
+    color: var(--success);
+    border-color: rgba(0,200,150,0.28);
+    background: rgba(0,200,150,0.08);
+  }
+  .settings-status.error {
+    color: var(--error);
+    border-color: rgba(255,77,109,0.28);
+    background: rgba(255,77,109,0.08);
+  }
+  .settings-status.info {
+    color: var(--accent);
+    border-color: rgba(0,229,255,0.25);
+    background: rgba(0,229,255,0.07);
+  }
+  .settings-mono {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .settings-token {
+    color: var(--text);
+    font-weight: 600;
+  }
+
 </style>
+
+<script async defer src="https://accounts.google.com/gsi/client"></script>
+<script async defer src="https://apis.google.com/js/api.js"></script>
 </head>
 <body>
 
@@ -1276,16 +1331,53 @@
       </div>
     </div>
 
-    <div class="settings-card">
-      <div class="section-label" data-i18n="languageLabel">Language</div>
-      <div class="settings-row">
-        <div class="settings-label" data-i18n="languagePreference">App Language</div>
-        <div class="lang-toggle">
-          <button id="lang-en" type="button">EN</button>
-          <button id="lang-ja" type="button">日本語</button>
+    <div class="settings-stack">
+      <div class="settings-card">
+        <div class="section-label" data-i18n="languageLabel">Language</div>
+        <div class="settings-row">
+          <div class="settings-label" data-i18n="languagePreference">App Language</div>
+          <div class="lang-toggle">
+            <button id="lang-en" type="button">EN</button>
+            <button id="lang-ja" type="button">日本語</button>
+          </div>
         </div>
+        <div class="settings-help" data-i18n="languageHelp">Choose the language you want to use in the app. Your choice will be remembered.</div>
       </div>
-      <div class="settings-help" data-i18n="languageHelp">Choose the language you want to use in the app. Your choice will be remembered.</div>
+
+      <div class="settings-card">
+        <div class="section-label" data-i18n="driveBackupLabel">Google Drive Backup</div>
+        <div class="settings-row">
+          <div>
+            <div class="settings-label" data-i18n="driveBackupTitle">Backup & Restore</div>
+            <div class="settings-mono" id="gdrive-connection-label">Not connected</div>
+          </div>
+          <button class="btn-secondary" id="btn-gdrive-connect" type="button">
+            <span data-i18n="driveConnect">Connect</span>
+          </button>
+        </div>
+        <div class="settings-help" data-i18n="driveBackupHelp">Back up your workout data to your private app storage in Google Drive and restore the latest backup anytime.</div>
+        <div class="settings-help">
+          <span data-i18n="driveClientIdLabel">Client ID</span>:
+          <span class="settings-token">YOUR_GOOGLE_CLIENT_ID_HERE</span><br>
+          <span data-i18n="driveApiKeyLabel">API Key</span>:
+          <span class="settings-token">YOUR_GOOGLE_API_KEY_HERE</span>
+        </div>
+        <div class="settings-actions">
+          <button class="btn-secondary" id="btn-gdrive-backup" type="button">
+            <span data-i18n="driveBackupNow">Backup Now</span>
+          </button>
+          <button class="btn-secondary" id="btn-gdrive-restore" type="button">
+            <span data-i18n="driveRestoreLatest">Restore Latest</span>
+          </button>
+          <button class="btn-danger" id="btn-gdrive-signout" type="button">
+            <span data-i18n="driveDisconnect">Disconnect</span>
+          </button>
+          <button class="btn-secondary" id="btn-export-json" type="button">
+            <span data-i18n="exportJson">Export JSON</span>
+          </button>
+        </div>
+        <div class="settings-status" id="gdrive-status" data-i18n="driveStatusIdle">Google Drive backup is idle.</div>
+      </div>
     </div>
   </div>
 
@@ -1519,6 +1611,24 @@ const PRESET_EXERCISES = [
 
 
 // ══════════════════════════════════════════
+//  GOOGLE DRIVE BACKUP CONFIG
+// ══════════════════════════════════════════
+
+const GOOGLE_CLIENT_ID = 'YOUR_GOOGLE_CLIENT_ID_HERE';
+const GOOGLE_API_KEY = 'YOUR_GOOGLE_API_KEY_HERE';
+const GOOGLE_DISCOVERY_DOC = 'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest';
+const GOOGLE_DRIVE_SCOPES = 'https://www.googleapis.com/auth/drive.appdata';
+const DRIVE_BACKUP_FILE = 'workout-tracker-backup.json';
+const BACKUP_STORAGE_KEYS = [
+  'wt_exercises',
+  'wt_templates',
+  'wt_sessions',
+  'wt_active',
+  'wt_rest_duration',
+  'wt_lang'
+];
+
+// ══════════════════════════════════════════
 //  LANGUAGE
 // ══════════════════════════════════════════
 
@@ -1550,6 +1660,31 @@ const UI_TEXT = {
     languageLabel: 'Language',
     languagePreference: 'App Language',
     languageHelp: 'Choose the language you want to use in the app. Your choice will be remembered.',
+    driveBackupLabel: 'Google Drive Backup',
+    driveBackupTitle: 'Backup & Restore',
+    driveBackupHelp: 'Back up your workout data to your private app storage in Google Drive and restore the latest backup anytime.',
+    driveClientIdLabel: 'Client ID',
+    driveApiKeyLabel: 'API Key',
+    driveConnect: 'Connect',
+    driveDisconnect: 'Disconnect',
+    driveBackupNow: 'Backup Now',
+    driveRestoreLatest: 'Restore Latest',
+    exportJson: 'Export JSON',
+    driveConnected: 'Connected',
+    driveNotConnected: 'Not connected',
+    driveStatusIdle: 'Google Drive backup is idle.',
+    driveStatusReady: 'Google Drive is connected and ready.',
+    driveStatusConnecting: 'Connecting to Google Drive…',
+    driveStatusBackingUp: 'Uploading latest backup to Google Drive…',
+    driveStatusRestoring: 'Restoring latest backup from Google Drive…',
+    driveStatusSignedOut: 'Google Drive connection cleared on this device.',
+    driveNoBackupFound: 'No backup file was found in Google Drive yet.',
+    driveBackupSuccess: 'Backup saved to Google Drive.',
+    driveRestoreSuccess: 'Backup restored from Google Drive.',
+    driveConfigMissing: 'Add your Google Client ID and API key in the config section first.',
+    driveConfirmRestore: 'Restore the latest Google Drive backup and replace local data on this device?',
+    drivePermissionDenied: 'Google Drive permission was not granted.',
+    driveSignedInAs: 'Signed in as',
     exercises: 'Exercises',
     navHome: 'Home',
     navWorkout: 'Workout',
@@ -1602,6 +1737,31 @@ const UI_TEXT = {
     languageLabel: '言語',
     languagePreference: 'アプリの言語',
     languageHelp: 'アプリで使う言語を選んでください。選択は保存されます。',
+    driveBackupLabel: 'Google Drive バックアップ',
+    driveBackupTitle: 'バックアップと復元',
+    driveBackupHelp: 'ワークアウトデータを Google Drive のアプリ専用領域に保存し、いつでも最新バックアップを復元できます。',
+    driveClientIdLabel: 'クライアント ID',
+    driveApiKeyLabel: 'API キー',
+    driveConnect: '接続',
+    driveDisconnect: '切断',
+    driveBackupNow: '今すぐバックアップ',
+    driveRestoreLatest: '最新を復元',
+    exportJson: 'JSON を書き出し',
+    driveConnected: '接続済み',
+    driveNotConnected: '未接続',
+    driveStatusIdle: 'Google Drive バックアップは待機中です。',
+    driveStatusReady: 'Google Drive に接続され、準備完了です。',
+    driveStatusConnecting: 'Google Drive に接続中…',
+    driveStatusBackingUp: '最新バックアップを Google Drive に保存中…',
+    driveStatusRestoring: 'Google Drive から最新バックアップを復元中…',
+    driveStatusSignedOut: 'この端末の Google Drive 接続を解除しました。',
+    driveNoBackupFound: 'Google Drive にバックアップファイルがまだありません。',
+    driveBackupSuccess: 'バックアップを Google Drive に保存しました。',
+    driveRestoreSuccess: 'Google Drive からバックアップを復元しました。',
+    driveConfigMissing: '先に設定欄へ Google のクライアント ID と API キーを入れてください。',
+    driveConfirmRestore: 'Google Drive の最新バックアップで、この端末のローカルデータを上書きしますか？',
+    drivePermissionDenied: 'Google Drive の権限が許可されませんでした。',
+    driveSignedInAs: 'ログイン中',
     exercises: '種目',
     navHome: 'ホーム',
     navWorkout: '記録',
@@ -1726,7 +1886,251 @@ function renderCurrentView() {
 }
 
 function renderSettingsTab() {
-  // Static settings panel; translations handle visible text.
+  updateDriveUiState();
+}
+
+// ══════════════════════════════════════════
+//  GOOGLE DRIVE BACKUP
+// ══════════════════════════════════════════
+
+function isGoogleDriveConfigured() {
+  return GOOGLE_CLIENT_ID && GOOGLE_CLIENT_ID !== '910100038770-e5fm2ohupc4e5s5dalk0offsfk7jstlg.apps.googleusercontent.com';
+}
+
+function setDriveStatus(message, type = 'info') {
+  const el = document.getElementById('gdrive-status');
+  if (!el) return;
+  el.textContent = message;
+  el.className = `settings-status ${type}`;
+}
+
+function updateDriveUiState() {
+  const connectBtn = document.getElementById('btn-gdrive-connect');
+  const backupBtn = document.getElementById('btn-gdrive-backup');
+  const restoreBtn = document.getElementById('btn-gdrive-restore');
+  const signoutBtn = document.getElementById('btn-gdrive-signout');
+  const label = document.getElementById('gdrive-connection-label');
+  const ready = !!state.gdriveAccessToken;
+
+  if (label) {
+    label.textContent = ready
+      ? `${t('driveSignedInAs')}: ${state.gdriveUserEmail || t('driveConnected')}`
+      : t('driveNotConnected');
+  }
+  if (connectBtn) connectBtn.disabled = !isGoogleDriveConfigured();
+  if (backupBtn) backupBtn.disabled = !ready;
+  if (restoreBtn) restoreBtn.disabled = !ready;
+  if (signoutBtn) signoutBtn.disabled = !ready;
+}
+
+function gapiLoaded() {
+  gapi.load('client', async () => {
+    try {
+      await gapi.client.init({
+        apiKey: GOOGLE_API_KEY === 'AIzaSyBghYlbQiC303ScE4BnyfiREzDf6Zcci8w' ? undefined : GOOGLE_API_KEY,
+        discoveryDocs: [GOOGLE_DISCOVERY_DOC]
+      });
+      state.gapiInited = true;
+      maybeDriveReady();
+    } catch (err) {
+      console.error('gapi init failed', err);
+      setDriveStatus(err?.message || 'Google API init failed.', 'error');
+    }
+  });
+}
+
+function gisLoaded() {
+  if (!isGoogleDriveConfigured()) {
+    state.gisInited = false;
+    updateDriveUiState();
+    return;
+  }
+  try {
+    state.gdriveTokenClient = google.accounts.oauth2.initTokenClient({
+      client_id: GOOGLE_CLIENT_ID,
+      scope: GOOGLE_DRIVE_SCOPES,
+      callback: async (resp) => {
+        if (resp.error) {
+          console.error(resp);
+          setDriveStatus(resp.error, 'error');
+          updateDriveUiState();
+          return;
+        }
+        state.gdriveAccessToken = resp.access_token || '';
+        gapi.client.setToken({ access_token: state.gdriveAccessToken });
+        await hydrateDriveUser();
+        maybeDriveReady();
+        setDriveStatus(t('driveStatusReady'), 'ok');
+      }
+    });
+    state.gisInited = true;
+    maybeDriveReady();
+  } catch (err) {
+    console.error('gis init failed', err);
+    setDriveStatus(err?.message || 'Google Identity init failed.', 'error');
+  }
+}
+
+function maybeDriveReady() {
+  state.gdriveReady = state.gapiInited && state.gisInited;
+  updateDriveUiState();
+}
+
+async function hydrateDriveUser() {
+  if (!state.gdriveAccessToken) return;
+  try {
+    const resp = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+      headers: { Authorization: `Bearer ${state.gdriveAccessToken}` }
+    });
+    if (!resp.ok) return;
+    const json = await resp.json();
+    state.gdriveUserEmail = json.email || '';
+  } catch (err) {
+    console.warn('userinfo failed', err);
+  }
+  updateDriveUiState();
+}
+
+function connectGoogleDrive() {
+  if (!isGoogleDriveConfigured()) {
+    setDriveStatus(t('driveConfigMissing'), 'error');
+    return;
+  }
+  if (!state.gdriveTokenClient) {
+    setDriveStatus(t('driveStatusConnecting'), 'info');
+    return;
+  }
+  setDriveStatus(t('driveStatusConnecting'), 'info');
+  state.gdriveTokenClient.requestAccessToken({ prompt: state.gdriveAccessToken ? '' : 'consent' });
+}
+
+function disconnectGoogleDrive() {
+  if (state.gdriveAccessToken && window.google?.accounts?.oauth2) {
+    google.accounts.oauth2.revoke(state.gdriveAccessToken, () => {});
+  }
+  state.gdriveAccessToken = '';
+  state.gdriveUserEmail = '';
+  gapi.client.setToken(null);
+  setDriveStatus(t('driveStatusSignedOut'), 'info');
+  updateDriveUiState();
+}
+
+function getBackupPayload() {
+  const payload = {
+    app: 'Workout Tracker',
+    version: 1,
+    exportedAt: new Date().toISOString(),
+    data: {}
+  };
+  BACKUP_STORAGE_KEYS.forEach(key => {
+    payload.data[key] = localStorage.getItem(key);
+  });
+  return payload;
+}
+
+function applyBackupPayload(payload) {
+  if (!payload || typeof payload !== 'object' || !payload.data) throw new Error('Invalid backup file.');
+  BACKUP_STORAGE_KEYS.forEach(key => {
+    if (Object.prototype.hasOwnProperty.call(payload.data, key)) {
+      const value = payload.data[key];
+      if (value === null || typeof value === 'undefined') localStorage.removeItem(key);
+      else localStorage.setItem(key, value);
+    }
+  });
+  state.lang = getLang();
+  applyTranslations();
+  migrateSessionMetadata();
+  const active = getActive();
+  state.expandedExercises.clear();
+  if (active?.exercises) active.exercises.forEach((_, i) => state.expandedExercises.add(i));
+  renderCurrentView();
+}
+
+async function findDriveBackupFile() {
+  const resp = await gapi.client.drive.files.list({
+    spaces: 'appDataFolder',
+    pageSize: 1,
+    fields: 'files(id,name,modifiedTime)',
+    orderBy: 'modifiedTime desc',
+    q: `name = '${DRIVE_BACKUP_FILE}' and trashed = false`
+  });
+  return resp.result.files?.[0] || null;
+}
+
+async function uploadBackupToDrive() {
+  if (!state.gdriveAccessToken) {
+    connectGoogleDrive();
+    return;
+  }
+  setDriveStatus(t('driveStatusBackingUp'), 'info');
+  const existing = await findDriveBackupFile();
+  const metadata = {
+    name: DRIVE_BACKUP_FILE,
+    parents: ['appDataFolder'],
+    mimeType: 'application/json'
+  };
+  const boundary = 'workouttrackerboundary';
+  const body =
+    `--${boundary}\r\n` +
+    'Content-Type: application/json; charset=UTF-8\r\n\r\n' +
+    `${JSON.stringify(metadata)}\r\n` +
+    `--${boundary}\r\n` +
+    'Content-Type: application/json\r\n\r\n' +
+    `${JSON.stringify(getBackupPayload())}\r\n` +
+    `--${boundary}--`;
+
+  const url = existing
+    ? `https://www.googleapis.com/upload/drive/v3/files/${existing.id}?uploadType=multipart`
+    : 'https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart';
+  const method = existing ? 'PATCH' : 'POST';
+
+  const resp = await fetch(url, {
+    method,
+    headers: {
+      Authorization: `Bearer ${state.gdriveAccessToken}`,
+      'Content-Type': `multipart/related; boundary=${boundary}`
+    },
+    body
+  });
+
+  if (!resp.ok) {
+    const msg = await resp.text();
+    throw new Error(msg || 'Backup failed.');
+  }
+  setDriveStatus(t('driveBackupSuccess'), 'ok');
+}
+
+async function restoreBackupFromDrive() {
+  if (!state.gdriveAccessToken) {
+    connectGoogleDrive();
+    return;
+  }
+  if (!confirm(t('driveConfirmRestore'))) return;
+  setDriveStatus(t('driveStatusRestoring'), 'info');
+  const existing = await findDriveBackupFile();
+  if (!existing) {
+    setDriveStatus(t('driveNoBackupFound'), 'error');
+    return;
+  }
+  const resp = await fetch(`https://www.googleapis.com/drive/v3/files/${existing.id}?alt=media`, {
+    headers: { Authorization: `Bearer ${state.gdriveAccessToken}` }
+  });
+  if (!resp.ok) throw new Error(await resp.text() || 'Restore failed.');
+  const payload = await resp.json();
+  applyBackupPayload(payload);
+  setDriveStatus(t('driveRestoreSuccess'), 'ok');
+}
+
+function exportBackupJson() {
+  const blob = new Blob([JSON.stringify(getBackupPayload(), null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `workout-tracker-backup-${new Date().toISOString().slice(0,19).replace(/[:T]/g,'-')}.json`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
 }
 
 // ══════════════════════════════════════════
@@ -1784,6 +2188,12 @@ const state = {
   calendarAddMode: false,
   selectedCalendarDate: null,
   lang: getLang(),
+  gapiInited: false,
+  gisInited: false,
+  gdriveReady: false,
+  gdriveTokenClient: null,
+  gdriveAccessToken: '',
+  gdriveUserEmail: '',
 };
 
 // ══════════════════════════════════════════
@@ -3600,6 +4010,29 @@ document.addEventListener('DOMContentLoaded', () => {
   applyTranslations();
   document.getElementById('lang-en')?.addEventListener('click', () => setLang('en'));
   document.getElementById('lang-ja')?.addEventListener('click', () => setLang('ja'));
+  document.getElementById('btn-gdrive-connect')?.addEventListener('click', connectGoogleDrive);
+  document.getElementById('btn-gdrive-backup')?.addEventListener('click', async () => {
+    try { await uploadBackupToDrive(); } catch (err) { console.error(err); setDriveStatus(err?.message || 'Backup failed.', 'error'); }
+  });
+  document.getElementById('btn-gdrive-restore')?.addEventListener('click', async () => {
+    try { await restoreBackupFromDrive(); } catch (err) { console.error(err); setDriveStatus(err?.message || 'Restore failed.', 'error'); }
+  });
+  document.getElementById('btn-gdrive-signout')?.addEventListener('click', disconnectGoogleDrive);
+  document.getElementById('btn-export-json')?.addEventListener('click', exportBackupJson);
+
+  window.gapiLoaded = gapiLoaded;
+  window.gisLoaded = gisLoaded;
+  const gapiScript = document.querySelector('script[src="https://apis.google.com/js/api.js"]');
+  const gisScript = document.querySelector('script[src="https://accounts.google.com/gsi/client"]');
+  if (gapiScript) {
+    if (window.gapi) gapiLoaded();
+    else gapiScript.addEventListener('load', gapiLoaded, { once: true });
+  }
+  if (gisScript && isGoogleDriveConfigured()) {
+    if (window.google?.accounts?.oauth2) gisLoaded();
+    else gisScript.addEventListener('load', gisLoaded, { once: true });
+  }
+
 
   // Bottom nav
   document.querySelectorAll('.bottom-nav button[data-tab]').forEach(btn => {
@@ -3715,7 +4148,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Initial render
   renderHomeTab();
+  renderSettingsTab();
   applyTranslations();
+  if (!isGoogleDriveConfigured()) setDriveStatus(t('driveConfigMissing'), 'error');
 });
 </script>
 </body>
