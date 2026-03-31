@@ -3,11 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Workout Tracker</title>
+<title>Bare Metal</title>
 <meta name="theme-color" content="#00e5ff">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Workout">
+<meta name="apple-mobile-web-app-title" content="Bare Metal">
+<link rel="manifest" href="./manifest.webmanifest">
 <style>
   @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans+JP:wght@300;400;600&display=swap');
 
@@ -2047,14 +2048,22 @@ async function maybeSilentReconnect() {
 }
 
 async function maybeSmartAutoBackup(reason = 'manual') {
-  if (!state.gdriveAccessToken) return;
-  if (reason === 'daily' && !shouldRunDailyAutoBackup()) return;
+  if (reason === 'daily' && !shouldRunDailyAutoBackup()) return false;
+  if (!state.gdriveAccessToken) {
+    state.pendingAutoBackupReason = reason;
+    if (state.gdriveReady && wasDriveConnectedBefore()) maybeSilentReconnect();
+    return false;
+  }
   try {
     setDriveStatus(t('driveStatusAutoBackup'), 'info');
     await uploadBackupToDrive({ silent: true });
+    setDriveStatus(t('driveBackupSuccess'), 'ok');
+    state.pendingAutoBackupReason = '';
+    return true;
   } catch (err) {
     console.warn('smart auto backup failed', err);
     setDriveStatus(err?.message || 'Auto backup failed.', 'error');
+    return false;
   }
 }
 
@@ -2126,6 +2135,7 @@ function gisLoaded() {
       callback: async (resp) => {
         if (resp.error) {
           console.error(resp);
+          state.gdriveSilentReconnectPending = false;
           setDriveStatus(resp.error, 'error');
           updateDriveUiState();
           return;
@@ -2137,6 +2147,11 @@ function gisLoaded() {
         await hydrateDriveUser();
         maybeDriveReady();
         setDriveStatus(t('driveStatusReady'), 'ok');
+        if (state.pendingAutoBackupReason) {
+          const pendingReason = state.pendingAutoBackupReason;
+          state.pendingAutoBackupReason = '';
+          setTimeout(() => { maybeSmartAutoBackup(pendingReason); }, 300);
+        }
       }
     });
     state.gisInited = true;
@@ -2392,6 +2407,8 @@ const state = {
   gdriveTokenClient: null,
   gdriveAccessToken: '',
   gdriveUserEmail: '',
+  pendingAutoBackupReason: '',
+  deferredInstallPrompt: null,
 };
 
 // ══════════════════════════════════════════
@@ -4233,6 +4250,15 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   decorateBareMetalIcons();
+
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js').catch(err => console.warn('service worker registration failed', err));
+  }
+  window.addEventListener('beforeinstallprompt', (event) => {
+    event.preventDefault();
+    state.deferredInstallPrompt = event;
+  });
+
   setTimeout(() => { maybeSmartAutoBackup('daily'); }, 2500);
 
   // Bottom nav
