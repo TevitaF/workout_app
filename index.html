@@ -1867,32 +1867,44 @@
       </div>
 
       <div class="settings-card">
-        <div class="section-label" data-i18n="driveBackupLabel">Google Drive Backup</div>
+        <div class="section-label" data-i18n="driveBackupLabel">Forge Vault Link</div>
         <div class="settings-row">
           <div>
-            <div class="settings-label" data-i18n="driveBackupTitle">Backup & Restore</div>
-            <div class="settings-mono" id="gdrive-connection-label">Not connected</div>
+            <div class="settings-label" data-i18n="driveBackupTitle">Drive Vault</div>
+            <div class="settings-mono" id="gdrive-connection-label">Vault offline</div>
           </div>
           <button class="btn-secondary" id="btn-gdrive-connect" type="button">
-            <span data-i18n="driveConnect">Connect</span>
+            <span data-i18n="driveConnect">Link Vault</span>
           </button>
         </div>
-        <div class="settings-help" data-i18n="driveBackupHelp">Back up your workout data to your private app storage in Google Drive and restore the latest backup anytime.</div>
+        <div class="settings-help" data-i18n="driveBackupHelp">Forge a secure Google Drive vault for backups, restores, and auto-relink on this device.</div>
+
+        <div class="settings-row mt12">
+          <div>
+            <div class="settings-label" data-i18n="driveAutoRelinkTitle">Keep the Forge Linked</div>
+            <div class="settings-help" data-i18n="driveAutoRelinkHelp">When armed, Bare Metal will quietly try to reforge your Drive vault link on this device.</div>
+          </div>
+          <button class="btn-secondary" id="btn-gdrive-autolink" type="button">Armed</button>
+        </div>
+
         <div class="settings-actions">
           <button class="btn-secondary" id="btn-gdrive-backup" type="button">
-            <span data-i18n="driveBackupNow">Backup Now</span>
+            <span data-i18n="driveBackupNow">Forge Backup Now</span>
           </button>
           <button class="btn-secondary" id="btn-gdrive-restore" type="button">
-            <span data-i18n="driveRestoreLatest">Restore Latest</span>
+            <span data-i18n="driveRestoreLatest">Pull Latest Backup</span>
+          </button>
+          <button class="btn-secondary" id="btn-gdrive-switch" type="button">
+            <span data-i18n="driveSwitchAccount">Switch Operator</span>
           </button>
           <button class="btn-danger" id="btn-gdrive-signout" type="button">
-            <span data-i18n="driveDisconnect">Disconnect</span>
+            <span data-i18n="driveDisconnect">Cut the Link</span>
           </button>
           <button class="btn-secondary" id="btn-export-json" type="button">
             <span data-i18n="exportJson">Export JSON</span>
           </button>
         </div>
-        <div class="settings-status" id="gdrive-status" data-i18n="driveStatusIdle">Google Drive backup is idle.</div>
+        <div class="settings-status" id="gdrive-status" data-i18n="driveStatusIdle">Drive vault is idle.</div>
       </div>
     </div>
   </div>
@@ -2317,6 +2329,7 @@ const BACKUP_STORAGE_KEYS = [
   'wt_program_state'
 ];
 const GDRIVE_WAS_CONNECTED_KEY = 'wt_gdrive_was_connected';
+const GDRIVE_AUTO_RELINK_KEY = 'wt_gdrive_auto_relink';
 const GDRIVE_LAST_BACKUP_AT_KEY = 'wt_gdrive_last_backup_at';
 const SMART_BACKUP_MAX_AGE_MS = 24 * 60 * 60 * 1000;
 
@@ -2353,33 +2366,42 @@ const UI_TEXT = {
     languageLabel: 'Language',
     languagePreference: 'App Language',
     languageHelp: 'Choose the language you want to use in the app. Your choice will be remembered.',
-    driveBackupLabel: 'Google Drive Backup',
-    driveBackupTitle: 'Backup & Restore',
-    driveBackupHelp: 'Back up your workout data to your private app storage in Google Drive and restore the latest backup anytime.',
+    driveBackupLabel: 'Forge Vault Link',
+    driveBackupTitle: 'Drive Vault',
+    driveBackupHelp: 'Forge a secure Google Drive vault for backups, restores, and auto-relink on this device.',
     driveClientIdLabel: 'Client ID',
     driveApiKeyLabel: 'API Key',
-    driveConnect: 'Connect',
-    driveDisconnect: 'Disconnect',
-    driveBackupNow: 'Backup Now',
-    driveRestoreLatest: 'Restore Latest',
+    driveConnect: 'Link Vault',
+    driveDisconnect: 'Cut the Link',
+    driveBackupNow: 'Forge Backup Now',
+    driveRestoreLatest: 'Pull Latest Backup',
     exportJson: 'Export JSON',
-    driveConnected: 'Connected',
-    driveNotConnected: 'Not connected',
-    driveStatusIdle: 'Google Drive backup is idle.',
-    driveStatusReady: 'Google Drive is connected and ready.',
-    driveStatusConnecting: 'Connecting to Google Drive…',
-    driveStatusBackingUp: 'Uploading latest backup to Google Drive…',
-    driveStatusRestoring: 'Restoring latest backup from Google Drive…',
-    driveStatusSignedOut: 'Google Drive connection cleared on this device.',
-    driveNoBackupFound: 'No backup file was found in Google Drive yet.',
-    driveBackupSuccess: 'Backup saved to Google Drive.',
-    driveRestoreSuccess: 'Backup restored from Google Drive.',
-    driveConfigMissing: 'Add your Google Client ID and API key in the config section first.',
-    driveConfirmRestore: 'Restore the latest Google Drive backup and replace local data on this device?',
-    drivePermissionDenied: 'Google Drive permission was not granted.',
-    driveSignedInAs: 'Signed in as',
-    driveStatusReconnecting: 'Reconnecting to Google Drive…',
-    driveStatusAutoBackup: 'Smart auto backup is running…',
+    driveConnected: 'Vault linked',
+    driveNotConnected: 'Vault offline',
+    driveStatusIdle: 'Drive vault is idle.',
+    driveStatusReady: 'Drive vault linked and combat-ready.',
+    driveStatusConnecting: 'Forging a live link to Google Drive…',
+    driveStatusBackingUp: 'Forging the latest vault snapshot to Google Drive…',
+    driveStatusRestoring: 'Pulling the latest vault snapshot from Google Drive…',
+    driveStatusSignedOut: 'Drive link severed on this device.',
+    driveNoBackupFound: 'No vault snapshot has been forged to Google Drive yet.',
+    driveBackupSuccess: 'Vault snapshot forged to Google Drive.',
+    driveRestoreSuccess: 'Vault snapshot pulled from Google Drive.',
+    driveConfigMissing: 'Forge keys missing. Add your Google Client ID and API key first.',
+    driveConfirmRestore: 'Pull the latest vault snapshot and replace the local steel on this device?',
+    drivePermissionDenied: 'Google Drive clearance was denied.',
+    driveSignedInAs: 'Operator locked in as',
+    driveStatusReconnecting: 'Reforging the Drive vault link…',
+    driveStatusAutoBackup: 'Silent forge sync is running…',
+    driveStatusAutoBackupFailed: 'Silent forge sync failed.',
+    driveSwitchAccount: 'Switch Operator',
+    driveAutoRelinkTitle: 'Keep the Forge Linked',
+    driveAutoRelinkHelp: 'When armed, Bare Metal will quietly try to reforge your Drive vault link on this device.',
+    driveAutoRelinkOn: 'Armed',
+    driveAutoRelinkOff: 'Disarmed',
+    driveAutoRelinkEnabledStatus: 'Auto-relink armed. Bare Metal will try to reforge the Drive vault link on launch.',
+    driveAutoRelinkDisabledStatus: 'Auto-relink disarmed. The forge will stay dark until you link it manually.',
+    driveNotConnectedArmed: 'Vault offline • auto-relink armed',
     exercises: 'Exercises',
     navHome: 'Home',
     navWorkout: 'Workout',
@@ -2446,33 +2468,42 @@ const UI_TEXT = {
     languageLabel: '言語',
     languagePreference: 'アプリの言語',
     languageHelp: 'アプリで使う言語を選んでください。選択は保存されます。',
-    driveBackupLabel: 'Google Drive バックアップ',
-    driveBackupTitle: 'バックアップと復元',
-    driveBackupHelp: 'ワークアウトデータを Google Drive のアプリ専用領域に保存し、いつでも最新バックアップを復元できます。',
+    driveBackupLabel: '保管庫リンク',
+    driveBackupTitle: 'Drive 保管庫',
+    driveBackupHelp: 'この端末で自動再接続しつつ、Google Drive に安全な保管庫を作ってバックアップと復元を行います。',
     driveClientIdLabel: 'クライアント ID',
     driveApiKeyLabel: 'API キー',
-    driveConnect: '接続',
-    driveDisconnect: '切断',
-    driveBackupNow: '今すぐバックアップ',
-    driveRestoreLatest: '最新を復元',
+    driveConnect: '保管庫を接続',
+    driveDisconnect: 'リンクを切る',
+    driveBackupNow: '今すぐ鍛造バックアップ',
+    driveRestoreLatest: '最新バックアップを回収',
     exportJson: 'JSON を書き出し',
-    driveConnected: '接続済み',
-    driveNotConnected: '未接続',
-    driveStatusIdle: 'Google Drive バックアップは待機中です。',
-    driveStatusReady: 'Google Drive に接続され、準備完了です。',
-    driveStatusConnecting: 'Google Drive に接続中…',
-    driveStatusBackingUp: '最新バックアップを Google Drive に保存中…',
-    driveStatusRestoring: 'Google Drive から最新バックアップを復元中…',
-    driveStatusSignedOut: 'この端末の Google Drive 接続を解除しました。',
-    driveNoBackupFound: 'Google Drive にバックアップファイルがまだありません。',
-    driveBackupSuccess: 'バックアップを Google Drive に保存しました。',
-    driveRestoreSuccess: 'Google Drive からバックアップを復元しました。',
-    driveConfigMissing: '先に設定欄へ Google のクライアント ID と API キーを入れてください。',
-    driveConfirmRestore: 'Google Drive の最新バックアップで、この端末のローカルデータを上書きしますか？',
-    drivePermissionDenied: 'Google Drive の権限が許可されませんでした。',
-    driveSignedInAs: 'ログイン中',
-    driveStatusReconnecting: 'Google Drive に再接続中…',
-    driveStatusAutoBackup: 'スマート自動バックアップを実行中…',
+    driveConnected: '保管庫リンク済み',
+    driveNotConnected: '保管庫オフライン',
+    driveStatusIdle: 'Drive 保管庫は待機中です。',
+    driveStatusReady: 'Drive 保管庫のリンク完了。いつでも動けます。',
+    driveStatusConnecting: 'Google Drive とのリンクを鍛造中…',
+    driveStatusBackingUp: '最新の保管庫スナップショットを Google Drive に鍛造中…',
+    driveStatusRestoring: 'Google Drive から最新の保管庫スナップショットを回収中…',
+    driveStatusSignedOut: 'この端末の Drive リンクを切断しました。',
+    driveNoBackupFound: 'Google Drive に保管庫スナップショットがまだありません。',
+    driveBackupSuccess: '保管庫スナップショットを Google Drive に鍛造しました。',
+    driveRestoreSuccess: 'Google Drive から保管庫スナップショットを回収しました。',
+    driveConfigMissing: '鍛造キー不足です。先に Google のクライアント ID と API キーを設定してください。',
+    driveConfirmRestore: '最新の保管庫スナップショットで、この端末のローカルデータを上書きしますか？',
+    drivePermissionDenied: 'Google Drive の権限が拒否されました。',
+    driveSignedInAs: '接続オペレーター',
+    driveStatusReconnecting: 'Drive 保管庫リンクを再鍛造中…',
+    driveStatusAutoBackup: '静かな鍛造同期を実行中…',
+    driveStatusAutoBackupFailed: '静かな鍛造同期に失敗しました。',
+    driveSwitchAccount: 'オペレーター切替',
+    driveAutoRelinkTitle: '炉とのリンクを維持',
+    driveAutoRelinkHelp: '有効にすると、この端末で Bare Metal が静かに Drive 保管庫リンクの再鍛造を試みます。',
+    driveAutoRelinkOn: '武装中',
+    driveAutoRelinkOff: '解除中',
+    driveAutoRelinkEnabledStatus: '自動再リンクを武装しました。起動時に Bare Metal が Drive 保管庫リンクの再鍛造を試みます。',
+    driveAutoRelinkDisabledStatus: '自動再リンクを解除しました。手動でつなぐまで炉は静かなままです。',
+    driveNotConnectedArmed: '保管庫オフライン • 自動再リンク武装中',
     exercises: '種目',
     navHome: 'ホーム',
     navWorkout: '記録',
@@ -2629,6 +2660,29 @@ function setDriveRemembered(value) {
 function wasDriveConnectedBefore() {
   return localStorage.getItem(GDRIVE_WAS_CONNECTED_KEY) === '1';
 }
+function setDriveAutoRelink(value) {
+  localStorage.setItem(GDRIVE_AUTO_RELINK_KEY, value ? '1' : '0');
+}
+
+function isDriveAutoRelinkEnabled() {
+  const raw = localStorage.getItem(GDRIVE_AUTO_RELINK_KEY);
+  return raw === null ? true : raw === '1';
+}
+
+function toggleDriveAutoRelink() {
+  const next = !isDriveAutoRelinkEnabled();
+  setDriveAutoRelink(next);
+  if (next) {
+    state.gdriveReconnectAttempted = false;
+    setDriveStatus(t('driveAutoRelinkEnabledStatus'), 'info');
+    maybeSilentReconnect();
+  } else {
+    state.gdriveSilentReconnectPending = false;
+    state.gdriveReconnectAttempted = true;
+    setDriveStatus(t('driveAutoRelinkDisabledStatus'), 'info');
+  }
+  updateDriveUiState();
+}
 
 function getLastBackupAt() {
   return Number(localStorage.getItem(GDRIVE_LAST_BACKUP_AT_KEY) || '0');
@@ -2668,7 +2722,7 @@ function decorateBareMetalIcons() {
 }
 
 async function maybeSilentReconnect() {
-  if (!state.gdriveReady || !state.gdriveTokenClient || state.gdriveAccessToken || state.gdriveReconnectAttempted || !wasDriveConnectedBefore()) return;
+  if (!state.gdriveReady || !state.gdriveTokenClient || state.gdriveAccessToken || state.gdriveReconnectAttempted || !wasDriveConnectedBefore() || !isDriveAutoRelinkEnabled()) return;
   state.gdriveReconnectAttempted = true;
   state.gdriveSilentReconnectPending = true;
   setDriveStatus(t('driveStatusReconnecting'), 'info');
@@ -2677,18 +2731,23 @@ async function maybeSilentReconnect() {
   } catch (err) {
     state.gdriveSilentReconnectPending = false;
     console.warn('silent reconnect failed', err);
+    setDriveStatus(t('driveStatusIdle'), 'info');
   }
 }
 
 async function maybeSmartAutoBackup(reason = 'manual') {
-  if (!state.gdriveAccessToken) return;
+  if (!state.gdriveAccessToken || state.smartBackupRunning) return;
   if (reason === 'daily' && !shouldRunDailyAutoBackup()) return;
+  state.smartBackupRunning = true;
   try {
     setDriveStatus(t('driveStatusAutoBackup'), 'info');
     await uploadBackupToDrive({ silent: true });
+    setDriveStatus(t('driveBackupSuccess'), 'ok');
   } catch (err) {
     console.warn('smart auto backup failed', err);
-    setDriveStatus(err?.message || 'Auto backup failed.', 'error');
+    setDriveStatus(err?.message || t('driveStatusAutoBackupFailed'), 'error');
+  } finally {
+    state.smartBackupRunning = false;
   }
 }
 
@@ -2716,19 +2775,28 @@ function updateDriveUiState() {
   const connectBtn = document.getElementById('btn-gdrive-connect');
   const backupBtn = document.getElementById('btn-gdrive-backup');
   const restoreBtn = document.getElementById('btn-gdrive-restore');
+  const switchBtn = document.getElementById('btn-gdrive-switch');
   const signoutBtn = document.getElementById('btn-gdrive-signout');
+  const autoBtn = document.getElementById('btn-gdrive-autolink');
   const label = document.getElementById('gdrive-connection-label');
   const ready = !!state.gdriveAccessToken;
+  const configured = isGoogleDriveConfigured();
+  const autoRelink = isDriveAutoRelinkEnabled();
 
   if (label) {
     label.textContent = ready
       ? `${t('driveSignedInAs')}: ${state.gdriveUserEmail || t('driveConnected')}`
-      : t('driveNotConnected');
+      : (autoRelink ? t('driveNotConnectedArmed') : t('driveNotConnected'));
   }
-  if (connectBtn) connectBtn.disabled = !isGoogleDriveConfigured();
+  if (connectBtn) connectBtn.disabled = !configured;
   if (backupBtn) backupBtn.disabled = !ready;
   if (restoreBtn) restoreBtn.disabled = !ready;
+  if (switchBtn) switchBtn.disabled = !configured;
   if (signoutBtn) signoutBtn.disabled = !ready;
+  if (autoBtn) {
+    autoBtn.disabled = !configured;
+    autoBtn.textContent = autoRelink ? t('driveAutoRelinkOn') : t('driveAutoRelinkOff');
+  }
 }
 
 function gapiLoaded() {
@@ -2759,6 +2827,13 @@ function gisLoaded() {
       scope: GOOGLE_DRIVE_SCOPES,
       callback: async (resp) => {
         if (resp.error) {
+          const silentAttempt = !!state.gdriveSilentReconnectPending;
+          state.gdriveSilentReconnectPending = false;
+          if (silentAttempt) {
+            setDriveStatus(t('driveStatusIdle'), 'info');
+            updateDriveUiState();
+            return;
+          }
           console.error(resp);
           setDriveStatus(resp.error, 'error');
           updateDriveUiState();
@@ -2767,10 +2842,12 @@ function gisLoaded() {
         state.gdriveAccessToken = resp.access_token || '';
         state.gdriveSilentReconnectPending = false;
         setDriveRemembered(true);
+        if (localStorage.getItem(GDRIVE_AUTO_RELINK_KEY) === null) setDriveAutoRelink(true);
         gapi.client.setToken({ access_token: state.gdriveAccessToken });
         await hydrateDriveUser();
         maybeDriveReady();
         setDriveStatus(t('driveStatusReady'), 'ok');
+        maybeSmartAutoBackup('daily');
       }
     });
     state.gisInited = true;
@@ -2784,7 +2861,7 @@ function gisLoaded() {
 function maybeDriveReady() {
   state.gdriveReady = state.gapiInited && state.gisInited;
   updateDriveUiState();
-  if (state.gdriveReady) setTimeout(() => { maybeSilentReconnect(); }, 150);
+  if (state.gdriveReady && isDriveAutoRelinkEnabled()) setTimeout(() => { maybeSilentReconnect(); }, 150);
 }
 
 async function hydrateDriveUser() {
@@ -2802,7 +2879,7 @@ async function hydrateDriveUser() {
   updateDriveUiState();
 }
 
-function connectGoogleDrive() {
+function connectGoogleDrive(options = {}) {
   if (!isGoogleDriveConfigured()) {
     setDriveStatus(t('driveConfigMissing'), 'error');
     return;
@@ -2811,8 +2888,17 @@ function connectGoogleDrive() {
     setDriveStatus(t('driveStatusConnecting'), 'info');
     return;
   }
+  state.gdriveSilentReconnectPending = false;
   setDriveStatus(t('driveStatusConnecting'), 'info');
-  state.gdriveTokenClient.requestAccessToken({ prompt: state.gdriveAccessToken ? '' : 'consent' });
+  const promptMode = options.forceAccountPicker
+    ? 'select_account consent'
+    : (state.gdriveAccessToken ? '' : 'consent');
+  state.gdriveTokenClient.requestAccessToken({ prompt: promptMode });
+}
+
+function switchGoogleDriveAccount() {
+  state.gdriveReconnectAttempted = true;
+  connectGoogleDrive({ forceAccountPicker: true });
 }
 
 function disconnectGoogleDrive() {
@@ -2822,7 +2908,9 @@ function disconnectGoogleDrive() {
   state.gdriveAccessToken = '';
   state.gdriveUserEmail = '';
   state.gdriveSilentReconnectPending = false;
+  state.gdriveReconnectAttempted = true;
   setDriveRemembered(false);
+  setDriveAutoRelink(false);
   gapi.client.setToken(null);
   setDriveStatus(t('driveStatusSignedOut'), 'info');
   updateDriveUiState();
@@ -5661,7 +5749,9 @@ document.addEventListener('DOMContentLoaded', () => {
   applyTranslations();
   document.getElementById('lang-en')?.addEventListener('click', () => setLang('en'));
   document.getElementById('lang-ja')?.addEventListener('click', () => setLang('ja'));
-  document.getElementById('btn-gdrive-connect')?.addEventListener('click', connectGoogleDrive);
+  document.getElementById('btn-gdrive-connect')?.addEventListener('click', () => connectGoogleDrive());
+  document.getElementById('btn-gdrive-switch')?.addEventListener('click', switchGoogleDriveAccount);
+  document.getElementById('btn-gdrive-autolink')?.addEventListener('click', toggleDriveAutoRelink);
   document.getElementById('btn-gdrive-backup')?.addEventListener('click', async () => {
     try { await uploadBackupToDrive(); } catch (err) { console.error(err); setDriveStatus(err?.message || 'Backup failed.', 'error'); }
   });
