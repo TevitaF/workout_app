@@ -2825,6 +2825,7 @@ function gisLoaded() {
     state.gdriveTokenClient = google.accounts.oauth2.initTokenClient({
       client_id: GOOGLE_CLIENT_ID,
       scope: GOOGLE_DRIVE_SCOPES,
+      hint: localStorage.getItem('gdrive_login_hint') || '',
       callback: async (resp) => {
         if (resp.error) {
           const silentAttempt = !!state.gdriveSilentReconnectPending;
@@ -2873,6 +2874,7 @@ async function hydrateDriveUser() {
     if (!resp.ok) return;
     const json = await resp.json();
     state.gdriveUserEmail = json.email || '';
+    if (json.email) localStorage.setItem('gdrive_login_hint', json.email);
   } catch (err) {
     console.warn('userinfo failed', err);
   }
@@ -2907,6 +2909,7 @@ function disconnectGoogleDrive() {
   }
   state.gdriveAccessToken = '';
   state.gdriveUserEmail = '';
+  localStorage.removeItem('gdrive_login_hint');
   state.gdriveSilentReconnectPending = false;
   state.gdriveReconnectAttempted = true;
   setDriveRemembered(false);
