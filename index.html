@@ -2727,7 +2727,7 @@ async function maybeSilentReconnect() {
   state.gdriveSilentReconnectPending = true;
   setDriveStatus(t('driveStatusReconnecting'), 'info');
   try {
-    state.gdriveTokenClient.requestAccessToken({ prompt: '' });
+    state.gdriveTokenClient.requestAccessToken({ prompt: '', login_hint: localStorage.getItem('gdrive_login_hint') || '' });
   } catch (err) {
     state.gdriveSilentReconnectPending = false;
     console.warn('silent reconnect failed', err);
