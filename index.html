@@ -205,6 +205,30 @@
   .page-header-text p { font-size: 11px; color: var(--muted); margin-top: 2px; }
   .page-header-right { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--muted); }
 
+  /* ── Neon calendar icon button ── */
+  .btn-calendar-icon {
+    margin-left: auto;
+    background: rgba(0,229,255,0.08);
+    border: 1px solid rgba(0,229,255,0.25);
+    border-radius: 10px;
+    width: 38px; height: 38px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+    -webkit-tap-highlight-color: transparent;
+    transition: background 0.15s, border-color 0.15s, box-shadow 0.15s;
+  }
+  .btn-calendar-icon svg {
+    width: 18px; height: 18px;
+    stroke: var(--accent);
+    filter: drop-shadow(0 0 6px rgba(0,229,255,0.55)) drop-shadow(0 0 14px rgba(0,229,255,0.28));
+  }
+  .btn-calendar-icon:active {
+    background: rgba(0,229,255,0.18);
+    border-color: rgba(0,229,255,0.5);
+    box-shadow: 0 0 14px rgba(0,229,255,0.3);
+  }
+
   /* ── Section label ── */
   .section-label {
     font-family: 'IBM Plex Mono', monospace;
@@ -873,7 +897,637 @@
   .history-detail-set-row.is-pr .history-detail-set-data { color: var(--accent); }
   .history-detail-pr-badges { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
 
-  /* ── Body Measurements ── */
+  /* ── Home stats row ── */
+  .home-stats-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 4px;
+  }
+  .home-stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 12px;
+    text-align: center;
+  }
+  .home-stat-val {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 22px; font-weight: 700;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .home-stat-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.1em;
+  }
+
+  /* ── Workout subtabs ── */
+  .workout-subtabs {
+    display: flex;
+    gap: 0;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 3px;
+    margin-bottom: 16px;
+  }
+  .workout-subtab {
+    flex: 1; background: none; border: none;
+    color: var(--muted);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px; font-weight: 600;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 10px 8px; border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .workout-subtab.active {
+    background: linear-gradient(135deg, var(--accent2), var(--accent));
+    color: #fff;
+    box-shadow: 0 0 12px rgba(0,229,255,0.2);
+  }
+  .workout-subpanel { }
+  .workout-subpanel.hidden { display: none; }
+
+  /* ── Active program block ── */
+  .active-program-card {
+    background: linear-gradient(135deg, rgba(124,58,237,0.16), rgba(0,229,255,0.08));
+    border: 1px solid rgba(0,229,255,0.25);
+    border-radius: 14px;
+    padding: 18px;
+    margin-bottom: 16px;
+  }
+  .active-program-header {
+    display: flex; align-items: center; gap: 12px; margin-bottom: 12px;
+  }
+  .active-program-name {
+    font-size: 15px; font-weight: 700; color: var(--text);
+  }
+  .active-program-pos {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px; color: var(--accent); margin-top: 2px;
+  }
+  .active-program-progress {
+    height: 4px; background: rgba(255,255,255,0.08);
+    border-radius: 2px; margin-bottom: 12px; overflow: hidden;
+  }
+  .active-program-progress-fill {
+    height: 100%; border-radius: 2px;
+    background: linear-gradient(90deg, var(--accent2), var(--accent));
+    transition: width 0.4s ease;
+  }
+  .active-program-progress-text {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; color: var(--muted);
+    margin-bottom: 12px;
+  }
+  .active-program-actions {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .active-program-actions .btn-danger {
+    font-size: 11px; padding: 10px;
+    grid-column: 1 / -1;
+    background: none;
+    border: 1px solid rgba(239,68,68,0.3);
+    color: var(--error);
+  }
+  .active-program-actions .btn-secondary {
+    font-size: 12px; padding: 10px;
+  }
+  .active-program-start {
+    grid-column: 1 / -1;
+  }
+
+  /* ── Program library cards ── */
+  .program-lib-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; font-weight: 600;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 10px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .program-lib-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    display: flex; align-items: center; gap: 14px;
+    -webkit-tap-highlight-color: transparent;
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .program-lib-card:active { border-color: rgba(0,229,255,0.3); background: rgba(0,229,255,0.03); }
+  .program-lib-card.active-prog { border-color: rgba(0,229,255,0.4); }
+  .program-lib-card-icon {
+    width: 44px; height: 44px; border-radius: 10px;
+    background: linear-gradient(135deg, var(--accent2), var(--accent));
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 0 12px rgba(0,229,255,0.2);
+  }
+  .program-lib-info { flex: 1; min-width: 0; }
+  .program-lib-name { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+  .program-lib-meta { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--muted); }
+  .program-lib-badge {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--accent); border: 1px solid rgba(0,229,255,0.3);
+    border-radius: 4px; padding: 3px 6px; flex-shrink: 0;
+  }
+
+  /* ── Phase 3: Milestones ── */
+  .milestone-overlay {
+    position: fixed; inset: 0; z-index: 1000;
+    background: rgba(0,0,0,0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: flex; align-items: center; justify-content: center;
+    padding: 24px;
+    animation: fadeInOverlay 0.3s ease;
+  }
+  .milestone-card {
+    background: #13131e;
+    border-radius: 24px;
+    padding: 36px 28px 28px;
+    text-align: center;
+    width: 100%; max-width: 360px;
+    border: 1px solid rgba(0,229,255,0.2);
+    box-shadow: 0 0 60px rgba(0,229,255,0.12), 0 0 120px rgba(124,58,237,0.08);
+    animation: milestoneIn 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative; overflow: hidden;
+  }
+  @keyframes milestoneIn {
+    from { transform: scale(0.7) translateY(30px); opacity: 0; }
+    to   { transform: scale(1) translateY(0);      opacity: 1; }
+  }
+  .milestone-glow {
+    position: absolute; inset: -50%;
+    background: radial-gradient(circle at 50% 30%, rgba(0,229,255,0.08), transparent 60%),
+                radial-gradient(circle at 50% 70%, rgba(124,58,237,0.08), transparent 60%);
+    pointer-events: none;
+  }
+  .milestone-emoji {
+    font-size: 64px; line-height: 1; margin-bottom: 16px;
+    display: block;
+    filter: drop-shadow(0 0 20px rgba(0,229,255,0.5));
+    animation: milestoneEmoji 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.2s both;
+  }
+  @keyframes milestoneEmoji {
+    from { transform: scale(0) rotate(-15deg); opacity: 0; }
+    to   { transform: scale(1) rotate(0deg);   opacity: 1; }
+  }
+  .milestone-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; font-weight: 600;
+    letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 10px;
+  }
+  .milestone-title {
+    font-size: 28px; font-weight: 800;
+    color: var(--text); line-height: 1.1;
+    margin-bottom: 10px;
+  }
+  .milestone-subtitle {
+    font-size: 14px; color: var(--muted);
+    line-height: 1.6; margin-bottom: 24px;
+  }
+  .milestone-btn {
+    background: linear-gradient(135deg, var(--accent2), var(--accent));
+    border: none; border-radius: 12px;
+    color: #fff; font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 14px 32px; cursor: pointer; width: 100%;
+    -webkit-tap-highlight-color: transparent;
+    box-shadow: 0 0 20px rgba(0,229,255,0.25);
+  }
+  .milestone-btn:active { opacity: 0.85; }
+
+  /* Small acknowledgement toast */
+  .forge-toast {
+    position: fixed; bottom: calc(var(--safe-bottom) + 80px); left: 16px; right: 16px;
+    z-index: 900;
+    background: rgba(22,22,31,0.96);
+    border: 1px solid rgba(0,229,255,0.25);
+    border-radius: 12px;
+    padding: 12px 16px;
+    display: flex; align-items: center; gap: 12px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.4), 0 0 16px rgba(0,229,255,0.08);
+    animation: toastIn 0.3s cubic-bezier(0.4,0,0.2,1);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+  @keyframes toastIn {
+    from { transform: translateY(20px); opacity: 0; }
+    to   { transform: translateY(0);    opacity: 1; }
+  }
+  @keyframes toastOut {
+    from { transform: translateY(0);    opacity: 1; }
+    to   { transform: translateY(20px); opacity: 0; }
+  }
+  .forge-toast-emoji { font-size: 22px; flex-shrink: 0; }
+  .forge-toast-text { flex: 1; }
+  .forge-toast-title {
+    font-size: 13px; font-weight: 600; color: var(--text);
+    margin-bottom: 1px;
+  }
+  .forge-toast-sub {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; color: var(--muted);
+  }
+
+  /* ── Forge HQ Hero ── */
+  .forge-hq-card {
+    background: linear-gradient(135deg, rgba(124,58,237,0.22) 0%, rgba(0,229,255,0.10) 100%);
+    border: 1px solid rgba(0,229,255,0.2);
+    border-radius: 18px;
+    padding: 20px 18px 18px;
+    margin-bottom: 12px;
+    position: relative; overflow: hidden;
+  }
+  .forge-hq-card::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 80% 20%, rgba(0,229,255,0.08), transparent 60%),
+                radial-gradient(ellipse at 20% 80%, rgba(124,58,237,0.1), transparent 60%);
+    pointer-events: none;
+  }
+  .forge-hq-position-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px; font-weight: 700;
+    letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 8px;
+  }
+  .forge-hq-position {
+    font-size: 26px; font-weight: 800;
+    color: var(--text); line-height: 1.1;
+    margin-bottom: 4px;
+    font-family: 'IBM Plex Mono', monospace;
+    letter-spacing: -0.01em;
+  }
+  .forge-hq-objective {
+    font-size: 12px; color: var(--muted);
+    margin-bottom: 16px; line-height: 1.4;
+  }
+  .forge-hq-btn {
+    width: 100%;
+    background: linear-gradient(135deg, var(--accent2), var(--accent));
+    border: none; border-radius: 12px;
+    color: #fff;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px; font-weight: 800;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    padding: 16px; cursor: pointer;
+    box-shadow: 0 0 24px rgba(0,229,255,0.25);
+    -webkit-tap-highlight-color: transparent;
+    transition: opacity 0.15s, box-shadow 0.15s;
+    margin-bottom: 8px;
+    position: relative; overflow: hidden;
+  }
+  .forge-hq-btn:active { opacity: 0.85; }
+  .forge-hq-tagline {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px; font-weight: 600;
+    letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--muted); text-align: center;
+    margin-bottom: 14px;
+  }
+  .forge-hq-stats {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 8px; margin-top: 4px;
+  }
+  .forge-hq-stat {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 10px; padding: 12px 8px; text-align: center;
+  }
+  .forge-hq-stat-val {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 22px; font-weight: 800;
+    color: var(--accent); line-height: 1;
+    margin-bottom: 6px;
+  }
+  .forge-hq-stat-lbl {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 8px; font-weight: 600;
+    color: var(--muted); text-transform: uppercase;
+    letter-spacing: 0.12em; line-height: 1.3;
+  }
+
+  /* ── Forge HQ — no program state ── */
+  .forge-hq-no-program {
+    background: rgba(255,255,255,0.03);
+    border: 1px dashed rgba(0,229,255,0.2);
+    border-radius: 14px; padding: 20px 18px;
+    text-align: center; margin-bottom: 12px;
+  }
+  .forge-hq-no-program-title {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px; font-weight: 700;
+    color: var(--text); margin-bottom: 6px;
+  }
+  .forge-hq-no-program-sub {
+    font-size: 12px; color: var(--muted); margin-bottom: 14px;
+  }
+  .monthly-recap-card {
+    background: linear-gradient(135deg, rgba(124,58,237,0.15), rgba(0,229,255,0.07));
+    border: 1px solid rgba(124,58,237,0.3);
+    border-radius: 16px;
+    padding: 18px; margin-bottom: 10px;
+    position: relative; overflow: hidden;
+  }
+  .monthly-recap-glow {
+    position: absolute; inset: auto -20% -40% auto;
+    width: 200px; height: 200px;
+    background: radial-gradient(circle, rgba(124,58,237,0.12), transparent 65%);
+    pointer-events: none;
+  }
+  .monthly-recap-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 12px;
+  }
+  .monthly-recap-title {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; font-weight: 600;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: #a855f7;
+  }
+  .monthly-recap-month {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; color: var(--muted);
+  }
+  .monthly-recap-headline {
+    font-size: 20px; font-weight: 700;
+    color: var(--text); margin-bottom: 6px; line-height: 1.2;
+  }
+  .monthly-recap-obs {
+    font-size: 12px; color: var(--muted);
+    line-height: 1.6; margin-bottom: 14px; font-style: italic;
+  }
+  .monthly-recap-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 6px; margin-bottom: 12px;
+  }
+  .monthly-recap-stat {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 8px; padding: 10px 6px; text-align: center;
+  }
+  .monthly-recap-stat-val {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 17px; font-weight: 700; color: var(--text);
+    line-height: 1;
+  }
+  .monthly-recap-stat-lbl {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 8px; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.08em;
+    margin-top: 4px;
+  }
+  .monthly-recap-best {
+    background: rgba(168,85,247,0.08);
+    border: 1px solid rgba(168,85,247,0.2);
+    border-radius: 8px; padding: 10px 12px;
+    font-size: 12px; color: var(--text);
+  }
+  .monthly-recap-best-lbl {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px; color: #a855f7;
+    text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 4px;
+  }
+
+  /* ── Transformation Tracking ── */
+  .transform-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px; padding: 16px; margin-bottom: 10px;
+  }
+  .transform-header {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; font-weight: 600;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 14px;
+  }
+  .transform-row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 0; border-bottom: 1px solid rgba(42,42,58,0.4);
+  }
+  .transform-row:last-child { border-bottom: none; }
+  .transform-metric { flex: 1; min-width: 0; }
+  .transform-metric-name {
+    font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 2px;
+  }
+  .transform-metric-dates {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; color: var(--muted);
+  }
+  .transform-values {
+    display: flex; align-items: center; gap: 8px; flex-shrink: 0;
+  }
+  .transform-val {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 14px; font-weight: 700;
+  }
+  .transform-val.first { color: var(--muted); font-size: 12px; }
+  .transform-val.latest { color: var(--text); }
+  .transform-arrow { font-size: 12px; color: var(--muted); }
+  .transform-delta {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px; font-weight: 700;
+    padding: 2px 8px; border-radius: 4px;
+  }
+  .transform-delta.good { color: var(--success); background: rgba(34,197,94,0.1); }
+  .transform-delta.bad  { color: var(--error);   background: rgba(239,68,68,0.1); }
+  .transform-delta.neutral { color: var(--muted); background: rgba(255,255,255,0.05); }
+  .transform-sparkline { width: 60px; height: 28px; flex-shrink: 0; }
+
+  /* ── Phase 2: Weekly Review ── */
+  .weekly-review-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 10px;
+  }
+  .weekly-review-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 12px;
+  }
+  .weekly-review-title {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; font-weight: 600;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--accent);
+  }
+  .weekly-review-week {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; color: var(--muted);
+  }
+  .weekly-review-headline {
+    font-size: 17px; font-weight: 700;
+    color: var(--text); margin-bottom: 6px; line-height: 1.2;
+  }
+  .weekly-review-observation {
+    font-size: 12px; color: var(--muted);
+    line-height: 1.55; margin-bottom: 14px;
+    font-style: italic;
+  }
+  .weekly-review-stats {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 8px; margin-bottom: 12px;
+  }
+  .weekly-review-stat {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    border-radius: 8px; padding: 10px 8px; text-align: center;
+  }
+  .weekly-review-stat-val {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 18px; font-weight: 700; color: var(--text);
+  }
+  .weekly-review-stat-val.up { color: var(--success); }
+  .weekly-review-stat-val.down { color: var(--error); }
+  .weekly-review-stat-lbl {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.08em;
+    margin-top: 2px;
+  }
+  .weekly-review-best {
+    background: rgba(0,229,255,0.06);
+    border: 1px solid rgba(0,229,255,0.18);
+    border-radius: 8px; padding: 10px 12px;
+    font-size: 12px; color: var(--text);
+  }
+  .weekly-review-best-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px; color: var(--accent);
+    text-transform: uppercase; letter-spacing: 0.1em;
+    margin-bottom: 4px;
+  }
+
+  /* ── Consistency tracking ── */
+  .consistency-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px; margin-bottom: 10px;
+  }
+  .consistency-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  .consistency-title {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; font-weight: 600;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--accent);
+  }
+  .consistency-status {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 3px 8px; border-radius: 4px;
+  }
+  .consistency-status.on-track {
+    color: var(--success); border: 1px solid rgba(34,197,94,0.3);
+    background: rgba(34,197,94,0.08);
+  }
+  .consistency-status.off-track {
+    color: var(--error); border: 1px solid rgba(239,68,68,0.3);
+    background: rgba(239,68,68,0.08);
+  }
+  .consistency-status.complete {
+    color: var(--accent); border: 1px solid rgba(0,229,255,0.3);
+    background: rgba(0,229,255,0.08);
+  }
+  .consistency-progress-row {
+    display: flex; gap: 6px; margin-bottom: 8px;
+  }
+  .consistency-dot {
+    flex: 1; height: 8px; border-radius: 4px;
+    transition: background 0.2s;
+  }
+  .consistency-dot.done {
+    background: var(--accent);
+    box-shadow: 0 0 6px rgba(0,229,255,0.4);
+  }
+  .consistency-dot.today {
+    background: rgba(0,229,255,0.2);
+    border: 1px solid rgba(0,229,255,0.4);
+  }
+  .consistency-dot.empty { background: rgba(255,255,255,0.07); }
+  .consistency-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px; color: var(--muted);
+  }
+  .consistency-target-row {
+    display: flex; align-items: center; gap: 8px; margin-top: 10px;
+  }
+  .consistency-target-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; color: var(--muted); flex: 1;
+  }
+  .consistency-target-btns {
+    display: flex; gap: 4px;
+  }
+  .consistency-target-btn {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border); border-radius: 6px;
+    color: var(--muted); font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px; padding: 4px 10px; cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: all 0.12s;
+  }
+  .consistency-target-btn.active {
+    background: rgba(0,229,255,0.12);
+    border-color: rgba(0,229,255,0.4);
+    color: var(--accent);
+  }
+
+  /* ── Coaching suggestions ── */
+  .coaching-card {
+    background: linear-gradient(135deg, rgba(124,58,237,0.12), rgba(0,229,255,0.06));
+    border: 1px solid rgba(124,58,237,0.25);
+    border-radius: 14px;
+    padding: 14px 16px; margin-bottom: 10px;
+  }
+  .coaching-header {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; font-weight: 600;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: #a855f7; margin-bottom: 10px;
+  }
+  .coaching-item {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(124,58,237,0.15);
+  }
+  .coaching-item:last-child { border-bottom: none; }
+  .coaching-item-icon {
+    font-size: 16px; flex-shrink: 0; margin-top: 1px;
+  }
+  .coaching-item-text { flex: 1; }
+  .coaching-item-title {
+    font-size: 13px; font-weight: 600; color: var(--text);
+    margin-bottom: 2px;
+  }
+  .coaching-item-sub {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px; color: var(--muted); line-height: 1.4;
+  }
+  .coaching-item-action {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; color: #a855f7; font-weight: 700;
+    margin-top: 3px;
+  }
   .measure-inbody-card {
     background: linear-gradient(135deg, rgba(124,58,237,0.18), rgba(0,229,255,0.10));
     border: 1px solid rgba(0,229,255,0.25);
@@ -2595,45 +3249,60 @@
       <div class="page-header-icon" data-icon="home"></div>
       <div class="page-header-text">
         <h1 data-i18n="homeTitle">Bare Metal</h1>
-        <p data-i18n="homeSubtitle">Track your training</p>
+        <p data-i18n="homeSubtitle">Forge your path</p>
       </div>
       <div class="page-header-right" id="home-date"></div>
     </div>
 
-    <button class="btn-primary" id="btn-start-blank">
-      <div class="shimmer"></div>
-      <span data-i18n="startEmpty">▶ Start Empty Workout</span>
-    </button>
+    <div id="home-forge-hq"></div>
+    <div id="home-stats-row"></div>
+    <div id="home-monthly-recap"></div>
+    <div id="home-weekly-review"></div>
+    <div id="home-consistency"></div>
 
     <div class="mt16">
-      <div class="section-label" data-i18n="programSection">Program Mode</div>
-      <div id="program-home-card"></div>
-      <div class="no-workout-hint" data-i18n="freestyleHint">Free Mode always stays available.</div>
-    </div>
-
-    <div class="mt16">
-      <div class="section-label" data-i18n="templates">Templates</div>
-      <div id="template-list"></div>
-      <button class="btn-secondary mt8" id="btn-new-template">+ <span data-i18n="newTemplate">New Template</span></button>
-    </div>
-
-    <div class="mt16">
-      <div class="section-label" data-i18n="recent">Recent</div>
+      <div class="section-label" data-i18n="recent">Recent Sessions</div>
       <div id="recent-list"></div>
     </div>
   </div>
 
   <!-- ══ WORKOUT TAB ══ -->
   <div id="tab-workout" class="tab-panel">
-    <div id="workout-empty-state" class="empty-state">
-      <div class="empty-state-icon" data-icon="workout"></div>
-      <div class="empty-state-title" data-i18n="noActiveWorkout">No active workout</div>
-      <div class="empty-state-text" data-i18n="noActiveWorkoutText">Start a workout from the Home tab or tap below.</div>
-      <button class="btn-primary" style="max-width:280px;margin-top:8px" id="btn-start-blank-2">
-        <div class="shimmer"></div><span data-i18n="startEmpty">▶ Start Empty Workout</span>
-      </button>
+    <!-- Empty state: shown when no active workout -->
+    <div id="workout-empty-state">
+      <div style="padding:16px 0 12px;">
+        <button class="btn-primary" id="btn-start-blank">
+          <div class="shimmer"></div>
+          <span data-i18n="startEmpty">▶ Forge Your Own Path</span>
+        </button>
+      </div>
+
+      <!-- Programs / Templates tab switcher -->
+      <div class="workout-subtabs">
+        <button class="workout-subtab active" id="subtab-programs" data-subtab="programs">
+          <span data-i18n="programsTab">Programs</span>
+        </button>
+        <button class="workout-subtab" id="subtab-templates" data-subtab="templates">
+          <span data-i18n="templatesTab">Templates</span>
+        </button>
+      </div>
+
+      <!-- Programs panel -->
+      <div id="workout-programs-panel" class="workout-subpanel active">
+        <!-- Active program block -->
+        <div id="active-program-block"></div>
+        <!-- Program library -->
+        <div id="program-library"></div>
+      </div>
+
+      <!-- Templates panel -->
+      <div id="workout-templates-panel" class="workout-subpanel hidden">
+        <div id="template-list"></div>
+        <button class="btn-secondary mt8" id="btn-new-template">+ <span data-i18n="newTemplate">New Template</span></button>
+      </div>
     </div>
 
+    <!-- Active workout -->
     <div id="workout-active" class="hidden">
       <div class="workout-header">
         <div class="workout-title-wrap">
@@ -2645,7 +3314,7 @@
       <div id="program-workout-controls" class="program-control-bar hidden"></div>
       <div id="exercise-list"></div>
       <button class="btn-secondary mt8" id="btn-add-exercise">+ <span data-i18n="addExercise">Add Exercise</span></button>
-      <button class="btn-danger mt8" id="btn-discard"><span data-i18n="discardWorkout">${state.lang === 'ja' ? '破棄' : 'Discard'} Workout</span></button>
+      <button class="btn-danger mt8" id="btn-discard"><span data-i18n="discardWorkout">Discard Workout</span></button>
     </div>
   </div>
 
@@ -2657,31 +3326,39 @@
         <h1 data-i18n="historyTitle">History</h1>
         <p data-i18n="historySubtitle">Past workouts</p>
       </div>
+      <button id="btn-open-calendar" class="btn-calendar-icon" title="Calendar">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="4" width="18" height="18" rx="2"/>
+          <line x1="16" y1="2" x2="16" y2="6"/>
+          <line x1="8" y1="2" x2="8" y2="6"/>
+          <line x1="3" y1="10" x2="21" y2="10"/>
+        </svg>
+      </button>
     </div>
     <div id="history-list"></div>
   </div>
 
-  <!-- ══ CALENDAR TAB ══ -->
-  <div id="tab-calendar" class="tab-panel">
-    <div class="page-header">
-      <div class="page-header-icon" data-icon="calendar"></div>
-      <div class="page-header-text">
-        <h1 data-i18n="calendarTitle">Calendar</h1>
-        <p data-i18n="calendarSubtitle">Workout history</p>
+  <!-- ══ CALENDAR PAGE ══ -->
+  <div id="calendar-page" class="history-detail-page">
+    <div class="history-detail-topbar">
+      <button class="btn-back" id="btn-calendar-close">‹</button>
+      <div class="history-detail-topbar-title" data-i18n="calendarTitle">Calendar</div>
+      <div style="width:40px"></div>
+    </div>
+    <div style="padding:16px">
+      <div class="cal-nav">
+        <button class="cal-nav-btn" id="cal-prev">‹</button>
+        <div class="cal-month-title" id="cal-month-title"></div>
+        <button class="cal-nav-btn" id="cal-next">›</button>
       </div>
+      <div class="cal-grid" id="cal-grid"></div>
+      <div class="cal-actions">
+        <button class="btn-secondary" id="btn-calendar-add"><span data-i18n="addMissingWorkout">+ Add Missing Workout</span></button>
+        <button class="btn-ghost" id="btn-calendar-clear"><span data-i18n="clear">Clear</span></button>
+      </div>
+      <div class="cal-helper" id="cal-helper"></div>
+      <div class="cal-stats" id="cal-stats"></div>
     </div>
-    <div class="cal-nav">
-      <button class="cal-nav-btn" id="cal-prev">‹</button>
-      <div class="cal-month-title" id="cal-month-title"></div>
-      <button class="cal-nav-btn" id="cal-next">›</button>
-    </div>
-    <div class="cal-grid" id="cal-grid"></div>
-    <div class="cal-actions">
-      <button class="btn-secondary" id="btn-calendar-add"><span data-i18n="addMissingWorkout">+ Add Missing Workout</span></button>
-      <button class="btn-ghost" id="btn-calendar-clear"><span data-i18n="clear">Clear</span></button>
-    </div>
-    <div class="cal-helper" id="cal-helper"></div>
-    <div class="cal-stats" id="cal-stats"></div>
   </div>
 
   <!-- ══ ANALYTICS TAB ══ -->
@@ -2801,10 +3478,6 @@
     <button data-tab="history">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
       <span data-i18n="navHistory">History</span>
-    </button>
-    <button data-tab="calendar">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-      <span data-i18n="navCalendar">Calendar</span>
     </button>
     <button data-tab="analytics">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 19h16"/><path d="M7 16l4-4 3 3 5-7"/></svg>
@@ -3223,7 +3896,9 @@ const BACKUP_STORAGE_KEYS = [
   'wt_rest_duration',
   'wt_lang',
   'wt_program_state',
-  'wt_measurements'
+  'wt_measurements',
+  'wt_forge_streak',
+  'wt_milestones'
 ];
 const GDRIVE_WAS_CONNECTED_KEY = 'wt_gdrive_was_connected';
 const GDRIVE_AUTO_RELINK_KEY = 'wt_gdrive_auto_relink';
@@ -3239,27 +3914,27 @@ const UI_TEXT = {
   en: {
     appTitle: 'Bare Metal',
     homeTitle: 'Bare Metal',
-    homeSubtitle: 'Track your training',
-    startEmpty: '▶ Start Empty Workout',
-    templates: 'Templates',
-    newTemplate: 'New Template',
-    recent: 'Recent',
-    noActiveWorkout: 'No active workout',
-    noActiveWorkoutText: 'Start a workout from the Home tab or tap below.',
-    workoutNamePlaceholder: 'Workout name...',
-    finish: 'Finish',
-    addExercise: 'Add Exercise',
-    discardWorkout: 'Discard Workout',
-    historyTitle: 'History',
-    historySubtitle: 'Past workouts',
+    homeSubtitle: 'Forge your path',
+    startEmpty: '▶ Forge Your Own Path',
+    templates: 'Blueprints',
+    newTemplate: 'New Blueprint',
+    recent: 'Recent Sessions',
+    noActiveWorkout: 'The forge is cold',
+    noActiveWorkoutText: 'Start a session from the Workout tab or tap below.',
+    workoutNamePlaceholder: 'Session name...',
+    finish: 'Lock In',
+    addExercise: 'Add Lift',
+    discardWorkout: 'Abandon Session',
+    historyTitle: 'Forge Log',
+    historySubtitle: 'Every session forged',
     calendarTitle: 'Calendar',
     calendarSubtitle: 'Workout history',
-    addMissingWorkout: '+ Add Missing Workout',
+    addMissingWorkout: '+ Log Missing Session',
     clear: 'Clear',
-    analyticsTitle: 'Analytics',
-    analyticsSubtitle: 'Progress and lifetime stats',
+    analyticsTitle: 'Records',
+    analyticsSubtitle: 'Your advancement over time',
     settingsTitle: 'Settings',
-    settingsSubtitle: 'Personalize your app',
+    settingsSubtitle: 'Personalize your forge',
     languageLabel: 'Language',
     languagePreference: 'App Language',
     languageHelp: 'Choose the language you want to use in the app. Your choice will be remembered.',
@@ -3301,15 +3976,16 @@ const UI_TEXT = {
     driveNotConnectedArmed: 'Vault offline • auto-relink armed',
     exercises: 'Exercises',
     navHome: 'Home',
-    navWorkout: 'Workout',
-    navHistory: 'History',
+    navWorkout: 'Forge',
+    navHistory: 'Log',
     navCalendar: 'Calendar',
-    navStats: 'Stats',
+    navStats: 'Records',
+    navMeasure: 'Body',
     navSettings: 'Settings',
-    addExerciseModal: 'Add Exercise',
-    searchExercises: 'Search exercises...',
-    createCustomExercise: '+ Create Custom Exercise',
-    workoutComplete: 'Workout Complete 🎉',
+    addExerciseModal: 'Add Lift',
+    searchExercises: 'Search lifts...',
+    createCustomExercise: '+ Create Custom Lift',
+    workoutComplete: 'Session Locked In 🔥',
     rest: 'Rest',
     skip: 'Skip',
     restTimeModalTitle: 'Rest Time',
@@ -3330,14 +4006,28 @@ const UI_TEXT = {
     programTitle: 'Bare Metal Aesthetic Program',
     programSubtitle: '10-week guided program',
     programDescription: 'Follow the full 10-week program day by day. Free Mode still stays available anytime.',
-    programStart: 'Start Program',
-    programContinue: 'Start Next Workout',
-    programDayComplete: 'Program workout logged',
-    programDayCompleteText: 'Nice work. Your next assigned workout is ready when you are.',
-    programGuide: 'View Guide',
+    programStart: '▶ Enter the Forge',
+    programContinue: '▶ Enter the Forge',
+    programDayComplete: 'Session locked in',
+    programDayCompleteText: 'You showed up. Your next session is ready when you are.',
+    programGuide: '📖 The Blueprint',
     programProgress: 'Progress',
     freestyleHint: 'Free Mode always stays available.',
-    navMeasure: 'Body',
+    weeklyReviewTitle: 'Weekly Forge Report',
+    monthlyRecapTitle: 'Monthly Forge Report',
+    transformTitle: 'Transformation',
+    consistencyTitle: 'This Week\'s Target',
+    coachingTitle: '⚡ Coach\'s Corner',
+    onTrack: 'On Track',
+    offTrack: 'Off Track',
+    weekComplete: 'Week Complete',
+    programsTab: 'Programs',
+    templatesTab: 'Templates',
+    activeProgramLabel: 'Active Program',
+    programLibraryLabel: 'All Programs',
+    switchProgram: 'Switch Program',
+    switchProgramWarning: 'Switching programs will reset your current progress. Continue?',
+    noActiveProgramHint: 'Choose a program below to get started.',
     measureTitle: 'Body',
     measureSubtitle: 'Track your physique',
     measureInBody: 'InBody Quick Log',
@@ -3357,27 +4047,27 @@ const UI_TEXT = {
   ja: {
     appTitle: 'Bare Metal',
     homeTitle: 'Bare Metal',
-    homeSubtitle: 'トレーニングを記録',
-    startEmpty: '▶ 空のワークアウトを開始',
-    templates: 'テンプレート',
-    newTemplate: '新規テンプレート',
-    recent: '最近',
-    noActiveWorkout: '進行中のワークアウトはありません',
-    noActiveWorkoutText: 'ホームから始めるか、下のボタンをタップしてください。',
-    workoutNamePlaceholder: 'ワークアウト名...',
-    finish: '終了',
-    addExercise: '種目を追加',
-    discardWorkout: 'ワークアウトを破棄',
-    historyTitle: '履歴',
-    historySubtitle: '過去のワークアウト',
+    homeSubtitle: '鍛造の道を歩め',
+    startEmpty: '▶ 自分だけの道を切り開く',
+    templates: 'ブループリント',
+    newTemplate: '新規ブループリント',
+    recent: '最近のセッション',
+    noActiveWorkout: '炉は冷えている',
+    noActiveWorkoutText: 'ワークアウトタブからセッションを開始してください。',
+    workoutNamePlaceholder: 'セッション名...',
+    finish: 'ロックイン',
+    addExercise: 'リフトを追加',
+    discardWorkout: 'セッションを中断',
+    historyTitle: 'フォージログ',
+    historySubtitle: '全セッションの記録',
     calendarTitle: 'カレンダー',
     calendarSubtitle: 'ワークアウト履歴',
-    addMissingWorkout: '+ 過去のワークアウトを追加',
+    addMissingWorkout: '+ セッションを追加',
     clear: 'クリア',
-    analyticsTitle: '分析',
-    analyticsSubtitle: '進捗と累計データ',
+    analyticsTitle: 'レコード',
+    analyticsSubtitle: 'あなたの進化の記録',
     settingsTitle: '設定',
-    settingsSubtitle: 'アプリを自分用に調整',
+    settingsSubtitle: '自分だけのフォージを作る',
     languageLabel: '言語',
     languagePreference: 'アプリの言語',
     languageHelp: 'アプリで使う言語を選んでください。選択は保存されます。',
@@ -3419,15 +4109,16 @@ const UI_TEXT = {
     driveNotConnectedArmed: '保管庫オフライン • 自動再リンク武装中',
     exercises: '種目',
     navHome: 'ホーム',
-    navWorkout: '記録',
-    navHistory: '履歴',
-    navCalendar: '日付',
-    navStats: '分析',
+    navWorkout: 'フォージ',
+    navHistory: 'ログ',
+    navCalendar: 'カレンダー',
+    navStats: 'レコード',
+    navMeasure: 'ボディ',
     navSettings: '設定',
-    addExerciseModal: '種目を追加',
-    searchExercises: '種目を検索...',
-    createCustomExercise: '+ カスタム種目を作成',
-    workoutComplete: 'ワークアウト完了 🎉',
+    addExerciseModal: 'リフトを追加',
+    searchExercises: 'リフトを検索...',
+    createCustomExercise: '+ カスタムリフトを作成',
+    workoutComplete: 'セッション完了 🔥',
     rest: '休憩',
     skip: 'スキップ',
     restTimeModalTitle: '休憩時間',
@@ -3448,14 +4139,28 @@ const UI_TEXT = {
     programTitle: 'Bare Metal Aesthetic Program',
     programSubtitle: '10週間ガイド付きプログラム',
     programDescription: '10週間のプログラムを日ごとに進められます。フリーモードもいつでも使えます。',
-    programStart: 'プログラム開始',
-    programContinue: '次のワークアウトを開始',
-    programDayComplete: 'プログラムを記録しました',
-    programDayCompleteText: 'ナイス。次の指定ワークアウトはいつでも始められます。',
-    programGuide: 'ガイドを見る',
+    programStart: '▶ フォージに入る',
+    programContinue: '▶ フォージに入る',
+    programDayComplete: 'セッションをロックイン',
+    programDayCompleteText: '今日も来た。次のセッションはいつでも始められます。',
+    programGuide: '📖 ブループリント',
     programProgress: '進行状況',
     freestyleHint: 'フリーモードはいつでも使えます。',
-    navMeasure: 'ボディ',
+    weeklyReviewTitle: '週間フォージレポート',
+    monthlyRecapTitle: '月間フォージレポート',
+    transformTitle: '変革の記録',
+    consistencyTitle: '今週の目標',
+    coachingTitle: '⚡ コーチの提言',
+    onTrack: '順調',
+    offTrack: '遅れ気味',
+    weekComplete: '週完了',
+    programsTab: 'プログラム',
+    templatesTab: 'テンプレート',
+    activeProgramLabel: '実行中のプログラム',
+    programLibraryLabel: 'すべてのプログラム',
+    switchProgram: 'プログラムを切り替え',
+    switchProgramWarning: 'プログラムを切り替えると現在の進捗がリセットされます。続けますか？',
+    noActiveProgramHint: '下からプログラムを選んで始めましょう。',
     measureTitle: 'ボディ',
     measureSubtitle: '体型を記録',
     measureInBody: 'InBodyクイック記録',
@@ -3647,10 +4352,10 @@ function applyTranslations() {
 function renderCurrentView() {
   decorateBareMetalIcons();
   if (state.activeTab === 'home') renderHomeTab();
-  if (state.activeTab === 'workout') renderWorkoutTab();
+  if (state.activeTab === 'workout') { renderWorkoutTab(); if (!getActive()) renderWorkoutEmptyState(); }
   if (state.activeTab === 'history') renderHistoryTab();
-  if (state.activeTab === 'calendar') renderCalendarTab();
   if (state.activeTab === 'analytics') renderAnalyticsTab();
+  if (state.activeTab === 'measurements') renderMeasurementsTab();
   if (state.activeTab === 'settings') renderSettingsTab();
   if (document.getElementById('modal-template')?.classList.contains('open')) openTemplateEditor(state.editingTemplateId, false);
   if (document.getElementById('modal-add-exercise')?.classList.contains('open')) renderAddExerciseList(document.getElementById('ex-search')?.value || '');
@@ -3692,6 +4397,78 @@ const MEASURE_METRICS = [
   { id: 'r_calf',      name: 'Right Calf',        nameJa: '右ふくらはぎ', unit: 'cm',  group: 'parts', higherIsBetter: true  },
 ];
 
+// ══════════════════════════════════════════
+//  FORGE STREAK
+// ══════════════════════════════════════════
+
+const STREAK_KEY = 'wt_forge_streak';
+
+function getStreakData() {
+  return JSON.parse(localStorage.getItem(STREAK_KEY) || '{"current":0,"longest":0,"lastDate":null}');
+}
+
+function saveStreakData(data) {
+  localStorage.setItem(STREAK_KEY, JSON.stringify(data));
+}
+
+function updateStreakAfterSession() {
+  const streak = getStreakData();
+  const today = new Date().toISOString().slice(0, 10);
+  const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+
+  if (streak.lastDate === today) return streak; // already logged today
+  if (streak.lastDate === yesterday) {
+    streak.current += 1; // extend streak
+  } else {
+    streak.current = 1; // reset — new streak starts
+  }
+  streak.longest = Math.max(streak.longest, streak.current);
+  streak.lastDate = today;
+  saveStreakData(streak);
+  return streak;
+}
+
+function getForgeStreakFromSessions() {
+  // Compute streak from actual session history (source of truth)
+  const sessions = getSessions();
+  if (!sessions.length) return { current: 0, longest: 0 };
+
+  const dates = [...new Set(
+    sessions.map(s => new Date(s.startTime).toISOString().slice(0, 10))
+  )].sort().reverse();
+
+  const today = new Date().toISOString().slice(0, 10);
+  const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+
+  // Current streak: must include today or yesterday
+  let current = 0;
+  if (dates[0] === today || dates[0] === yesterday) {
+    let expected = dates[0];
+    for (const d of dates) {
+      if (d === expected) {
+        current++;
+        expected = new Date(new Date(expected).getTime() - 86400000).toISOString().slice(0, 10);
+      } else break;
+    }
+  }
+
+  // Longest streak from history
+  let longest = 0, run = 1;
+  for (let i = 1; i < dates.length; i++) {
+    const prev = new Date(dates[i - 1]).getTime();
+    const curr = new Date(dates[i]).getTime();
+    if (prev - curr === 86400000) {
+      run++;
+      longest = Math.max(longest, run);
+    } else {
+      run = 1;
+    }
+  }
+  longest = Math.max(longest, current, 1);
+
+  return { current, longest };
+}
+
 function getMeasurements() {
   return JSON.parse(localStorage.getItem(MEASURE_STORAGE_KEY) || '{}');
 }
@@ -3723,6 +4500,9 @@ function renderMeasurementsTab() {
   container.innerHTML = '';
 
   const data = getMeasurements();
+
+  // ── Transformation tracking (at the top if data exists) ──
+  renderTransformationCard();
 
   // ── Progress score card (if has body comp data) ──
   const weightEntries = getMeasureEntries('weight');
@@ -6006,6 +6786,7 @@ function finishWorkout() {
 }
 
 function saveWorkout(active) {
+  const prs = detectPRs(active);
   const sessions = getSessions();
   enrichSession(active, sessions);
   sessions.unshift(active);
@@ -6015,8 +6796,11 @@ function saveWorkout(active) {
   stopTimer();
   closeModal('modal-summary');
   state.expandedHistorySessions.clear();
-  showTab('history');
+  showTab('home');
   maybeSmartAutoBackup('workout');
+
+  // Trigger milestone flow after navigation
+  setTimeout(() => triggerMilestoneFlow(active, prs, null), 400);
 }
 
 // ══════════════════════════════════════════
@@ -6149,15 +6933,19 @@ function detectPRs(active) {
 // ══════════════════════════════════════════
 
 function showTab(name) {
+  // Calendar is now a slide-in page, not a tab
+  if (name === 'calendar') { openCalendarPage(); return; }
+
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.bottom-nav button').forEach(b => b.classList.remove('active'));
-  document.getElementById(`tab-${name}`).classList.add('active');
-  document.querySelector(`.bottom-nav button[data-tab="${name}"]`).classList.add('active');
+  const tabEl = document.getElementById(`tab-${name}`);
+  if (tabEl) tabEl.classList.add('active');
+  const navBtn = document.querySelector(`.bottom-nav button[data-tab="${name}"]`);
+  if (navBtn) navBtn.classList.add('active');
   state.activeTab = name;
   if (name === 'home') renderHomeTab();
-  if (name === 'workout') renderWorkoutTab();
+  if (name === 'workout') { renderWorkoutTab(); if (!getActive()) renderWorkoutEmptyState(); }
   if (name === 'history') renderHistoryTab();
-  if (name === 'calendar') renderCalendarTab();
   if (name === 'analytics') renderAnalyticsTab();
   if (name === 'measurements') renderMeasurementsTab();
   if (name === 'settings') renderSettingsTab();
@@ -6167,98 +6955,971 @@ function showTab(name) {
 //  RENDER: HOME TAB
 // ══════════════════════════════════════════
 
+// ══════════════════════════════════════════
+//  PROGRAM LIBRARY
+// ══════════════════════════════════════════
+
+const PROGRAM_LIBRARY = [
+  {
+    id: 'maps-aesthetic',
+    name: 'Bare Metal Aesthetic Program',
+    nameJa: 'Bare Metal Aesthetic Program',
+    description: '10-week guided program — Strength, Size, Sharpen.',
+    descriptionJa: '10週間ガイド付きプログラム — 筋力・筋肥大・仕上げ。',
+    weeks: 10,
+    sessionsPerWeek: 3,
+    totalSessions: 30,
+    level: 'Intermediate',
+    levelJa: '中級',
+    icon: 'analytics'
+  }
+  // Future programs can be added here
+];
+
+// ══════════════════════════════════════════
+//  PHASE 3: MILESTONES
+// ══════════════════════════════════════════
+
+const MILESTONE_KEY = 'wt_milestones';
+
+// Big milestones — full screen celebration
+const BIG_MILESTONES = [
+  {
+    id: 'first_session',
+    check: (sessions, streak, prs) => sessions.length === 1,
+    emoji: '🔥',
+    title: (s, l) => l === 'ja' ? 'フォージ開幕' : 'The Forge Begins',
+    subtitle: (s, l) => l === 'ja'
+      ? '最初の一歩を踏み出した。これが全ての始まりだ。'
+      : 'You showed up. That\'s everything. The path starts here.'
+  },
+  {
+    id: 'first_pr',
+    check: (sessions, streak, prs) => sessions.length > 1 && sessions[0].prCount > 0 && sessions.slice(1).every(s => (s.prCount||0) === 0),
+    emoji: '🏆',
+    title: (s, l) => l === 'ja' ? '初の自己ベスト' : 'First Personal Record',
+    subtitle: (s, l) => l === 'ja'
+      ? '数字が証明した。今日のあなたは昨日より強い。'
+      : 'The numbers don\'t lie. You are stronger than you were.'
+  },
+  {
+    id: 'sessions_5',
+    check: (sessions) => sessions.length === 5,
+    emoji: '⚡',
+    title: (s, l) => l === 'ja' ? '5セッション完了' : '5 Sessions Forged',
+    subtitle: (s, l) => l === 'ja'
+      ? 'ルーティンができてきた。習慣は鉄のように固まりつつある。'
+      : 'A routine is forming. Habits are being forged.'
+  },
+  {
+    id: 'sessions_10',
+    check: (sessions) => sessions.length === 10,
+    emoji: '💪',
+    title: (s, l) => l === 'ja' ? '10セッション達成' : '10 Sessions. You\'re Real Now.',
+    subtitle: (s, l) => l === 'ja'
+      ? 'ほとんどの人がここに来ない。あなたは来た。続けろ。'
+      : 'Most people never make it here. You did. Keep going.'
+  },
+  {
+    id: 'streak_7',
+    check: (sessions, streak) => streak === 7,
+    emoji: '🔥',
+    title: (s, l) => l === 'ja' ? '7日連続フォージ' : '7-Day Forge Streak',
+    subtitle: (s, l) => l === 'ja'
+      ? '1週間、一度も約束を破らなかった。これが鍛造の精神だ。'
+      : 'One full week. Zero broken promises. This is who you are.'
+  },
+  {
+    id: 'sessions_25',
+    check: (sessions) => sessions.length === 25,
+    emoji: '🛠',
+    title: (s, l) => l === 'ja' ? '25セッション達成' : '25 Sessions. A Quarter Century.',
+    subtitle: (s, l) => l === 'ja'
+      ? '四半期を越えた。あなたはもうアスリートだ。'
+      : 'This is no longer a habit. This is your identity.'
+  },
+  {
+    id: 'streak_30',
+    check: (sessions, streak) => streak === 30,
+    emoji: '👑',
+    title: (s, l) => l === 'ja' ? '30日連続フォージ' : '30-Day Forge Streak',
+    subtitle: (s, l) => l === 'ja'
+      ? '一ヶ月間、炉を燃やし続けた。これは意志の力だ。'
+      : 'One month of unbroken commitment. This is rare. You are rare.'
+  },
+  {
+    id: 'sessions_50',
+    check: (sessions) => sessions.length === 50,
+    emoji: '🔩',
+    title: (s, l) => l === 'ja' ? '50セッション達成' : '50 Sessions Forged',
+    subtitle: (s, l) => l === 'ja'
+      ? 'この鉄はもうあなたの一部だ。'
+      : 'Half a century. The iron is part of you now.'
+  },
+  {
+    id: 'sessions_100',
+    check: (sessions) => sessions.length === 100,
+    emoji: '💯',
+    title: (s, l) => l === 'ja' ? '100セッション制覇' : '100 Sessions. Forged.',
+    subtitle: (s, l) => l === 'ja'
+      ? '100回炉に入った。100回約束を守った。これが変革だ。'
+      : '100 sessions. 100 kept promises. You have been transformed.'
+  },
+  {
+    id: 'program_complete',
+    check: (sessions, streak, prs, ps) => ps?.completedAt && !ps._milestoned,
+    emoji: '🏅',
+    title: (s, l) => l === 'ja' ? 'プログラム完全制覇' : 'Program Complete',
+    subtitle: (s, l) => l === 'ja'
+      ? '30セッション全て制覇した。Bare Metal Aesthetic Programを完走した戦士だ。'
+      : 'All 30 sessions forged. You ran the full Bare Metal Aesthetic Program. Elite.'
+  },
+];
+
+// Small acknowledgements — toast messages shown on completion
+const SMALL_ACK_ROTATING = [
+  { emoji: '🔒', title: (l) => l === 'ja' ? 'ロックイン完了' : 'Locked in.',           sub: (l) => l === 'ja' ? 'また一つ積み上げた' : 'Another one in the vault.' },
+  { emoji: '⚡', title: (l) => l === 'ja' ? '炉は燃えている' : 'The forge burns.',       sub: (l) => l === 'ja' ? '鉄は嘘をつかない' : 'The iron never lies.' },
+  { emoji: '🛠', title: (l) => l === 'ja' ? '鍛造完了' : 'Session forged.',              sub: (l) => l === 'ja' ? 'あなたは来た。それだけで十分' : 'You showed up. That\'s everything.' },
+  { emoji: '💪', title: (l) => l === 'ja' ? '記録更新中' : 'Building the record.',       sub: (l) => l === 'ja' ? 'データが積み上がっていく' : 'Every session adds to the story.' },
+  { emoji: '🔥', title: (l) => l === 'ja' ? '炎は消えない' : 'Still burning.',           sub: (l) => l === 'ja' ? '炉から離れるな' : 'Don\'t leave the forge cold.' },
+  { emoji: '🗜', title: (l) => l === 'ja' ? 'プレッシャーが鉄を鍛える' : 'Pressure forges iron.', sub: (l) => l === 'ja' ? '今日もやり遂げた' : 'You pushed. It counted.' },
+  { emoji: '🧱', title: (l) => l === 'ja' ? '一枚ずつ積む' : 'Brick by brick.',          sub: (l) => l === 'ja' ? '偉大な体は一日では作れない' : 'Great physiques aren\'t built in a day.' },
+  { emoji: '⚙️', title: (l) => l === 'ja' ? '機械は止まらない' : 'The machine runs.',    sub: (l) => l === 'ja' ? '毎日の積み重ねが全て' : 'Consistency is the only cheat code.' },
+];
+
+const SMALL_ACK_SPECIAL = {
+  pr_hit: { emoji: '🏆', title: (l) => l === 'ja' ? '自己ベスト更新！' : 'PR Hit!',             sub: (l, n) => l === 'ja' ? `${n}件の記録を塗り替えた` : `${n} personal record${n>1?'s':''} today` },
+  beat_last: { emoji: '📈', title: (l) => l === 'ja' ? '前回を超えた' : 'Beat Last Session',   sub: (l) => l === 'ja' ? '進歩は止まらない' : 'Progress is undeniable.' },
+  back_after_gap: { emoji: '🔙', title: (l) => l === 'ja' ? 'フォージに帰還' : 'Back in the Forge', sub: (l) => l === 'ja' ? '休んでも炉の火は消えない' : 'The forge waited. You came back.' },
+  week_target_hit: { emoji: '🎯', title: (l) => l === 'ja' ? '週間目標達成！' : 'Weekly Target Hit!', sub: (l) => l === 'ja' ? '今週の約束を守った' : 'You kept your promise this week.' },
+  streak_extend: { emoji: '🔥', title: (l) => l === 'ja' ? (n) => `${n}日連続フォージ` : (n) => `${n}-Day Streak`, sub: (l) => l === 'ja' ? '約束を守り続けている' : 'Promise kept.' },
+};
+
+function getMilestonesData() {
+  return JSON.parse(localStorage.getItem(MILESTONE_KEY) || '{"achieved":[]}');
+}
+function saveMilestonesData(data) {
+  localStorage.setItem(MILESTONE_KEY, JSON.stringify(data));
+}
+function hasMilestone(id) {
+  return getMilestonesData().achieved.includes(id);
+}
+function markMilestone(id) {
+  const data = getMilestonesData();
+  if (!data.achieved.includes(id)) data.achieved.push(id);
+  saveMilestonesData(data);
+}
+
+function checkBigMilestones(sessions, prs) {
+  const { current: streak } = getForgeStreakFromSessions();
+  const ps = getProgramStateOrFresh();
+  const pending = [];
+
+  BIG_MILESTONES.forEach(m => {
+    if (hasMilestone(m.id)) return;
+    if (m.check(sessions, streak, prs, ps)) {
+      markMilestone(m.id);
+      pending.push(m);
+    }
+  });
+  return pending;
+}
+
+function showBigMilestone(milestone, onDone) {
+  const overlay = document.createElement('div');
+  overlay.className = 'milestone-overlay';
+  const l = state.lang;
+
+  overlay.innerHTML = `
+    <div class="milestone-card">
+      <div class="milestone-glow"></div>
+      <span class="milestone-emoji">${milestone.emoji}</span>
+      <div class="milestone-label">${l === 'ja' ? 'マイルストーン達成' : 'Milestone Unlocked'}</div>
+      <div class="milestone-title">${milestone.title(null, l)}</div>
+      <div class="milestone-subtitle">${milestone.subtitle(null, l)}</div>
+      <button class="milestone-btn">${l === 'ja' ? '続ける 🔥' : 'Keep Forging 🔥'}</button>
+    </div>`;
+
+  overlay.querySelector('.milestone-btn').addEventListener('click', () => {
+    overlay.style.animation = 'fadeInOverlay 0.2s ease reverse';
+    setTimeout(() => { overlay.remove(); if (onDone) onDone(); }, 180);
+  });
+
+  document.body.appendChild(overlay);
+}
+
+function showBigMilestonesSequential(milestones, onAllDone) {
+  if (!milestones.length) { if (onAllDone) onAllDone(); return; }
+  const [first, ...rest] = milestones;
+  showBigMilestone(first, () => showBigMilestonesSequential(rest, onAllDone));
+}
+
+function showForgeToast(emoji, title, sub, duration = 3000) {
+  // Remove existing toast
+  document.querySelectorAll('.forge-toast').forEach(t => t.remove());
+
+  const toast = document.createElement('div');
+  toast.className = 'forge-toast';
+  toast.innerHTML = `
+    <div class="forge-toast-emoji">${emoji}</div>
+    <div class="forge-toast-text">
+      <div class="forge-toast-title">${title}</div>
+      <div class="forge-toast-sub">${sub}</div>
+    </div>`;
+
+  document.body.appendChild(toast);
+  setTimeout(() => {
+    if (toast.parentNode) {
+      toast.style.animation = 'toastOut 0.3s ease forwards';
+      setTimeout(() => toast.remove(), 280);
+    }
+  }, duration);
+}
+
+function getSmallAck(sessions, prs, active) {
+  const l = state.lang;
+  const allSessions = sessions;
+
+  // Priority: special acks first
+  // Back after gap (3+ days since last session)
+  if (allSessions.length >= 2) {
+    const last = new Date(allSessions[1].startTime);
+    const now = new Date();
+    const daysSince = Math.floor((now - last) / 86400000);
+    if (daysSince >= 3) return SMALL_ACK_SPECIAL.back_after_gap;
+  }
+
+  // PR hit
+  if (prs.length > 0) {
+    const ack = { ...SMALL_ACK_SPECIAL.pr_hit };
+    ack.sub = (l) => SMALL_ACK_SPECIAL.pr_hit.sub(l, prs.length);
+    return ack;
+  }
+
+  // Weekly target hit (just this session pushed them over)
+  const target = getWeeklyTarget();
+  const thisWeekSessions = getWeekSessions(0);
+  if (thisWeekSessions.length === target) return SMALL_ACK_SPECIAL.week_target_hit;
+
+  // Streak extension (streak 2+)
+  const { current: streak } = getForgeStreakFromSessions();
+  if (streak >= 2 && streak % 1 === 0) {
+    return {
+      emoji: SMALL_ACK_SPECIAL.streak_extend.emoji,
+      title: (l) => (l === 'ja' ? `${streak}日連続フォージ` : `${streak}-Day Streak`),
+      sub: SMALL_ACK_SPECIAL.streak_extend.sub
+    };
+  }
+
+  // Rotating generic — use session count to pick one (variety, not random)
+  const idx = allSessions.length % SMALL_ACK_ROTATING.length;
+  return SMALL_ACK_ROTATING[idx];
+}
+
+function triggerMilestoneFlow(active, prs, onComplete) {
+  // Save session first to get accurate counts
+  const sessions = getSessions();
+  const bigOnes = checkBigMilestones(sessions, prs);
+
+  if (bigOnes.length > 0) {
+    // Show big milestones first, then small toast after
+    showBigMilestonesSequential(bigOnes, () => {
+      const ack = getSmallAck(sessions, prs, active);
+      const l = state.lang;
+      showForgeToast(ack.emoji, ack.title(l), ack.sub(l));
+      if (onComplete) onComplete();
+    });
+  } else {
+    // Just show small toast
+    const ack = getSmallAck(sessions, prs, active);
+    const l = state.lang;
+    showForgeToast(ack.emoji, ack.title(l), ack.sub(l));
+    if (onComplete) onComplete();
+  }
+}
+
+// ══════════════════════════════════════════
+//  FORGE HQ — HOME HERO
+// ══════════════════════════════════════════
+
+function renderForgeHQ() {
+  const el = document.getElementById('home-forge-hq');
+  if (!el) return;
+
+  const sessions = getSessions();
+  const { current: streak } = getForgeStreakFromSessions();
+  const ps = getProgramStateOrFresh();
+  const hasProg = ps && ps.programId;
+  const progressCount = getProgramCompletionCount(ps);
+  const total = getProgramTotalWorkouts();
+  const pct = hasProg ? Math.round((progressCount / total) * 100) : 0;
+  const l = state.lang;
+
+  if (!hasProg) {
+    // No active program — show a clean start-forging card
+    el.innerHTML = `
+      <div class="forge-hq-no-program">
+        <div class="forge-hq-no-program-title">🔥 ${l === 'ja' ? 'フォージを開始しよう' : 'Enter the Forge'}</div>
+        <div class="forge-hq-no-program-sub">${l === 'ja' ? 'プログラムを選んで変革を始めよう' : 'Choose a program and start your transformation'}</div>
+        <button class="btn-primary" onclick="showTab('workout')" style="max-width:240px;margin:0 auto">
+          <div class="shimmer"></div>${l === 'ja' ? '▶ プログラムを選ぶ' : '▶ Choose a Program'}
+        </button>
+      </div>`;
+    return;
+  }
+
+  const currentWorkout = getProgramWorkoutByRef(ps);
+  const posText = getProgramPositionText(ps);
+  const subtitle = currentWorkout ? currentWorkout.subtitle || '' : '';
+  const exCount = currentWorkout ? currentWorkout.exercises.length : 0;
+  const isComplete = !!ps.completedAt;
+
+  const taglines = l === 'ja'
+    ? ['示せ。汗で語れ。', '炉は待っている。', '今日の約束を果たせ。', '限界は自分が作る。', '止まるな。']
+    : ['SHOW UP. DO THE WORK.', 'THE FORGE IS WAITING.', 'KEEP YOUR PROMISE.', 'NO EXCUSES. ONLY IRON.', 'ONE MORE SESSION.'];
+  const tagline = taglines[sessions.length % taglines.length];
+
+  el.innerHTML = `
+    <div class="forge-hq-card">
+      <div class="forge-hq-position-label">${l === 'ja' ? '現在の位置' : 'CURRENT POSITION'}</div>
+      <div class="forge-hq-position">${isComplete ? (l === 'ja' ? 'プログラム完了 🏅' : 'Program Complete 🏅') : posText}</div>
+      <div class="forge-hq-objective">${isComplete
+        ? (l === 'ja' ? 'Bare Metal Aesthetic Program を完全制覇した。' : 'You completed the full Bare Metal Aesthetic Program.')
+        : `${l === 'ja' ? '目標' : 'Objective'}: Bare Metal Aesthetic Program · ${posText}${subtitle ? ' · ' + subtitle : ''}`}
+      </div>
+      <button class="forge-hq-btn" id="forge-hq-enter-btn">
+        <div class="shimmer"></div>
+        ${isComplete ? (l === 'ja' ? '▶ W1D1から再点火' : '▶ REFORGE FROM W1D1') : (l === 'ja' ? '▶ フォージに入る' : '▶ ENTER THE FORGE')}
+      </button>
+      <div class="forge-hq-tagline">${tagline}</div>
+      <div class="forge-hq-stats">
+        <div class="forge-hq-stat">
+          <div class="forge-hq-stat-val">${streak}</div>
+          <div class="forge-hq-stat-lbl">${l === 'ja' ? 'フォージ\nストリーク' : 'FORGE\nSTREAK'}</div>
+        </div>
+        <div class="forge-hq-stat">
+          <div class="forge-hq-stat-val">${sessions.length}</div>
+          <div class="forge-hq-stat-lbl">${l === 'ja' ? 'トータル\nセッション' : 'TOTAL\nSESSIONS'}</div>
+        </div>
+        <div class="forge-hq-stat">
+          <div class="forge-hq-stat-val">${pct}%</div>
+          <div class="forge-hq-stat-lbl">${l === 'ja' ? 'プログラム\n進捗' : 'CURRENT\nPATH'}</div>
+        </div>
+      </div>
+    </div>`;
+
+  document.getElementById('forge-hq-enter-btn')?.addEventListener('click', async () => {
+    await startProgramWorkout(isComplete);
+  });
+}
+
+// ══════════════════════════════════════════
+//  MONTHLY RECAP
+// ══════════════════════════════════════════
+
+function getMonthSessions(year, month) {
+  return getSessions().filter(s => {
+    const d = new Date(s.startTime);
+    return d.getFullYear() === year && d.getMonth() === month;
+  });
+}
+
+function renderMonthlyRecap() {
+  const el = document.getElementById('home-monthly-recap');
+  if (!el) return;
+
+  const now = new Date();
+  const isFirstWeek = now.getDate() <= 7;
+
+  // Only show in first week of month (recap of last month) or last 3 days (preview current)
+  const isLastDays = now.getDate() >= now.getDate() - 2;
+
+  // Show recap of last month during first week
+  const showMonth = isFirstWeek
+    ? (now.getMonth() === 0 ? new Date(now.getFullYear() - 1, 11) : new Date(now.getFullYear(), now.getMonth() - 1))
+    : new Date(now.getFullYear(), now.getMonth());
+
+  const sessions = getMonthSessions(showMonth.getFullYear(), showMonth.getMonth());
+
+  // Need at least 2 sessions to show recap
+  if (sessions.length < 2 && !isFirstWeek) { el.innerHTML = ''; return; }
+  if (sessions.length === 0) { el.innerHTML = ''; return; }
+
+  const monthNames = state.lang === 'ja'
+    ? ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月']
+    : ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+  const monthLabel = monthNames[showMonth.getMonth()];
+  const isLastMonth = isFirstWeek;
+
+  const totalVol = Math.round(sessions.reduce((s, sess) => s + (sess.totalVolume || 0), 0));
+  const totalPRs = sessions.reduce((s, sess) => s + (sess.prCount || 0), 0);
+  const totalSets = sessions.reduce((s, sess) => s + (sess.totalSetsDone || 0), 0);
+
+  // Best lift of month
+  let bestLift = null;
+  sessions.forEach(sess => {
+    (sess.exercises || []).forEach(ex => {
+      (ex.sets || []).filter(s => s.done && !s.warmup && s.weight > 0 && s.reps > 0).forEach(s => {
+        const e = estimated1RM(Number(s.weight), Number(s.reps));
+        if (!bestLift || e > bestLift.e) bestLift = { name: ex.name, weight: s.weight, reps: s.reps, e };
+      });
+    });
+  });
+
+  // Coaching observation
+  const target = getWeeklyTarget();
+  const weeksInMonth = Math.ceil(new Date(showMonth.getFullYear(), showMonth.getMonth() + 1, 0).getDate() / 7);
+  const targetSessions = target * weeksInMonth;
+  const hitRate = Math.round((sessions.length / targetSessions) * 100);
+
+  const obs = state.lang === 'ja'
+    ? sessions.length >= targetSessions
+      ? `完璧な月。${sessions.length}セッション達成。この調子で次の月も駆け抜けろ。`
+      : hitRate >= 75
+        ? `${sessions.length}セッションで月を終えた。目標の${hitRate}%を達成。来月はもう一段上を目指そう。`
+        : `${sessions.length}セッション。来月は週${target}回のペースを意識して積み上げていこう。`
+    : sessions.length >= targetSessions
+      ? `Perfect month. ${sessions.length} sessions. Carry this into next month.`
+      : hitRate >= 75
+        ? `${sessions.length} sessions this month — ${hitRate}% of target. Next month, close the gap.`
+        : `${sessions.length} sessions. Next month aim for ${target}x/week consistently.`;
+
+  const headline = isLastMonth
+    ? (state.lang === 'ja' ? `${monthLabel}の鍛造完了` : `${monthLabel} — Forged`)
+    : (state.lang === 'ja' ? `${monthLabel}の進捗` : `${monthLabel} So Far`);
+
+  el.innerHTML = `
+    <div class="monthly-recap-card mt4">
+      <div class="monthly-recap-glow"></div>
+      <div class="monthly-recap-header">
+        <div class="monthly-recap-title">${t('monthlyRecapTitle')}</div>
+        <div class="monthly-recap-month">${monthLabel}</div>
+      </div>
+      <div class="monthly-recap-headline">${headline}</div>
+      <div class="monthly-recap-obs">${obs}</div>
+      <div class="monthly-recap-grid">
+        <div class="monthly-recap-stat">
+          <div class="monthly-recap-stat-val">${sessions.length}</div>
+          <div class="monthly-recap-stat-lbl">${state.lang === 'ja' ? 'セッション' : 'Sessions'}</div>
+        </div>
+        <div class="monthly-recap-stat">
+          <div class="monthly-recap-stat-val">${totalVol > 999 ? Math.round(totalVol/1000) + 'k' : totalVol}</div>
+          <div class="monthly-recap-stat-lbl">${state.lang === 'ja' ? 'ボリューム' : 'Volume'}</div>
+        </div>
+        <div class="monthly-recap-stat">
+          <div class="monthly-recap-stat-val">${totalPRs}</div>
+          <div class="monthly-recap-stat-lbl">PRs</div>
+        </div>
+        <div class="monthly-recap-stat">
+          <div class="monthly-recap-stat-val">${totalSets}</div>
+          <div class="monthly-recap-stat-lbl">${state.lang === 'ja' ? 'セット' : 'Sets'}</div>
+        </div>
+      </div>
+      ${bestLift ? `
+      <div class="monthly-recap-best">
+        <div class="monthly-recap-best-lbl">${state.lang === 'ja' ? '今月のベストリフト' : 'Best Lift This Month'}</div>
+        ${esc(trExercise(bestLift.name))} · ${bestLift.weight} kg × ${bestLift.reps} · 1RM ~${Math.round(bestLift.e)} kg
+      </div>` : ''}
+    </div>`;
+}
+
+// ══════════════════════════════════════════
+//  TRANSFORMATION TRACKING
+// ══════════════════════════════════════════
+
+function renderTransformationCard() {
+  // Renders on the Body (measurements) tab
+  const wrap = document.getElementById('measurements-content');
+  if (!wrap) return;
+
+  const data = getMeasurements();
+  const sessions = getSessions();
+  if (sessions.length === 0) return;
+
+  // Key body comp metrics to track
+  const trackMetrics = [
+    { id: 'weight',  name: state.lang === 'ja' ? '体重' : 'Weight',        unit: 'kg',  higherIsBetter: false },
+    { id: 'muscle',  name: state.lang === 'ja' ? '筋肉量' : 'Muscle Mass', unit: 'kg',  higherIsBetter: true  },
+    { id: 'bodyfat', name: state.lang === 'ja' ? '体脂肪率' : 'Body Fat',  unit: '%',   higherIsBetter: false },
+  ];
+
+  const hasData = trackMetrics.some(m => (data[m.id] || []).length >= 2);
+  if (!hasData) return;
+
+  // Training context — first and most recent session date
+  const firstSession = sessions[sessions.length - 1];
+  const latestSession = sessions[0];
+  const startDate = formatLocalDate(firstSession.startTime);
+  const latestDate = formatLocalDate(latestSession.startTime);
+
+  let rowsHtml = '';
+  trackMetrics.forEach(metric => {
+    const entries = (data[metric.id] || []).sort((a, b) => new Date(a.date) - new Date(b.date));
+    if (entries.length < 2) return;
+
+    const first = entries[0];
+    const latest = entries[entries.length - 1];
+    const delta = latest.value - first.value;
+    const isGood = metric.higherIsBetter ? delta > 0 : delta < 0;
+    const isNeutral = Math.abs(delta) < 0.1;
+    const deltaClass = isNeutral ? 'neutral' : isGood ? 'good' : 'bad';
+    const sign = delta > 0 ? '+' : '';
+
+    // Mini sparkline SVG
+    const vals = entries.map(e => e.value);
+    const minV = Math.min(...vals), maxV = Math.max(...vals);
+    const span = maxV - minV || 1;
+    const W = 60, H = 28, pad = 3;
+    const pts = vals.map((v, i) => {
+      const x = pad + (i / (vals.length - 1)) * (W - pad * 2);
+      const y = pad + (1 - (v - minV) / span) * (H - pad * 2);
+      return `${x},${y}`;
+    }).join(' ');
+    const color = isNeutral ? 'var(--muted)' : isGood ? 'var(--success)' : 'var(--error)';
+    const sparkline = vals.length >= 2
+      ? `<svg class="transform-sparkline" viewBox="0 0 ${W} ${H}"><polyline points="${pts}" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`
+      : '';
+
+    rowsHtml += `
+      <div class="transform-row">
+        <div class="transform-metric">
+          <div class="transform-metric-name">${metric.name}</div>
+          <div class="transform-metric-dates">${formatLocalDate(first.date)} → ${formatLocalDate(latest.date)}</div>
+        </div>
+        ${sparkline}
+        <div class="transform-values">
+          <span class="transform-val first">${first.value}</span>
+          <span class="transform-arrow">→</span>
+          <span class="transform-val latest">${latest.value} ${metric.unit}</span>
+          <span class="transform-delta ${deltaClass}">${sign}${delta.toFixed(1)}</span>
+        </div>
+      </div>`;
+  });
+
+  if (!rowsHtml) return;
+
+  // Training summary alongside measurements
+  const totalSessions = sessions.length;
+  const totalVol = Math.round(sessions.reduce((s, sess) => s + (sess.totalVolume || 0), 0));
+
+  const card = document.createElement('div');
+  card.className = 'transform-card mt4';
+  card.innerHTML = `
+    <div class="transform-header">🔄 ${t('transformTitle')}</div>
+    ${rowsHtml}
+    <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border);display:flex;gap:12px;">
+      <div style="flex:1;text-align:center;">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:18px;font-weight:700;color:var(--accent)">${totalSessions}</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em">${state.lang === 'ja' ? 'セッション' : 'Sessions'}</div>
+      </div>
+      <div style="flex:1;text-align:center;">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:18px;font-weight:700;color:var(--accent)">${totalVol > 999 ? Math.round(totalVol/1000) + 'k' : totalVol}</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em">${state.lang === 'ja' ? 'kg鍛造' : 'kg Forged'}</div>
+      </div>
+      <div style="flex:1;text-align:center;">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:14px;font-weight:700;color:var(--accent)">${startDate}</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em">${state.lang === 'ja' ? '開始日' : 'Started'}</div>
+      </div>
+    </div>`;
+
+  // Insert at top of measurements content (before score card)
+  wrap.insertBefore(card, wrap.firstChild);
+}
+
+// ══════════════════════════════════════════
+//  PHASE 2: WEEKLY REVIEW
+// ══════════════════════════════════════════
+
+const WEEKLY_TARGET_KEY = 'wt_weekly_target';
+
+function getWeeklyTarget() {
+  return parseInt(localStorage.getItem(WEEKLY_TARGET_KEY) || '3', 10);
+}
+function setWeeklyTarget(n) {
+  localStorage.setItem(WEEKLY_TARGET_KEY, n);
+}
+
+function getWeekSessions(offsetWeeks = 0) {
+  const sessions = getSessions();
+  const now = new Date();
+  const startOfWeek = new Date(now);
+  startOfWeek.setDate(now.getDate() - now.getDay() - offsetWeeks * 7);
+  startOfWeek.setHours(0, 0, 0, 0);
+  const endOfWeek = new Date(startOfWeek);
+  endOfWeek.setDate(startOfWeek.getDate() + 7);
+  return sessions.filter(s => {
+    const d = new Date(s.startTime);
+    return d >= startOfWeek && d < endOfWeek;
+  });
+}
+
+function renderWeeklyReview() {
+  const el = document.getElementById('home-weekly-review');
+  if (!el) return;
+
+  const thisSessions = getWeekSessions(0);
+  const lastSessions = getWeekSessions(1);
+  const isMonday = new Date().getDay() === 1;
+  const isSunday = new Date().getDay() === 0;
+
+  // Only show weekly review on Sunday (recap) or Monday (fresh start)
+  // But always show if there's data from last week to review
+  const hasLastWeek = lastSessions.length > 0;
+  const isSundayOrMonday = isSunday || isMonday;
+
+  if (!hasLastWeek && !isSundayOrMonday) { el.innerHTML = ''; return; }
+  if (!hasLastWeek) { el.innerHTML = ''; return; }
+
+  const thisVol = Math.round(thisSessions.reduce((s, sess) => s + (sess.totalVolume || 0), 0));
+  const lastVol = Math.round(lastSessions.reduce((s, sess) => s + (sess.totalVolume || 0), 0));
+  const thisPRs = thisSessions.reduce((s, sess) => s + (sess.prCount || 0), 0);
+  const volDelta = thisVol - lastVol;
+  const sessionDelta = thisSessions.length - lastSessions.length;
+
+  // Best lift this week
+  let bestLift = null;
+  lastSessions.forEach(sess => {
+    (sess.exercises || []).forEach(ex => {
+      (ex.sets || []).filter(s => s.done && s.weight > 0 && s.reps > 0).forEach(s => {
+        const e = estimated1RM(Number(s.weight), Number(s.reps));
+        if (!bestLift || e > bestLift.e) bestLift = { name: ex.name, weight: s.weight, reps: s.reps, e };
+      });
+    });
+  });
+
+  // Coaching observation
+  const obs = state.lang === 'ja'
+    ? lastSessions.length === 0
+      ? '先週はセッションなし。今週は炉を燃やそう。'
+      : lastSessions.length >= getWeeklyTarget()
+        ? `先週は目標達成。${lastSessions.length}セッション完了。その勢いを今週も続けよう。`
+        : `先週は${lastSessions.length}セッション。目標まであと${getWeeklyTarget() - lastSessions.length}回。今週は取り返そう。`
+    : lastSessions.length === 0
+      ? 'No sessions last week. This week, light the forge.'
+      : lastSessions.length >= getWeeklyTarget()
+        ? `Target hit. ${lastSessions.length} session${lastSessions.length !== 1 ? 's' : ''} forged last week. Carry that momentum.`
+        : `${lastSessions.length} session${lastSessions.length !== 1 ? 's' : ''} last week — ${getWeeklyTarget() - lastSessions.length} short of target. Make this week count.`;
+
+  const headline = state.lang === 'ja'
+    ? lastSessions.length >= getWeeklyTarget() ? '🔥 先週の目標達成' : `先週: ${lastSessions.length}セッション`
+    : lastSessions.length >= getWeeklyTarget() ? '🔥 Last Week: Target Crushed' : `Last Week: ${lastSessions.length} Session${lastSessions.length !== 1 ? 's' : ''}`;
+
+  // Week date range label
+  const now = new Date();
+  const lastMonday = new Date(now);
+  lastMonday.setDate(now.getDate() - now.getDay() - 6);
+  const lastSunday = new Date(lastMonday);
+  lastSunday.setDate(lastMonday.getDate() + 6);
+  const fmt = d => `${d.getMonth() + 1}/${d.getDate()}`;
+  const weekLabel = `${fmt(lastMonday)} – ${fmt(lastSunday)}`;
+
+  const volClass = volDelta > 0 ? 'up' : volDelta < 0 ? 'down' : '';
+  const volSign = volDelta > 0 ? '+' : '';
+
+  el.innerHTML = `
+    <div class="weekly-review-card mt12">
+      <div class="weekly-review-header">
+        <div class="weekly-review-title">${t('weeklyReviewTitle')}</div>
+        <div class="weekly-review-week">${weekLabel}</div>
+      </div>
+      <div class="weekly-review-headline">${headline}</div>
+      <div class="weekly-review-observation">${obs}</div>
+      <div class="weekly-review-stats">
+        <div class="weekly-review-stat">
+          <div class="weekly-review-stat-val">${lastSessions.length}</div>
+          <div class="weekly-review-stat-lbl">${state.lang === 'ja' ? 'セッション' : 'Sessions'}</div>
+        </div>
+        <div class="weekly-review-stat">
+          <div class="weekly-review-stat-val ${volClass}">${lastVol > 0 ? lastVol.toLocaleString() : '—'}</div>
+          <div class="weekly-review-stat-lbl">${state.lang === 'ja' ? 'ボリューム kg' : 'Volume kg'}</div>
+        </div>
+        <div class="weekly-review-stat">
+          <div class="weekly-review-stat-val">${thisPRs > 0 ? thisPRs : lastSessions.reduce((s,sess) => s + (sess.prCount||0), 0)}</div>
+          <div class="weekly-review-stat-lbl">PRs</div>
+        </div>
+      </div>
+      ${bestLift ? `
+      <div class="weekly-review-best">
+        <div class="weekly-review-best-label">${state.lang === 'ja' ? '先週のベストリフト' : 'Best Lift Last Week'}</div>
+        ${esc(trExercise(bestLift.name))} · ${bestLift.weight} kg × ${bestLift.reps}
+      </div>` : ''}
+    </div>`;
+}
+
+function renderConsistencyTracker() {
+  const el = document.getElementById('home-consistency');
+  if (!el) return;
+
+  const sessions = getSessions();
+  const target = getWeeklyTarget();
+  const now = new Date();
+
+  // Get this week's session count per day (Sun=0)
+  const weekStart = new Date(now);
+  weekStart.setDate(now.getDate() - now.getDay());
+  weekStart.setHours(0, 0, 0, 0);
+
+  const daysHit = new Set();
+  sessions.forEach(s => {
+    const d = new Date(s.startTime);
+    if (d >= weekStart) {
+      daysHit.add(d.toISOString().slice(0, 10));
+    }
+  });
+
+  const sessionsThisWeek = daysHit.size;
+  const todayKey = now.toISOString().slice(0, 10);
+  const todayIdx = now.getDay(); // 0=Sun
+
+  const status = sessionsThisWeek >= target
+    ? 'complete'
+    : (target - sessionsThisWeek) <= (6 - todayIdx)
+      ? 'on-track'
+      : 'off-track';
+
+  const statusLabel = status === 'complete'
+    ? t('weekComplete')
+    : status === 'on-track' ? t('onTrack') : t('offTrack');
+
+  // Build day dots (Mon–Sun display)
+  const dayLabels = state.lang === 'ja'
+    ? ['月','火','水','木','金','土','日']
+    : ['M','T','W','T','F','S','S'];
+
+  // Reorder days Mon→Sun
+  const orderedDays = [1,2,3,4,5,6,0].map((dayOfWeek, i) => {
+    const d = new Date(weekStart);
+    d.setDate(weekStart.getDate() + dayOfWeek);
+    const key = d.toISOString().slice(0, 10);
+    const isToday = key === todayKey;
+    const isPast = d < now && !isToday;
+    const hit = daysHit.has(key);
+    return { label: dayLabels[i], hit, isToday, isPast };
+  });
+
+  const dots = orderedDays.map(d =>
+    `<div style="flex:1;text-align:center;">
+      <div class="consistency-dot ${d.hit ? 'done' : d.isToday ? 'today' : 'empty'}"></div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:${d.isToday ? 'var(--accent)' : 'var(--muted)'};margin-top:4px;">${d.label}</div>
+    </div>`
+  ).join('');
+
+  el.innerHTML = `
+    <div class="consistency-card">
+      <div class="consistency-header">
+        <div class="consistency-title">${t('consistencyTitle')}</div>
+        <div class="consistency-status ${status}">${statusLabel}</div>
+      </div>
+      <div style="font-size:22px;font-weight:700;font-family:'IBM Plex Mono',monospace;color:var(--text);margin-bottom:4px;">
+        ${sessionsThisWeek}<span style="font-size:14px;color:var(--muted);font-weight:400;"> / ${target} ${state.lang === 'ja' ? '回' : 'sessions'}</span>
+      </div>
+      <div style="display:flex;gap:6px;margin:10px 0 4px;">${dots}</div>
+      <div class="consistency-target-row">
+        <span class="consistency-target-label">${state.lang === 'ja' ? '週間目標:' : 'Weekly target:'}</span>
+        <div class="consistency-target-btns">
+          ${[2,3,4,5].map(n => `<button class="consistency-target-btn ${n === target ? 'active' : ''}" data-target="${n}">${n}x</button>`).join('')}
+        </div>
+      </div>
+    </div>`;
+
+  // Wire target buttons
+  el.querySelectorAll('.consistency-target-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      setWeeklyTarget(parseInt(btn.dataset.target));
+      renderConsistencyTracker();
+    });
+  });
+}
+
+// ══════════════════════════════════════════
+//  PHASE 2: COACHING SUGGESTIONS
+// ══════════════════════════════════════════
+
+function generateCoachingSuggestions() {
+  const sessions = getSessions();
+  if (sessions.length < 2) return [];
+
+  const suggestions = [];
+  const exerciseMap = new Map(); // exerciseId/name → last 3 sessions data
+
+  // Build exercise history
+  sessions.slice(0, 10).forEach(sess => {
+    (sess.exercises || []).forEach(ex => {
+      const key = ex.exerciseId || ex.name;
+      if (!exerciseMap.has(key)) exerciseMap.set(key, { name: ex.name, id: ex.exerciseId, sessions: [] });
+      const doneSets = (ex.sets || []).filter(s => s.done && !s.warmup && s.weight > 0 && s.reps > 0);
+      if (doneSets.length > 0) {
+        const best1RM = Math.max(...doneSets.map(s => estimated1RM(Number(s.weight), Number(s.reps))));
+        const bestSet = doneSets.reduce((a, b) => Number(b.weight) > Number(a.weight) ? b : a);
+        exerciseMap.get(key).sessions.push({
+          date: sess.startTime,
+          bestSet,
+          best1RM,
+          sets: doneSets
+        });
+      }
+    });
+  });
+
+  // Generate suggestions
+  exerciseMap.forEach(({ name, id, sessions: exSessions }) => {
+    if (exSessions.length < 2) return;
+    const latest = exSessions[0];
+    const prev = exSessions[1];
+
+    const latestBest = latest.bestSet;
+    const prevBest = prev.bestSet;
+
+    // Progression suggestion: hit target reps last session → suggest weight increase
+    const hitTopReps = latest.sets.every(s => Number(s.reps) >= 8);
+    const stagnant = latestBest.weight === prevBest.weight && latestBest.reps === prevBest.reps;
+    const improved = Number(latestBest.weight) > Number(prevBest.weight);
+
+    if (hitTopReps && !improved) {
+      const nextWeight = Math.round((Number(latestBest.weight) + 2.5) * 2) / 2;
+      suggestions.push({
+        type: 'progression',
+        exercise: name,
+        exerciseId: id,
+        icon: '📈',
+        title: trExercise(name, id),
+        sub: state.lang === 'ja'
+          ? `前回 ${latestBest.weight}kg×${latestBest.reps} — 今日は ${nextWeight}kg を試そう`
+          : `Last: ${latestBest.weight}kg×${latestBest.reps} — Try ${nextWeight}kg today`,
+        action: state.lang === 'ja' ? '▶ 重量アップの準備完了' : '▶ Ready to level up'
+      });
+    } else if (stagnant && exSessions.length >= 3) {
+      suggestions.push({
+        type: 'plateau',
+        exercise: name,
+        exerciseId: id,
+        icon: '⚠️',
+        title: trExercise(name, id),
+        sub: state.lang === 'ja'
+          ? `${latestBest.weight}kg×${latestBest.reps} が2セッション続いている。重量かレップ数を上げる時`
+          : `${latestBest.weight}kg×${latestBest.reps} for 2 sessions. Time to push weight or reps.`,
+        action: state.lang === 'ja' ? '⚡ プラトー打破のチャンス' : '⚡ Break the plateau'
+      });
+    } else if (improved) {
+      suggestions.push({
+        type: 'momentum',
+        exercise: name,
+        exerciseId: id,
+        icon: '🔥',
+        title: trExercise(name, id),
+        sub: state.lang === 'ja'
+          ? `前回から +${(Number(latestBest.weight) - Number(prevBest.weight)).toFixed(1)}kg — 勢いに乗っている`
+          : `+${(Number(latestBest.weight) - Number(prevBest.weight)).toFixed(1)}kg vs last session — momentum is real`,
+        action: state.lang === 'ja' ? '🔥 この調子を維持' : '🔥 Keep this momentum'
+      });
+    }
+  });
+
+  // Return top 3 most useful suggestions (prioritize progression, then plateau, then momentum)
+  const priority = { progression: 0, plateau: 1, momentum: 2 };
+  return suggestions
+    .sort((a, b) => priority[a.type] - priority[b.type])
+    .slice(0, 3);
+}
+
+function renderCoachingCard() {
+  // Attach coaching card to weekly review section or after consistency
+  const existing = document.getElementById('home-coaching');
+  const insertAfter = document.getElementById('home-consistency');
+  if (!insertAfter) return;
+
+  // Create or reuse element
+  let el = existing;
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'home-coaching';
+    insertAfter.insertAdjacentElement('afterend', el);
+  }
+
+  const suggestions = generateCoachingSuggestions();
+  if (suggestions.length === 0) { el.innerHTML = ''; return; }
+
+  el.innerHTML = `
+    <div class="coaching-card mt10">
+      <div class="coaching-header">${t('coachingTitle')}</div>
+      ${suggestions.map(s => `
+        <div class="coaching-item">
+          <div class="coaching-item-icon">${s.icon}</div>
+          <div class="coaching-item-text">
+            <div class="coaching-item-title">${esc(s.title)}</div>
+            <div class="coaching-item-sub">${s.sub}</div>
+            <div class="coaching-item-action">${s.action}</div>
+          </div>
+        </div>`).join('')}
+    </div>`;
+}
+
 function renderHomeTab() {
-  // Date
   const now = new Date();
   const days = state.lang === 'ja' ? ['日','月','火','水','木','金','土'] : ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
   const el = document.getElementById('home-date');
-  if (el) el.textContent = state.lang === 'ja' ? `${now.getMonth()+1}/${now.getDate()} (${days[now.getDay()]})` : `${days[now.getDay()]} ${now.getMonth()+1}/${now.getDate()}`;
+  if (el) el.textContent = state.lang === 'ja'
+    ? `${now.getMonth()+1}/${now.getDate()} (${days[now.getDay()]})`
+    : `${days[now.getDay()]} ${now.getMonth()+1}/${now.getDate()}`;
 
-  // Program card
-  const programWrap = document.getElementById('program-home-card');
-  if (programWrap) {
-    const ps = getProgramStateOrFresh();
-    const currentWorkout = getProgramWorkoutByRef(ps) || BARE_METAL_PROGRAM.workouts['1-1-1'];
-    const progressCount = getProgramCompletionCount(ps);
-    const progressText = `${progressCount}/${getProgramTotalWorkouts()}`;
-    const statusNote = ps.completedAt
-      ? (state.lang === 'ja' ? '全30セッション制覇。もう一周するならW1D1から再点火。' : 'All 30 sessions cleared. If you want another run, reforge from W1D1.')
-      : progressCount > 0
-        ? (state.lang === 'ja' ? '日付を空けても大丈夫。次に出るのは未完了の次セッションです。必要ならその日を飛ばせます。' : 'Miss a calendar day? No problem. The app always serves the next unfinished session, and you can advance past any day you want to skip.')
-        : (state.lang === 'ja' ? 'プログラムはフリーワークアウトとは別枠で進みます。' : 'Program mode runs in its own lane. Free workouts stay fully separate.');
-    programWrap.innerHTML = `
-      <div class="card" style="padding:16px;border:1px solid rgba(0,229,255,0.22);background:linear-gradient(135deg, rgba(124,58,237,0.14), rgba(0,229,255,0.08));">
-        <div style="display:flex;align-items:center;gap:12px;">
-          <div class="template-card-icon">${getMenuIconSvg('analytics')}</div>
-          <div style="flex:1;min-width:0;">
-            <div class="template-card-name">${t('programTitle')}</div>
-            <div class="template-card-meta">${ps.completedAt ? (state.lang === 'ja' ? 'プログラム完了' : 'Program Complete') : getProgramPositionText(ps)}</div>
-          </div>
+  const statsEl = document.getElementById('home-stats-row');
+  if (statsEl) {
+    const sessions = getSessions();
+    const thisWeekStart = new Date();
+    thisWeekStart.setDate(thisWeekStart.getDate() - thisWeekStart.getDay());
+    thisWeekStart.setHours(0,0,0,0);
+    const thisWeek = sessions.filter(s => new Date(s.startTime) >= thisWeekStart).length;
+    const totalPRs = sessions.reduce((sum, s) => sum + (s.prCount || 0), 0);
+    const { longest } = getForgeStreakFromSessions();
+
+    // 7-day dot bar
+    const dotRow = [...Array(7)].map((_, i) => {
+      const d = new Date();
+      d.setDate(d.getDate() - (6 - i));
+      const dateKey = d.toISOString().slice(0, 10);
+      const hit = sessions.some(s => new Date(s.startTime).toISOString().slice(0, 10) === dateKey);
+      const isToday = i === 6;
+      return `<div style="flex:1;height:5px;border-radius:3px;background:${hit ? 'var(--accent)' : isToday ? 'rgba(0,229,255,0.15)' : 'rgba(255,255,255,0.06)'};${hit ? 'box-shadow:0 0 5px rgba(0,229,255,0.4)' : ''}"></div>`;
+    }).join('');
+
+    statsEl.innerHTML = `
+      <div style="display:flex;gap:5px;margin-bottom:4px;">${dotRow}</div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--muted);text-align:right;margin-bottom:10px;">${state.lang === 'ja' ? `最長 ${longest}日連続` : `Longest streak: ${longest} day${longest !== 1 ? 's' : ''}`}</div>
+      <div class="home-stats-row">
+        <div class="home-stat-card">
+          <div class="home-stat-val">${thisWeek}</div>
+          <div class="home-stat-label">${state.lang === 'ja' ? '今週' : 'This Week'}</div>
         </div>
-        <div class="settings-help" style="margin-top:12px;">${t('programDescription')}</div>
-        <div class="settings-help" style="margin-top:8px;color:var(--text);">${currentWorkout.exercises.length} ${state.lang === 'ja' ? '種目' : 'exercises'} · ${currentWorkout.subtitle || t('programSubtitle')}</div>
-        <div class="settings-help" style="margin-top:8px;"><strong>${t('programProgress')}:</strong> ${progressText}</div>
-        <div class="program-status-note">${statusNote}</div>
-        <div class="settings-actions" style="margin-top:12px;">
-          <button class="btn-secondary" id="btn-start-program-home">${ps.completedAt ? (state.lang === 'ja' ? 'W1D1から再始動' : 'Restart From W1D1') : progressCount > 0 ? t('programContinue') : t('programStart')}</button>
-          <button class="btn-secondary" id="btn-view-program-guide">${t('programGuide')}</button>
-          <button class="btn-secondary" id="btn-skip-program-home">${state.lang === 'ja' ? '次の日へ進む' : 'Advance One Day'}</button>
-          <button class="btn-danger" id="btn-restart-program-home">${state.lang === 'ja' ? '進捗をリセット' : 'Reset Program'}</button>
+        <div class="home-stat-card">
+          <div class="home-stat-val">${sessions.length}</div>
+          <div class="home-stat-label">${state.lang === 'ja' ? '総回数' : 'Total'}</div>
+        </div>
+        <div class="home-stat-card">
+          <div class="home-stat-val">${totalPRs}</div>
+          <div class="home-stat-label">${state.lang === 'ja' ? 'PR数' : 'PRs'}</div>
         </div>
       </div>`;
-    document.getElementById('btn-start-program-home')?.addEventListener('click', async () => { await startProgramWorkout(ps.completedAt); });
-    document.getElementById('btn-view-program-guide')?.addEventListener('click', openProgramGuide);
-    document.getElementById('btn-skip-program-home')?.addEventListener('click', async () => { await skipProgramDay({ fromHome: true }); });
-    document.getElementById('btn-restart-program-home')?.addEventListener('click', async () => { await restartProgramProgress(); });
   }
 
-  // Templates
-  const templates = getTemplates();
-  const tList = document.getElementById('template-list');
-  if (tList) {
-    if (templates.length === 0) {
-      tList.innerHTML = `<p style="font-size:12px;color:var(--muted);padding:4px 0 8px;">${state.lang === 'ja' ? 'まだテンプレートがありません。下から作成してください。' : 'No templates yet. Create one below.'}</p>`;
-    } else {
-      tList.innerHTML = '';
-      templates.forEach(tmpl => {
-        const exMap = getAllExerciseMap();
-        const exNames = (tmpl.exerciseIds || []).map(id => trExercise(exMap.get(id)?.name || id, id));
-        const card = document.createElement('div');
-        card.className = 'template-card';
-        card.innerHTML = `
-          <div class="template-card-icon">${getMenuIconSvg('workout')}</div>
-          <div class="template-card-body">
-            <div class="template-card-name">${esc(tmpl.name)}</div>
-            <div class="template-card-meta">${exNames.length} ${state.lang === 'ja' ? '種目' : 'exercise' + (exNames.length!==1?'s':'')} · ${exNames.slice(0,3).map(esc).join(', ')}${exNames.length>3?'…':''}</div>
-          </div>
-          <div class="template-card-actions">
-            <button class="btn-icon" title="Edit" data-edit-tmpl="${tmpl.id}">✎</button>
-          </div>`;
-        card.addEventListener('click', async e => {
-          if (e.target.closest('[data-edit-tmpl]')) {
-            openTemplateEditor(tmpl.id);
-          } else {
-            await startWorkout(tmpl.id);
-          }
-        });
-        tList.appendChild(card);
-      });
-    }
-  }
-
-  // Recent
   const sessions = getSessions();
   const rList = document.getElementById('recent-list');
   if (rList) {
     if (sessions.length === 0) {
-      rList.innerHTML = `<p style="font-size:12px;color:var(--muted);padding:4px 0;">${state.lang === 'ja' ? 'まだワークアウトがありません。' : 'No workouts yet.'}</p>`;
+      rList.innerHTML = `<p style="font-size:12px;color:var(--muted);padding:4px 0;">${state.lang === 'ja' ? 'まだセッションがありません。炉に入ろう。' : 'No sessions yet. Enter the forge.'}</p>`;
     } else {
       rList.innerHTML = '';
-      sessions.slice(0, 3).forEach(sess => {
-        rList.appendChild(buildSessionCard(sess, true));
-      });
+      sessions.slice(0, 3).forEach(sess => rList.appendChild(buildSessionCard(sess)));
     }
   }
+
+  // Phase 2 + 3
+  renderForgeHQ();
+  renderMonthlyRecap();
+  renderWeeklyReview();
+  renderConsistencyTracker();
+  renderCoachingCard();
 }
 
 // ══════════════════════════════════════════
@@ -6273,6 +7934,7 @@ function renderWorkoutTab() {
     emptyEl.classList.remove('hidden');
     activeEl.classList.add('hidden');
     stopTimer();
+    renderWorkoutEmptyState();
     return;
   }
   emptyEl.classList.add('hidden');
@@ -6286,8 +7948,8 @@ function renderWorkoutTab() {
     if (active.programRef && active.programRef.programId === BARE_METAL_PROGRAM_ID) {
       programControls.classList.remove('hidden');
       programControls.innerHTML = `
-        <button class="btn-secondary" id="btn-program-skip-workout">${state.lang === 'ja' ? 'この日をスキップ' : 'Skip Program Day'}</button>
-        <button class="btn-danger" id="btn-program-restart-workout">${state.lang === 'ja' ? 'W1D1に戻す' : 'Restart From W1D1'}</button>`;
+        <button class="btn-secondary" id="btn-program-skip-workout">${state.lang === 'ja' ? '⏭ この日をスキップ' : '⏭ Skip This Day'}</button>
+        <button class="btn-danger" id="btn-program-restart-workout">${state.lang === 'ja' ? '💀 W1D1に戻す' : '💀 Reforge From W1D1'}</button>`;
       document.getElementById('btn-program-skip-workout')?.addEventListener('click', async () => { await skipProgramDay(); });
       document.getElementById('btn-program-restart-workout')?.addEventListener('click', async () => { await restartProgramProgress(); });
     } else {
@@ -6298,6 +7960,186 @@ function renderWorkoutTab() {
 
   renderExerciseList(active);
   startTimer(active.startTime);
+}
+
+function renderWorkoutEmptyState() {
+  renderActiveProgramBlock();
+  renderProgramLibrary();
+  renderTemplateList();
+  wireWorkoutSubtabs();
+}
+
+function wireWorkoutSubtabs() {
+  document.querySelectorAll('.workout-subtab').forEach(btn => {
+    btn.onclick = null;
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.workout-subtab').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const target = btn.dataset.subtab;
+      document.getElementById('workout-programs-panel').classList.toggle('hidden', target !== 'programs');
+      document.getElementById('workout-templates-panel').classList.toggle('hidden', target !== 'templates');
+    });
+  });
+}
+
+function renderActiveProgramBlock() {
+  const wrap = document.getElementById('active-program-block');
+  if (!wrap) return;
+  wrap.innerHTML = '';
+
+  const ps = getProgramStateOrFresh();
+  if (!ps || !ps.programId) {
+    // No active program — just show hint
+    const hint = document.createElement('p');
+    hint.style.cssText = 'font-size:12px;color:var(--muted);padding:0 0 8px;';
+    hint.textContent = t('noActiveProgramHint');
+    wrap.appendChild(hint);
+    return;
+  }
+
+  const progMeta = PROGRAM_LIBRARY.find(p => p.id === ps.programId);
+  const progressCount = getProgramCompletionCount(ps);
+  const total = getProgramTotalWorkouts();
+  const pct = Math.round((progressCount / total) * 100);
+
+  const card = document.createElement('div');
+  card.className = 'active-program-card';
+
+  const labelEl = document.createElement('div');
+  labelEl.style.cssText = 'font-family:IBM Plex Mono,monospace;font-size:10px;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;';
+  labelEl.textContent = t('activeProgramLabel');
+  card.appendChild(labelEl);
+
+  const header = document.createElement('div');
+  header.className = 'active-program-header';
+  header.innerHTML = `
+    <div class="program-lib-card-icon">${getMenuIconSvg('analytics')}</div>
+    <div style="flex:1;min-width:0;">
+      <div class="active-program-name">${progMeta ? (state.lang === 'ja' ? progMeta.nameJa : progMeta.name) : t('programTitle')}</div>
+      <div class="active-program-pos">${ps.completedAt ? (state.lang === 'ja' ? '✅ 完了' : '✅ Complete') : getProgramPositionText(ps)}</div>
+    </div>`;
+  card.appendChild(header);
+
+  // Progress bar
+  const progBar = document.createElement('div');
+  progBar.className = 'active-program-progress';
+  progBar.innerHTML = `<div class="active-program-progress-fill" style="width:${pct}%"></div>`;
+  card.appendChild(progBar);
+
+  const progText = document.createElement('div');
+  progText.className = 'active-program-progress-text';
+  progText.textContent = `${progressCount} / ${total} ${state.lang === 'ja' ? 'セッション完了' : 'sessions complete'} · ${pct}%`;
+  card.appendChild(progText);
+
+  // Actions
+  const actions = document.createElement('div');
+  actions.className = 'active-program-actions';
+
+  const startBtn = document.createElement('button');
+  startBtn.className = 'btn-primary active-program-start';
+  startBtn.innerHTML = `<div class="shimmer"></div>${ps.completedAt ? (state.lang === 'ja' ? '▶ W1D1から再点火' : '▶ Reforge From W1D1') : progressCount > 0 ? t('programContinue') : t('programStart')}`;
+  startBtn.addEventListener('click', async () => { await startProgramWorkout(ps.completedAt); });
+
+  const guideBtn = document.createElement('button');
+  guideBtn.className = 'btn-secondary';
+  guideBtn.textContent = t('programGuide');
+  guideBtn.addEventListener('click', openProgramGuide);
+
+  const skipBtn = document.createElement('button');
+  skipBtn.className = 'btn-secondary';
+  skipBtn.textContent = state.lang === 'ja' ? '⏭ 次の日へ' : '⏭ Skip Day';
+  skipBtn.addEventListener('click', async () => { await skipProgramDay({ fromHome: true }); });
+
+  const resetBtn = document.createElement('button');
+  resetBtn.className = 'btn-danger';
+  resetBtn.textContent = state.lang === 'ja' ? '💀 進捗を全消去' : '💀 Scrap Progress';
+  resetBtn.addEventListener('click', async () => { await restartProgramProgress(); });
+
+  actions.appendChild(startBtn);
+  actions.appendChild(guideBtn);
+  actions.appendChild(skipBtn);
+  actions.appendChild(resetBtn);
+  card.appendChild(actions);
+  wrap.appendChild(card);
+}
+
+function renderProgramLibrary() {
+  const wrap = document.getElementById('program-library');
+  if (!wrap) return;
+  wrap.innerHTML = '';
+
+  const ps = getProgramStateOrFresh();
+
+  const label = document.createElement('div');
+  label.className = 'program-lib-label';
+  label.textContent = t('programLibraryLabel');
+  wrap.appendChild(label);
+
+  PROGRAM_LIBRARY.forEach(prog => {
+    const isActive = ps.programId === prog.id;
+    const card = document.createElement('div');
+    card.className = 'program-lib-card' + (isActive ? ' active-prog' : '');
+    card.innerHTML = `
+      <div class="program-lib-card-icon">${getMenuIconSvg(prog.icon)}</div>
+      <div class="program-lib-info">
+        <div class="program-lib-name">${state.lang === 'ja' ? prog.nameJa : prog.name}</div>
+        <div class="program-lib-meta">${prog.weeks} ${state.lang === 'ja' ? '週' : 'wks'} · ${prog.sessionsPerWeek}x/${state.lang === 'ja' ? '週' : 'wk'} · ${state.lang === 'ja' ? prog.levelJa : prog.level}</div>
+      </div>
+      ${isActive ? `<span class="program-lib-badge">${state.lang === 'ja' ? '実行中' : 'Active'}</span>` : ''}`;
+
+    card.addEventListener('click', async () => {
+      if (isActive) return; // already active
+      const hasProgress = getProgramCompletionCount(ps) > 0;
+      if (hasProgress) {
+        if (!await showForgeConfirm({
+          title: t('switchProgram'),
+          message: t('switchProgramWarning'),
+          okText: state.lang === 'ja' ? '切り替える' : 'Switch',
+          okVariant: 'danger'
+        })) return;
+      }
+      // Activate new program
+      const newPs = { programId: prog.id, phase: 1, week: 1, day: 1, completedDays: {} };
+      saveProgramState(newPs);
+      renderWorkoutEmptyState();
+    });
+
+    wrap.appendChild(card);
+  });
+}
+
+function renderTemplateList() {
+  const tList = document.getElementById('template-list');
+  if (!tList) return;
+  const templates = getTemplates();
+  if (templates.length === 0) {
+    tList.innerHTML = `<p style="font-size:12px;color:var(--muted);padding:4px 0 8px;">${state.lang === 'ja' ? 'まだテンプレートがありません。下から作成してください。' : 'No templates yet. Create one below.'}</p>`;
+    return;
+  }
+  tList.innerHTML = '';
+  templates.forEach(tmpl => {
+    const exMap = getAllExerciseMap();
+    const exNames = (tmpl.exerciseIds || []).map(id => trExercise(exMap.get(id)?.name || id, id));
+    const card = document.createElement('div');
+    card.className = 'template-card';
+    card.innerHTML = `
+      <div class="template-card-icon">${getMenuIconSvg('workout')}</div>
+      <div class="template-card-body">
+        <div class="template-card-name">${esc(tmpl.name)}</div>
+        <div class="template-card-meta">${exNames.length} ${state.lang === 'ja' ? '種目' : 'exercise' + (exNames.length!==1?'s':'')} · ${exNames.slice(0,3).map(esc).join(', ')}${exNames.length>3?'…':''}</div>
+      </div>
+      <div class="template-card-actions">
+        <button class="btn-icon" title="Edit" data-edit-tmpl="${tmpl.id}">✎</button>
+      </div>`;
+    card.addEventListener('click', async e => {
+      if (e.target.closest('[data-edit-tmpl]')) {
+        openTemplateEditor(tmpl.id);
+      } else {
+        await startWorkout(tmpl.id);
+      }
+    });
+    tList.appendChild(card);
+  });
 }
 
 function renderExerciseList(active) {
@@ -7728,6 +9570,17 @@ function openHistoryDetailMenu(sessId) {
 //  RENDER: CALENDAR TAB
 // ══════════════════════════════════════════
 
+function openCalendarPage() {
+  const page = document.getElementById('calendar-page');
+  if (page) page.classList.add('open');
+  renderCalendarTab();
+}
+
+function closeCalendarPage() {
+  const page = document.getElementById('calendar-page');
+  if (page) page.classList.remove('open');
+}
+
 function renderCalendarTab() {
   const y = state.calYear, m = state.calMonth;
   const monthNames = state.lang === 'ja' ? ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'] : ['January','February','March','April','May','June',
@@ -7786,6 +9639,7 @@ function renderCalendarTab() {
       }
       if (hasWorkout) {
         state.historyFilterDate = dayKey;
+        closeCalendarPage();
         showTab('history');
       } else {
         if (await showForgeConfirm({ title: state.lang === 'ja' ? '空白の日付' : 'Empty Day Found', message: state.lang === 'ja' ? `${dayKey} にワークアウトはありません。今追加しますか？` : `No workout is logged for ${dayKey}. Forge one now?`, okText: state.lang === 'ja' ? '追加' : 'Add Workout' })) {
@@ -8063,27 +9917,42 @@ function renderSummaryModal(active, prs) {
     });
   });
 
+  const { current: streak } = getForgeStreakFromSessions();
+  const isStreakDay = streak > 0;
+
   const summaryTone = state.lang === 'ja'
     ? prs.length > 0
       ? `モンスターセッション。${prs.length}件のPRを更新してトレンドを前進させた。`
       : improvedExercises > 0
-        ? `好調。${improvedExercises}種目で前回のパフォーマンスを上回った。`
+        ? `着実な前進。${improvedExercises}種目で前回を上回った。`
         : totalSets > 0
-          ? `記録完了。また一つセッションを積み上げた。`
+          ? `ロックイン完了。また一つ積み上げた。`
           : `セッション保存。次回は完了セットを入力してより詳細な分析を解放しよう。`
     : prs.length > 0
-      ? `Monster session. You hit ${prs.length} PR${prs.length !== 1 ? 's' : ''} and pushed the trend forward.`
+      ? `Monster session. ${prs.length} PR${prs.length !== 1 ? 's' : ''} on the board. You are advancing.`
       : improvedExercises > 0
-        ? `Strong work. You matched or beat previous performance on ${improvedExercises} exercise${improvedExercises !== 1 ? 's' : ''}.`
+        ? `Solid progress. You beat previous performance on ${improvedExercises} lift${improvedExercises !== 1 ? 's' : ''}.`
         : totalSets > 0
-          ? `Logged and locked in. Another session in the bank.`
-          : `Session saved. Fill in some completed sets next time to unlock richer insights.`;
+          ? `Locked in. Another session forged.`
+          : `Session saved. Log completed sets next time to unlock deeper insights.`;
+
+  const headline = prs.length > 0
+    ? (state.lang === 'ja' ? '🏆 PRを更新した' : '🏆 Personal Records Hit')
+    : improvedExercises > 0
+      ? (state.lang === 'ja' ? '⚡ 前進あり' : '⚡ Progress Made')
+      : (state.lang === 'ja' ? '🔒 ロックイン' : '🔒 Locked In');
 
   let html = `
-    <div class="summary-hero">
-      <div class="summary-kicker">${state.lang === 'ja' ? 'セッション完了' : 'Session complete'}</div>
-      <div class="summary-headline">${prs.length > 0 ? (state.lang === 'ja' ? 'PRを更新' : 'PRs on the board') : improvedExercises > 0 ? (state.lang === 'ja' ? '今日の進歩あり' : 'Progress made today') : (state.lang === 'ja' ? 'ワークアウトを記録' : 'Workout logged')}</div>
-      <div class="summary-subline">${summaryTone}</div>
+    <div style="background:linear-gradient(135deg,rgba(124,58,237,0.22),rgba(0,229,255,0.12));border:1px solid rgba(0,229,255,0.25);border-radius:16px;padding:20px;margin-bottom:16px;position:relative;overflow:hidden;">
+      <div style="position:absolute;inset:auto -10% -30% auto;width:160px;height:160px;background:radial-gradient(circle,rgba(0,229,255,0.14),transparent 65%);pointer-events:none;"></div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent);margin-bottom:8px;">${state.lang === 'ja' ? 'セッション完了' : 'Session Forged'}</div>
+      <div style="font-size:26px;font-weight:700;color:var(--text);line-height:1.15;margin-bottom:8px;">${headline}</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.55;">${summaryTone}</div>
+      ${isStreakDay ? `
+      <div style="margin-top:14px;padding-top:12px;border-top:1px solid rgba(0,229,255,0.15);display:flex;align-items:center;gap:10px;">
+        <div style="font-size:28px;font-weight:800;font-family:'IBM Plex Mono',monospace;color:var(--accent);">${streak}</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.4;">${state.lang === 'ja' ? `日連続フォージ🔥<br>約束を守り続けている` : `day forge streak 🔥<br>You keep your promises`}</div>
+      </div>` : ''}
     </div>
 
     <div class="summary-stat-row">
@@ -8107,7 +9976,7 @@ function renderSummaryModal(active, prs) {
         <div class="summary-highlight-value">${bestLift ? `${esc(trExercise(bestLift.name))} ${bestLift.weight}×${bestLift.reps}` : (state.lang === 'ja' ? '完了リフトなし' : 'No completed lifts')}</div>
       </div>
       <div class="summary-highlight">
-        <div class="summary-highlight-label">${state.lang === 'ja' ? '改善した種目' : 'Improved exercises'}</div>
+        <div class="summary-highlight-label">${state.lang === 'ja' ? '改善した種目' : 'Lifts improved'}</div>
         <div class="summary-highlight-value accent">${improvedExercises}/${completedExercises || active.exercises.length || 0}</div>
       </div>
     </div>`;
@@ -8141,8 +10010,8 @@ function renderSummaryModal(active, prs) {
 
   html += `
     <div class="divider"></div>
-    <button class="btn-primary" id="btn-save-workout"><div class="shimmer"></div>${state.lang === 'ja' ? 'ワークアウト保存' : 'Save Workout'}</button>
-    <button class="btn-danger mt8" id="btn-discard-after-summary">${state.lang === 'ja' ? '破棄' : 'Discard'}</button>`;
+    <button class="btn-primary" id="btn-save-workout"><div class="shimmer"></div>${state.lang === 'ja' ? 'セッションをロックイン' : 'Lock It In'}</button>
+    <button class="btn-danger mt8" id="btn-discard-after-summary">${state.lang === 'ja' ? 'セッションを破棄' : 'Abandon Session'}</button>`;
 
   body.innerHTML = html;
 
@@ -8298,6 +10167,7 @@ async function saveTemplate() {
   saveTemplates(templates);
   closeModal('modal-template');
   renderHomeTab();
+  renderTemplateList();
 }
 
 async function deleteTemplate(id) {
@@ -8306,6 +10176,7 @@ async function deleteTemplate(id) {
   saveTemplates(templates);
   closeModal('modal-template');
   renderHomeTab();
+  renderTemplateList();
 }
 
 // ══════════════════════════════════════════
@@ -8341,6 +10212,8 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('lang-ja')?.addEventListener('click', () => setLang('ja'));
   document.getElementById('btn-gdrive-connect')?.addEventListener('click', () => connectGoogleDrive());
   document.getElementById('btn-history-detail-back')?.addEventListener('click', closeHistoryDetail);
+  document.getElementById('btn-open-calendar')?.addEventListener('click', openCalendarPage);
+  document.getElementById('btn-calendar-close')?.addEventListener('click', closeCalendarPage);
   document.getElementById('btn-measure-detail-back')?.addEventListener('click', () => {
     const page = document.getElementById('measure-detail-page');
     if (page) page.classList.remove('open');
@@ -8396,7 +10269,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Start workout buttons
   document.getElementById('btn-start-blank').addEventListener('click', async () => { await startWorkout(); });
-  document.getElementById('btn-start-blank-2')?.addEventListener('click', async () => { await startWorkout(); });
 
   // New template
   document.getElementById('btn-new-template').addEventListener('click', () => openTemplateEditor(null));
@@ -8502,6 +10374,7 @@ ${catOptions}`, placeholder: state.lang === 'ja' ? 'カテゴリー' : 'Category
 
   // Initial render
   renderHomeTab();
+  renderWorkoutEmptyState();
   renderSettingsTab();
   applyTranslations();
   if (!isGoogleDriveConfigured()) setDriveStatus(t('driveConfigMissing'), 'error');
