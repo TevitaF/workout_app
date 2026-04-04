@@ -1,22 +1,37 @@
 {
   "name": "Bare Metal",
   "short_name": "Bare Metal",
+  "description": "Forge your path. Track your transformation.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "orientation": "portrait",
   "background_color": "#0a0a0f",
   "theme_color": "#00e5ff",
-  "description": "Bare Metal workout tracker",
+  "lang": "en",
+  "categories": ["fitness", "health", "sports"],
   "icons": [
     {
       "src": "./baremetal-192.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     },
     {
       "src": "./baremetal-512.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Enter the Forge",
+      "short_name": "Forge",
+      "description": "Start a new workout",
+      "url": "./?action=forge",
+      "icons": [{ "src": "./baremetal-192.png", "sizes": "192x192" }]
     }
   ]
 }

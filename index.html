@@ -2,13 +2,33 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Bare Metal</title>
+<meta name="description" content="Forge your path. Track your transformation.">
+
+<!-- PWA -->
+<link rel="manifest" href="./manifest.webmanifest">
 <meta name="theme-color" content="#00e5ff">
+
+<!-- iOS PWA -->
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Bare Metal">
-<link rel="manifest" href="./manifest.webmanifest">
+<link rel="apple-touch-icon" href="./baremetal-192.png">
+
+<!-- Android -->
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="application-name" content="Bare Metal">
+
+<!-- Prevent phone number detection -->
+<meta name="format-detection" content="telephone=no">
+
+<!-- Open Graph (for sharing) -->
+<meta property="og:title" content="Bare Metal">
+<meta property="og:description" content="Forge your path. Track your transformation.">
+<meta property="og:image" content="./baremetal-512.png">
+<meta property="og:url" content="https://app.baremetal.fit">
+<meta property="og:type" content="website">
 <style>
   @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans+JP:wght@300;400;600&display=swap');
 
@@ -1303,7 +1323,96 @@
     text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 4px;
   }
 
-  /* ── Macro Calculator ── */
+  /* ── Program Detail Page ── */
+  .program-detail-hero {
+    background: linear-gradient(135deg, rgba(124,58,237,0.2), rgba(0,229,255,0.08));
+    border: 1px solid rgba(0,229,255,0.2);
+    border-radius: 16px; padding: 20px; margin-bottom: 16px;
+    position: relative; overflow: hidden;
+  }
+  .program-detail-hero::after {
+    content: ''; position: absolute; inset: auto -10% -30% auto;
+    width: 160px; height: 160px;
+    background: radial-gradient(circle, rgba(0,229,255,0.1), transparent 65%);
+    pointer-events: none;
+  }
+  .program-detail-tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px; font-weight: 700;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 8px;
+  }
+  .program-detail-name {
+    font-size: 22px; font-weight: 800;
+    color: var(--text); line-height: 1.15; margin-bottom: 10px;
+  }
+  .program-detail-meta {
+    display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 14px;
+  }
+  .program-detail-meta-item {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px; color: var(--muted);
+    display: flex; align-items: center; gap: 4px;
+  }
+  .program-detail-meta-item strong { color: var(--text); }
+  .program-detail-desc {
+    font-size: 13px; color: var(--muted); line-height: 1.6;
+  }
+  .program-detail-warning {
+    background: rgba(239,68,68,0.08);
+    border: 1px solid rgba(239,68,68,0.2);
+    border-radius: 10px; padding: 12px 14px;
+    font-size: 12px; color: var(--error);
+    line-height: 1.5; margin-bottom: 16px;
+    display: flex; gap: 10px; align-items: flex-start;
+  }
+  .program-detail-phase {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px; padding: 14px 16px; margin-bottom: 8px;
+  }
+  .program-detail-phase-header {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 8px;
+  }
+  .program-detail-phase-badge {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--accent); border: 1px solid rgba(0,229,255,0.3);
+    border-radius: 4px; padding: 3px 8px; flex-shrink: 0;
+  }
+  .program-detail-phase-name {
+    font-size: 15px; font-weight: 700; color: var(--text);
+  }
+  .program-detail-phase-weeks {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; color: var(--muted); margin-left: auto;
+  }
+  .program-detail-phase-obj {
+    font-size: 12px; color: var(--muted); line-height: 1.55; margin-bottom: 8px;
+  }
+  .program-detail-phase-stats {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+  .program-detail-phase-stat {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 8px; padding: 8px 10px;
+  }
+  .program-detail-phase-stat-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 8px; text-transform: uppercase;
+    letter-spacing: 0.1em; color: var(--muted); margin-bottom: 3px;
+  }
+  .program-detail-phase-stat-val {
+    font-size: 11px; color: var(--text); line-height: 1.35;
+  }
+  .program-detail-activate {
+    position: sticky; bottom: 0;
+    background: linear-gradient(to top, #0e0e17 60%, transparent);
+    padding: 16px 0 8px; margin-top: 8px;
+  }
   .macro-calc-card {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -2098,6 +2207,12 @@
     transition: border-color 0.15s, background 0.15s;
     -webkit-tap-highlight-color: transparent;
   }
+  input.set-input::placeholder {
+    color: rgba(255,255,255,0.22);
+    font-size: 15px;
+  }
+  input.set-input::-webkit-input-placeholder { color: rgba(255,255,255,0.22); }
+  input.set-input::-moz-placeholder { color: rgba(255,255,255,0.22); }
   input.set-input::-webkit-inner-spin-button,
   input.set-input::-webkit-outer-spin-button { display: none; }
   input.set-input:focus { outline: none; border-color: var(--accent); background: rgba(0,229,255,0.04); }
@@ -3617,6 +3732,12 @@
           <button class="btn-secondary" id="btn-export-json" type="button">
             <span data-i18n="exportJson">Export JSON</span>
           </button>
+          <button class="btn-secondary" id="btn-export-csv" type="button">
+            📊 <span data-i18n="exportCsv">Export CSV</span>
+          </button>
+          <button class="btn-secondary" id="btn-import-csv" type="button">
+            📥 <span data-i18n="importCsv">Import CSV</span>
+          </button>
         </div>
         <div class="settings-status" id="gdrive-status" data-i18n="driveStatusIdle">Drive vault is idle.</div>
       </div>
@@ -3763,11 +3884,33 @@
   <div class="modal-sheet">
     <div class="modal-handle"></div>
     <div class="modal-header">
-      <span class="modal-title">Bare Metal Aesthetic Program Guide</span>
+      <span class="modal-title" id="program-guide-title">Program Guide</span>
       <button class="btn-icon" onclick="closeModal('modal-program-guide')">✕</button>
     </div>
     <div class="modal-body" id="program-guide-body"></div>
   </div>
+</div>
+
+<!-- ══ CSV IMPORT MODAL ══ -->
+<div id="modal-csv-import" class="modal-overlay">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <span class="modal-title" data-i18n="importCsvTitle">Import Workout Data</span>
+      <button class="btn-icon" onclick="closeModal('modal-csv-import')">✕</button>
+    </div>
+    <div class="modal-body" id="csv-import-body"></div>
+  </div>
+</div>
+
+<!-- ══ PROGRAM DETAIL PAGE ══ -->
+<div id="program-detail-page" class="history-detail-page">
+  <div class="history-detail-topbar">
+    <button class="btn-back" id="btn-program-detail-back">‹</button>
+    <div class="history-detail-topbar-title" id="program-detail-title">Program</div>
+    <div style="width:40px"></div>
+  </div>
+  <div class="history-detail-body" id="program-detail-body"></div>
 </div>
 
 
@@ -4131,6 +4274,17 @@ const UI_TEXT = {
     driveBackupNow: 'Forge Backup Now',
     driveRestoreLatest: 'Pull Latest Backup',
     exportJson: 'Export JSON',
+    exportCsv: 'Export CSV',
+    importCsv: 'Import CSV',
+    importCsvTitle: 'Import Workout Data',
+    importCsvDetected: 'Format detected',
+    importCsvPreview: 'Preview',
+    importCsvSessions: 'sessions found',
+    importCsvMerge: 'Merge with existing data',
+    importCsvReplace: 'Replace all data',
+    importCsvConfirm: 'Import',
+    importCsvSuccess: 'Import complete',
+    importCsvError: 'Import failed',
     driveConnected: 'Vault linked',
     driveNotConnected: 'Vault offline',
     driveStatusIdle: 'Drive vault is idle.',
@@ -4272,6 +4426,17 @@ const UI_TEXT = {
     driveBackupNow: '今すぐ鍛造バックアップ',
     driveRestoreLatest: '最新バックアップを回収',
     exportJson: 'JSON を書き出し',
+    exportCsv: 'CSV を書き出し',
+    importCsv: 'CSV をインポート',
+    importCsvTitle: 'ワークアウトデータのインポート',
+    importCsvDetected: 'フォーマット検出',
+    importCsvPreview: 'プレビュー',
+    importCsvSessions: 'セッション検出',
+    importCsvMerge: '既存データと統合',
+    importCsvReplace: '全データを置き換え',
+    importCsvConfirm: 'インポート',
+    importCsvSuccess: 'インポート完了',
+    importCsvError: 'インポート失敗',
     driveConnected: '保管庫リンク済み',
     driveNotConnected: '保管庫オフライン',
     driveStatusIdle: 'Drive 保管庫は待機中です。',
@@ -5701,11 +5866,374 @@ function exportBackupJson() {
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = `workout-tracker-backup-${new Date().toISOString().slice(0,19).replace(/[:T]/g,'-')}.json`;
+  a.download = `baremetal-backup-${new Date().toISOString().slice(0,19).replace(/[:T]/g,'-')}.json`;
   document.body.appendChild(a);
   a.click();
   a.remove();
   URL.revokeObjectURL(url);
+}
+
+// ══════════════════════════════════════════
+//  CSV EXPORT
+// ══════════════════════════════════════════
+
+function exportCSV() {
+  const sessions = getSessions();
+  if (!sessions.length) {
+    showForgeAlert({ title: state.lang === 'ja' ? 'データなし' : 'No Data', message: state.lang === 'ja' ? 'エクスポートするセッションがありません。' : 'No sessions to export yet.', okText: 'OK' });
+    return;
+  }
+
+  const rows = [
+    ['Date', 'Workout Name', 'Exercise Name', 'Set Order', 'Weight (kg)', 'Reps', 'Set Type', '1RM', 'Notes']
+  ];
+
+  sessions.forEach(sess => {
+    const date = new Date(sess.startTime).toISOString().slice(0, 10);
+    const workoutName = sess.name || 'Workout';
+    (sess.exercises || []).forEach(ex => {
+      const exName = ex.name || '';
+      const note = ex.note || '';
+      let setOrder = 0;
+      (ex.sets || []).forEach(s => {
+        if (!s.done) return;
+        setOrder++;
+        const setType = s.warmup ? 'warmup' : 'normal';
+        const oneRM = (s.weight > 0 && s.reps > 0)
+          ? Math.round(Number(s.weight) * (1 + Number(s.reps) / 30))
+          : '';
+        rows.push([
+          date,
+          workoutName,
+          exName,
+          setOrder,
+          s.weight || 0,
+          s.reps || 0,
+          setType,
+          oneRM,
+          setOrder === 1 ? note : ''
+        ]);
+      });
+    });
+  });
+
+  const csv = rows.map(r => r.map(v => `"${String(v).replace(/"/g, '""')}"`).join(',')).join('\n');
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `baremetal-export-${new Date().toISOString().slice(0,10)}.csv`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+}
+
+// ══════════════════════════════════════════
+//  CSV IMPORT
+// ══════════════════════════════════════════
+
+function detectCSVFormat(headers) {
+  const h = headers.map(s => s.toLowerCase().trim());
+  // Strong format
+  if (h.includes('workout name') && h.includes('exercise name') && h.includes('set order')) return 'strong';
+  // Hevy format
+  if (h.includes('exercise_title') || h.includes('start_time') || h.includes('exercise title')) return 'hevy';
+  // Bare Metal format
+  if (h.includes('workout name') && h.includes('set type') && h.includes('1rm')) return 'baremetal';
+  // Generic
+  if (h.some(x => x.includes('exercise')) && h.some(x => x.includes('weight'))) return 'generic';
+  return 'unknown';
+}
+
+function parseCSV(text) {
+  const lines = text.split(/\r?\n/).filter(l => l.trim());
+  const rows = lines.map(line => {
+    const result = [];
+    let inQuote = false, cur = '';
+    for (let i = 0; i < line.length; i++) {
+      const ch = line[i];
+      if (ch === '"') {
+        if (inQuote && line[i+1] === '"') { cur += '"'; i++; }
+        else inQuote = !inQuote;
+      } else if (ch === ',' && !inQuote) {
+        result.push(cur.trim()); cur = '';
+      } else {
+        cur += ch;
+      }
+    }
+    result.push(cur.trim());
+    return result;
+  });
+  return rows;
+}
+
+function normalizeImportedSessions(rows, format) {
+  if (!rows.length) return [];
+  const headers = rows[0].map(h => h.toLowerCase().trim().replace(/[^a-z0-9_]/g, '_'));
+  const data = rows.slice(1);
+  const sessions = {};
+
+  const col = (row, ...names) => {
+    for (const name of names) {
+      const idx = headers.findIndex(h => h.includes(name.toLowerCase().replace(/[^a-z0-9]/g, '_')));
+      if (idx >= 0 && row[idx] !== undefined) return row[idx]?.trim() || '';
+    }
+    return '';
+  };
+
+  data.forEach((row, rowIdx) => {
+    if (row.length < 3) return;
+
+    let date, workoutName, exerciseName, setOrder, weight, reps, setType, note;
+
+    if (format === 'strong' || format === 'baremetal') {
+      date = col(row, 'date');
+      workoutName = col(row, 'workout name', 'workout_name');
+      exerciseName = col(row, 'exercise name', 'exercise_name');
+      setOrder = parseInt(col(row, 'set order', 'set_order')) || 1;
+      weight = parseFloat(col(row, 'weight')) || 0;
+      reps = parseInt(col(row, 'reps')) || 0;
+      setType = col(row, 'set type', 'set_type').toLowerCase();
+      note = col(row, 'notes', 'note');
+    } else if (format === 'hevy') {
+      date = col(row, 'start_time', 'date').slice(0, 10);
+      workoutName = col(row, 'title', 'workout_name', 'workout name');
+      exerciseName = col(row, 'exercise_title', 'exercise name', 'exercise_name');
+      setOrder = parseInt(col(row, 'set_index', 'set order', 'set_order')) + 1 || 1;
+      weight = parseFloat(col(row, 'weight_kg', 'weight')) || 0;
+      reps = parseInt(col(row, 'reps')) || 0;
+      setType = col(row, 'set_type', 'set type').toLowerCase();
+      note = col(row, 'notes', 'note', 'description');
+    } else {
+      // Generic
+      date = col(row, 'date');
+      workoutName = col(row, 'workout', 'name', 'session');
+      exerciseName = col(row, 'exercise', 'lift', 'movement');
+      setOrder = parseInt(col(row, 'set', 'set_order', 'order')) || 1;
+      weight = parseFloat(col(row, 'weight', 'kg', 'load')) || 0;
+      reps = parseInt(col(row, 'reps', 'repetitions', 'count')) || 0;
+      setType = 'normal';
+      note = col(row, 'notes', 'note', 'comment');
+    }
+
+    if (!date || !exerciseName) return;
+
+    const sessionKey = `${date}__${workoutName || 'Workout'}`;
+    if (!sessions[sessionKey]) {
+      sessions[sessionKey] = {
+        id: generateId(),
+        name: workoutName || 'Imported Workout',
+        startTime: new Date(date).toISOString(),
+        endTime: new Date(date + 'T01:00:00').toISOString(),
+        exercises: [],
+        _imported: true
+      };
+    }
+
+    const sess = sessions[sessionKey];
+    let exEntry = sess.exercises.find(e => e.name === exerciseName);
+    if (!exEntry) {
+      exEntry = {
+        exerciseId: null,
+        name: exerciseName,
+        sets: [],
+        note: note || ''
+      };
+      sess.exercises.push(exEntry);
+    }
+
+    if (weight > 0 || reps > 0) {
+      exEntry.sets.push({
+        weight,
+        reps,
+        done: true,
+        warmup: setType === 'warmup' || setType === 'w'
+      });
+    }
+  });
+
+  return Object.values(sessions).filter(s => s.exercises.length > 0);
+}
+
+function openCSVImport() {
+  const body = document.getElementById('csv-import-body');
+  if (!body) return;
+  const l = state.lang;
+
+  body.innerHTML = `
+    <div style="padding:4px 0 16px;">
+      <p style="font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:16px;">
+        ${l === 'ja'
+          ? 'Strong・Hevy・Bare Metal形式のCSVファイルをインポートできます。フォーマットは自動検出されます。'
+          : 'Import from Strong, Hevy, Bare Metal, or any CSV with exercise data. Format is detected automatically.'}
+      </p>
+
+      <div id="csv-drop-zone" style="border:2px dashed rgba(0,229,255,0.3);border-radius:14px;padding:32px 20px;text-align:center;cursor:pointer;transition:all 0.15s;margin-bottom:16px;">
+        <div style="font-size:32px;margin-bottom:8px;">📊</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;color:var(--accent);margin-bottom:4px;">
+          ${l === 'ja' ? 'CSVファイルを選択' : 'Select CSV File'}
+        </div>
+        <div style="font-size:11px;color:var(--muted);">
+          ${l === 'ja' ? 'タップしてファイルを選択' : 'Tap to choose file'}
+        </div>
+        <input type="file" id="csv-file-input" accept=".csv" style="position:absolute;inset:0;opacity:0;cursor:pointer;">
+      </div>
+
+      <div id="csv-preview" style="display:none;"></div>
+    </div>`;
+
+  // Wire file input
+  const dropZone = body.querySelector('#csv-drop-zone');
+  const fileInput = body.querySelector('#csv-file-input');
+  dropZone.style.position = 'relative';
+
+  fileInput.addEventListener('change', () => {
+    const file = fileInput.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = e => processCSVFile(e.target.result, file.name);
+    reader.readAsText(file);
+  });
+
+  openModal('modal-csv-import');
+}
+
+function processCSVFile(text, filename) {
+  const l = state.lang;
+  const preview = document.getElementById('csv-preview');
+  if (!preview) return;
+
+  const rows = parseCSV(text);
+  if (rows.length < 2) {
+    preview.style.display = 'block';
+    preview.innerHTML = `<div style="color:var(--error);font-size:13px;padding:12px 0;">
+      ${l === 'ja' ? 'ファイルにデータが見つかりませんでした。' : 'No data found in file.'}</div>`;
+    return;
+  }
+
+  const headers = rows[0];
+  const format = detectCSVFormat(headers);
+  const importedSessions = normalizeImportedSessions(rows, format);
+
+  const formatLabels = {
+    strong: 'Strong App', hevy: 'Hevy', baremetal: 'Bare Metal',
+    generic: l === 'ja' ? '汎用CSV' : 'Generic CSV',
+    unknown: l === 'ja' ? '不明' : 'Unknown'
+  };
+
+  preview.style.display = 'block';
+  preview.innerHTML = `
+    <div style="background:rgba(0,229,255,0.06);border:1px solid rgba(0,229,255,0.2);border-radius:12px;padding:14px;margin-bottom:14px;">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:0.12em;color:var(--accent);margin-bottom:6px;">${t('importCsvDetected')}</div>
+      <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:4px;">${formatLabels[format] || 'CSV'}</div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--muted);">
+        ${importedSessions.length} ${t('importCsvSessions')} · ${rows.length - 1} ${l === 'ja' ? '行' : 'rows'}
+      </div>
+    </div>
+
+    ${importedSessions.length === 0 ? `
+      <div style="color:var(--error);font-size:13px;padding:8px 0;">
+        ${l === 'ja' ? '認識できるセッションが見つかりませんでした。フォーマットを確認してください。' : 'No recognizable sessions found. Check the file format.'}
+      </div>` : `
+
+    <!-- Preview first 3 sessions -->
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">${t('importCsvPreview')}</div>
+    ${importedSessions.slice(0, 3).map(s => `
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:10px 12px;margin-bottom:6px;">
+        <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:2px;">${esc(s.name)}</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted);">
+          ${new Date(s.startTime).toLocaleDateString()} · ${s.exercises.length} ${l === 'ja' ? '種目' : 'exercises'}
+        </div>
+      </div>`).join('')}
+    ${importedSessions.length > 3 ? `<div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);text-align:center;padding:4px 0;">+${importedSessions.length - 3} ${l === 'ja' ? 'セッション' : 'more sessions'}</div>` : ''}
+
+    <!-- Import mode -->
+    <div style="margin:16px 0 12px;">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:0.12em;color:var(--muted);margin-bottom:8px;">${l === 'ja' ? 'インポート方法' : 'Import Mode'}</div>
+      <div style="display:flex;gap:8px;">
+        <button id="csv-mode-merge" class="btn-secondary" style="flex:1;font-size:11px;border-color:rgba(0,229,255,0.4);color:var(--accent);">
+          🔀 ${t('importCsvMerge')}
+        </button>
+        <button id="csv-mode-replace" class="btn-secondary" style="flex:1;font-size:11px;">
+          🗑 ${t('importCsvReplace')}
+        </button>
+      </div>
+    </div>
+
+    <button id="csv-do-import" class="btn-primary" style="margin-top:4px;">
+      <div class="shimmer"></div>
+      ${t('importCsvConfirm')} ${importedSessions.length} ${l === 'ja' ? 'セッション' : 'sessions'}
+    </button>`}`;
+
+  // Wire mode buttons
+  let importMode = 'merge';
+  const mergeBtn = preview.querySelector('#csv-mode-merge');
+  const replaceBtn = preview.querySelector('#csv-mode-replace');
+
+  mergeBtn?.addEventListener('click', () => {
+    importMode = 'merge';
+    mergeBtn.style.borderColor = 'rgba(0,229,255,0.4)';
+    mergeBtn.style.color = 'var(--accent)';
+    replaceBtn.style.borderColor = '';
+    replaceBtn.style.color = '';
+  });
+
+  replaceBtn?.addEventListener('click', async () => {
+    if (!await showForgeConfirm({
+      title: l === 'ja' ? 'データを置き換え' : 'Replace All Data?',
+      message: l === 'ja' ? '現在の全セッション履歴が削除されます。' : 'This will delete all your current session history.',
+      okText: l === 'ja' ? '置き換える' : 'Replace',
+      okVariant: 'danger'
+    })) return;
+    importMode = 'replace';
+    replaceBtn.style.borderColor = 'rgba(239,68,68,0.4)';
+    replaceBtn.style.color = 'var(--error)';
+    mergeBtn.style.borderColor = '';
+    mergeBtn.style.color = '';
+  });
+
+  preview.querySelector('#csv-do-import')?.addEventListener('click', async () => {
+    await doCSVImport(importedSessions, importMode);
+  });
+}
+
+async function doCSVImport(importedSessions, mode) {
+  const l = state.lang;
+  let existing = mode === 'replace' ? [] : getSessions();
+
+  // Merge: skip sessions with same date+name that already exist
+  const existingKeys = new Set(existing.map(s =>
+    `${new Date(s.startTime).toISOString().slice(0,10)}__${s.name}`
+  ));
+
+  const toAdd = importedSessions.filter(s => {
+    const key = `${new Date(s.startTime).toISOString().slice(0,10)}__${s.name}`;
+    return mode === 'replace' || !existingKeys.has(key);
+  });
+
+  // Enrich imported sessions
+  const enriched = toAdd.map(s => {
+    enrichSession(s, existing);
+    return s;
+  });
+
+  const merged = [...enriched, ...existing].sort((a, b) =>
+    new Date(b.startTime) - new Date(a.startTime)
+  );
+
+  recomputeAndSaveSessions(merged);
+  closeModal('modal-csv-import');
+  renderHistoryTab();
+  renderHomeTab();
+
+  await showForgeAlert({
+    title: l === 'ja' ? '✅ インポート完了' : '✅ Import Complete',
+    message: l === 'ja'
+      ? `${enriched.length}セッションをインポートしました。`
+      : `${enriched.length} session${enriched.length !== 1 ? 's' : ''} imported successfully.`,
+    okText: 'OK'
+  });
 }
 
 
@@ -6464,11 +6992,15 @@ function isProgramDayComplete() {
 }
 function openProgramGuide() {
   const body = document.getElementById('program-guide-body');
+  const titleEl = document.getElementById('program-guide-title');
   if (!body) return;
   const ja = state.lang === 'ja';
   const ps = getProgramState();
   const prog = getProgramById(ps?.programId);
   const guide = prog?.guide || MAPS_AESTHETIC_GUIDE;
+  const progName = prog ? (ja ? (prog.guide === FAT_LOSS_GUIDE ? 'Bare Metal 脂肪燃焼プログラム' : prog.name) : prog.name) : 'Bare Metal Aesthetic Program';
+
+  if (titleEl) titleEl.textContent = `${progName} — ${ja ? 'ガイド' : 'Guide'}`;
 
   body.innerHTML = `
     <div class="settings-help" style="margin-top:0;margin-bottom:14px;">${esc(ja ? guide.equipmentJa : guide.equipment)}</div>
@@ -6485,6 +7017,134 @@ function openProgramGuide() {
     `).join('')}
   `;
   openModal('modal-program-guide');
+}
+
+function openProgramDetail(progId) {
+  const prog = getProgramById(progId);
+  const meta = PROGRAM_LIBRARY.find(p => p.id === progId);
+  if (!prog || !meta) return;
+
+  const page = document.getElementById('program-detail-page');
+  const body = document.getElementById('program-detail-body');
+  const titleEl = document.getElementById('program-detail-title');
+  if (!page || !body) return;
+
+  const ja = state.lang === 'ja';
+  const ps = getProgramStateOrFresh();
+  const isActive = ps.programId === progId;
+  const hasOtherProgress = !isActive && getProgramCompletionCount(ps) > 0;
+  const guide = prog.guide;
+
+  titleEl.textContent = ja ? meta.nameJa : meta.name;
+  body.innerHTML = '';
+
+  // Hero card
+  const hero = document.createElement('div');
+  hero.className = 'program-detail-hero';
+  hero.innerHTML = `
+    <div class="program-detail-tag">${ja ? 'プログラム詳細' : 'Program Details'}</div>
+    <div class="program-detail-name">${ja ? meta.nameJa : meta.name}</div>
+    <div class="program-detail-meta">
+      <div class="program-detail-meta-item">📅 <strong>${meta.weeks}</strong> ${ja ? '週間' : 'weeks'}</div>
+      <div class="program-detail-meta-item">🏋️ <strong>${meta.sessionsPerWeek}x</strong> ${ja ? '/週' : '/week'}</div>
+      <div class="program-detail-meta-item">📊 <strong>${ja ? meta.levelJa : meta.level}</strong></div>
+      <div class="program-detail-meta-item">🎯 <strong>${meta.totalSessions}</strong> ${ja ? 'セッション' : 'sessions'}</div>
+    </div>
+    <div class="program-detail-desc">${ja ? meta.descriptionJa : meta.description}</div>`;
+  body.appendChild(hero);
+
+  // Warning if switching programs
+  if (hasOtherProgress) {
+    const warn = document.createElement('div');
+    warn.className = 'program-detail-warning';
+    warn.innerHTML = `<span>⚠️</span><span>${ja
+      ? '別のプログラムが進行中です。切り替えると現在の進捗が失われます。'
+      : 'You have another program in progress. Activating this will reset your current progress.'}</span>`;
+    body.appendChild(warn);
+  }
+
+  // Already active badge
+  if (isActive) {
+    const activeBadge = document.createElement('div');
+    activeBadge.style.cssText = 'background:rgba(0,229,255,0.08);border:1px solid rgba(0,229,255,0.3);border-radius:10px;padding:10px 14px;font-family:IBM Plex Mono,monospace;font-size:11px;color:var(--accent);margin-bottom:16px;text-align:center;font-weight:700;letter-spacing:0.1em;';
+    activeBadge.textContent = ja ? '✓ このプログラムは実行中です' : '✓ This program is currently active';
+    body.appendChild(activeBadge);
+  }
+
+  // Phase breakdown
+  const phaseLabel = document.createElement('div');
+  phaseLabel.className = 'measure-section-label';
+  phaseLabel.textContent = ja ? 'フェーズ概要' : 'Phase Breakdown';
+  body.appendChild(phaseLabel);
+
+  guide.phases.forEach(phase => {
+    const phaseEl = document.createElement('div');
+    phaseEl.className = 'program-detail-phase';
+    phaseEl.innerHTML = `
+      <div class="program-detail-phase-header">
+        <div class="program-detail-phase-badge">${phase.phase}</div>
+        <div class="program-detail-phase-name">${ja ? phase.titleJa : phase.title}</div>
+        <div class="program-detail-phase-weeks">${ja ? '週' : 'Wk'} ${phase.weeks[0]}–${phase.weeks[phase.weeks.length-1]}</div>
+      </div>
+      <div class="program-detail-phase-obj">${ja ? phase.objectiveJa : phase.objective}</div>
+      <div class="program-detail-phase-stats">
+        <div class="program-detail-phase-stat">
+          <div class="program-detail-phase-stat-label">${ja ? '期待できること' : 'Expect'}</div>
+          <div class="program-detail-phase-stat-val">${ja ? phase.expectJa : phase.expect}</div>
+        </div>
+        <div class="program-detail-phase-stat">
+          <div class="program-detail-phase-stat-label">${ja ? 'セット/回数' : 'Sets/Reps'}</div>
+          <div class="program-detail-phase-stat-val">${ja ? phase.setsReps.foundationalJa : phase.setsReps.foundational}</div>
+        </div>
+        <div class="program-detail-phase-stat">
+          <div class="program-detail-phase-stat-label">${ja ? '頻度' : 'Frequency'}</div>
+          <div class="program-detail-phase-stat-val">${ja ? phase.frequency.foundationalJa : phase.frequency.foundational}</div>
+        </div>
+        <div class="program-detail-phase-stat">
+          <div class="program-detail-phase-stat-label">${ja ? '休憩' : 'Rest'}</div>
+          <div class="program-detail-phase-stat-val">${ja ? phase.rest.foundationalJa : phase.rest.foundational}</div>
+        </div>
+      </div>`;
+    body.appendChild(phaseEl);
+  });
+
+  // Activate button (sticky at bottom)
+  const activateWrap = document.createElement('div');
+  activateWrap.className = 'program-detail-activate';
+
+  if (isActive) {
+    const startBtn = document.createElement('button');
+    startBtn.className = 'btn-primary';
+    startBtn.innerHTML = `<div class="shimmer"></div>${ja ? '▶ フォージに入る' : '▶ Enter the Forge'}`;
+    startBtn.addEventListener('click', async () => {
+      page.classList.remove('open');
+      await startProgramWorkout(false);
+    });
+    activateWrap.appendChild(startBtn);
+  } else {
+    const activateBtn = document.createElement('button');
+    activateBtn.className = 'btn-primary';
+    activateBtn.innerHTML = `<div class="shimmer"></div>${ja ? '🔥 このプログラムを開始' : '🔥 Activate This Program'}`;
+    activateBtn.addEventListener('click', async () => {
+      if (hasOtherProgress) {
+        if (!await showForgeConfirm({
+          title: ja ? 'プログラムを切り替える' : 'Switch Program?',
+          message: ja ? '現在の進捗がリセットされます。続けますか？' : 'Your current progress will be lost. Continue?',
+          okText: ja ? '切り替える' : 'Switch',
+          okVariant: 'danger'
+        })) return;
+      }
+      const newPs = { programId: progId, phase: 1, week: 1, day: 1, completedDays: {} };
+      saveProgramState(newPs);
+      page.classList.remove('open');
+      renderWorkoutEmptyState();
+      renderHomeTab();
+    });
+    activateWrap.appendChild(activateBtn);
+  }
+  body.appendChild(activateWrap);
+
+  page.classList.add('open');
 }
 
 // ══════════════════════════════════════════
@@ -6779,10 +7439,14 @@ function getLastCompletedExerciseByNameOrId(exerciseId, exerciseName, excludeSes
 function cloneLastSetsForWorkout(exerciseId, exerciseName) {
   const previous = getLastCompletedExerciseByNameOrId(exerciseId, exerciseName);
   if (!previous) return [];
+  // Return empty sets (weight/reps = 0) so inputs start blank
+  // Previous values shown as placeholders via getExerciseProgressData
   return previous.doneSets.map(set => ({
-    weight: set.weight || 0,
-    reps: set.reps || 0,
-    done: false
+    weight: 0,
+    reps: 0,
+    done: false,
+    _prevWeight: set.weight || 0,
+    _prevReps: set.reps || 0
   }));
 }
 
@@ -8826,20 +9490,8 @@ function renderProgramLibrary() {
       </div>
       ${isActive ? `<span class="program-lib-badge">${state.lang === 'ja' ? '実行中' : 'Active'}</span>` : prog.tag ? `<span class="program-lib-badge" style="color:#f59e0b;border-color:rgba(245,158,11,0.4);background:rgba(245,158,11,0.08)">${prog.tag}</span>` : ''}`;
 
-    card.addEventListener('click', async () => {
-      if (isActive) return;
-      const hasProgress = getProgramCompletionCount(ps) > 0;
-      if (hasProgress) {
-        if (!await showForgeConfirm({
-          title: t('switchProgram'),
-          message: t('switchProgramWarning'),
-          okText: state.lang === 'ja' ? '切り替える' : 'Switch',
-          okVariant: 'danger'
-        })) return;
-      }
-      const newPs = { programId: prog.id, phase: 1, week: 1, day: 1, completedDays: {} };
-      saveProgramState(newPs);
-      renderWorkoutEmptyState();
+    card.addEventListener('click', () => {
+      openProgramDetail(prog.id);
     });
 
     wrap.appendChild(card);
@@ -8972,7 +9624,8 @@ function buildExerciseCard(exerciseIdx, active) {
   // Column headers
   const colHeaders = document.createElement('div');
   colHeaders.className = 'set-col-headers';
-  colHeaders.innerHTML = `<span>#</span><span>KG</span><span>${state.lang === 'ja' ? '回数' : 'REPS'}</span><span style="color:rgba(0,229,255,0.4);font-size:8px">▣</span><span></span>`;
+  const isTimeEx = isTimeBasedExercise(ex.name);
+  colHeaders.innerHTML = `<span>#</span><span>${isTimeEx ? '—' : 'KG'}</span><span>${isTimeEx ? 'SEC' : (state.lang === 'ja' ? '回数' : 'REPS')}</span><span style="color:rgba(0,229,255,0.4);font-size:8px">▣</span><span></span>`;
   body.appendChild(colHeaders);
 
   // Set rows
@@ -9743,6 +10396,10 @@ function renderExerciseCard(exerciseIdx, active) {
   }
 }
 
+function isTimeBasedExercise(name) {
+  return /\bplank\b/i.test(name || '');
+}
+
 function buildSetRow(set, setIdx, exerciseIdx, previousSet = null, totalSets = 0) {
   const frag = document.createDocumentFragment();
   const row = document.createElement('div');
@@ -9751,6 +10408,11 @@ function buildSetRow(set, setIdx, exerciseIdx, previousSet = null, totalSets = 0
   row.className = 'set-row' + (isWarmup ? ' warmup' : '') + (set.done ? ' done' : '') + (compareState ? ` ${compareState}` : '');
   row.dataset.ex = exerciseIdx;
   row.dataset.set = setIdx;
+
+  // Detect time-based exercise
+  const active = getActive();
+  const exName = active?.exercises[exerciseIdx]?.name || '';
+  const isTimeBased = isTimeBasedExercise(exName);
 
   // Long-press to delete
   let pressTimer = null;
@@ -9784,8 +10446,9 @@ function buildSetRow(set, setIdx, exerciseIdx, previousSet = null, totalSets = 0
   wInput.inputMode = 'decimal';
   wInput.step = 'any';
   wInput.className = 'set-input';
-  wInput.value = set.weight || '';
-  wInput.placeholder = 'kg';
+  wInput.value = set.weight > 0 ? set.weight : '';
+  const prevW = set._prevWeight || previousSet?.weight || 0;
+  wInput.placeholder = prevW > 0 ? String(prevW) : 'kg';
   wInput.addEventListener('blur', () => updateSetField(exerciseIdx, setIdx, 'weight', wInput.value));
 
   const rInput = document.createElement('input');
@@ -9793,9 +10456,15 @@ function buildSetRow(set, setIdx, exerciseIdx, previousSet = null, totalSets = 0
   rInput.inputMode = 'numeric';
   rInput.step = '1';
   rInput.className = 'set-input';
-  rInput.value = set.reps || '';
-  rInput.placeholder = state.lang === 'ja' ? '回数' : 'reps';
+  rInput.value = set.reps > 0 ? set.reps : '';
+  const prevR = set._prevReps || previousSet?.reps || 0;
+  rInput.placeholder = prevR > 0 ? String(prevR) : (state.lang === 'ja' ? '回数' : 'reps');
   rInput.addEventListener('blur', () => updateSetField(exerciseIdx, setIdx, 'reps', rInput.value));
+
+  if (isTimeBased) {
+    wInput.style.display = 'none';
+    rInput.placeholder = prevR > 0 ? `${prevR}s` : 'sec';
+  }
 
   const checkBtn = document.createElement('button');
   checkBtn.className = 'btn-check';
@@ -10956,6 +11625,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const page = document.getElementById('measure-detail-page');
     if (page) page.classList.remove('open');
   });
+  document.getElementById('btn-program-detail-back')?.addEventListener('click', () => {
+    const page = document.getElementById('program-detail-page');
+    if (page) page.classList.remove('open');
+  });
   document.getElementById('btn-history-detail-share')?.addEventListener('click', () => {
     const page = document.getElementById('history-detail-page');
     if (page?.dataset.sessId) shareWorkoutSession(page.dataset.sessId);
@@ -10974,6 +11647,8 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   document.getElementById('btn-gdrive-signout')?.addEventListener('click', disconnectGoogleDrive);
   document.getElementById('btn-export-json')?.addEventListener('click', exportBackupJson);
+  document.getElementById('btn-export-csv')?.addEventListener('click', exportCSV);
+  document.getElementById('btn-import-csv')?.addEventListener('click', openCSVImport);
   document.querySelectorAll('[data-rest-digit]').forEach(btn => {
     btn.addEventListener('click', () => appendRestKeypadDigit(btn.dataset.restDigit));
   });
@@ -11110,6 +11785,16 @@ ${catOptions}`, placeholder: state.lang === 'ja' ? 'カテゴリー' : 'Category
   if (!isGoogleDriveConfigured()) setDriveStatus(t('driveConfigMissing'), 'error');
 });
 
+</script>
+<!-- PWA Service Worker -->
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./service-worker.js')
+        .then(reg => console.log('SW registered:', reg.scope))
+        .catch(err => console.warn('SW registration failed:', err));
+    });
+  }
 </script>
 </body>
 </html>
