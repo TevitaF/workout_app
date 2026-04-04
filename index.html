@@ -5412,11 +5412,17 @@ async function maybeSilentReconnect() {
   state.gdriveSilentReconnectPending = true;
   setDriveStatus(t('driveStatusReconnecting'), 'info');
   try {
+    // Set a timeout — if silent reconnect doesn't complete in 5 seconds, give up gracefully
+    const timeout = setTimeout(() => {
+      if (state.gdriveSilentReconnectPending) {
+        state.gdriveSilentReconnectPending = false;
+        setDriveStatus(t('driveNotConnectedArmed'), 'info');
+      }
+    }, 5000);
     state.gdriveTokenClient.requestAccessToken({ prompt: '' });
   } catch (err) {
     state.gdriveSilentReconnectPending = false;
-    console.warn('silent reconnect failed', err);
-    setDriveStatus(t('driveStatusIdle'), 'info');
+    setDriveStatus(t('driveNotConnectedArmed'), 'info');
   }
 }
 
