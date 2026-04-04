@@ -3417,16 +3417,7 @@
 
 </style>
 
-<script>
-  // Worker-based OAuth — Google scripts no longer needed for auth
-  // Keep minimal gapi stub for compatibility
-  window.gapiLoaded = function() { if(typeof gapiLoaded === 'function') gapiLoaded(); };
-  window.gisLoaded  = function() { if(typeof gisLoaded  === 'function') gisLoaded();  };
-  // Auto-init on load
-  document.addEventListener('DOMContentLoaded', () => {
-    setTimeout(() => { gapiLoaded(); gisLoaded(); }, 100);
-  });
-</script>
+<!-- Worker-based OAuth active -->
 </head>
 <body>
 
@@ -4079,7 +4070,6 @@ const DRIVE_BACKUP_FILE = 'baremetal-backup.json';
 const GDRIVE_USER_KEY = 'wt_gdrive_user_id';
 const GOOGLE_DISCOVERY_DOC = 'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest';
 const GOOGLE_DRIVE_SCOPES = 'https://www.googleapis.com/auth/drive.file';
-const DRIVE_BACKUP_FILE = 'workout-tracker-backup.json';
 const BACKUP_STORAGE_KEYS = [
   'wt_exercises',
   'wt_templates',
@@ -10996,16 +10986,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   window.gapiLoaded = gapiLoaded;
   window.gisLoaded = gisLoaded;
-  const gapiScript = document.querySelector('script[src="https://apis.google.com/js/api.js"]');
-  const gisScript = document.querySelector('script[src="https://accounts.google.com/gsi/client"]');
-  if (gapiScript) {
-    if (window.gapi) gapiLoaded();
-    else gapiScript.addEventListener('load', gapiLoaded, { once: true });
-  }
-  if (gisScript && isGoogleDriveConfigured()) {
-    if (window.google?.accounts?.oauth2) gisLoaded();
-    else gisScript.addEventListener('load', gisLoaded, { once: true });
-  }
+  // Worker-based OAuth — call directly, no external scripts needed
+  setTimeout(() => { gapiLoaded(); gisLoaded(); }, 100);
 
   decorateBareMetalIcons();
   setTimeout(() => { maybeSmartAutoBackup('daily'); }, 2500);
