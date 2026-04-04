@@ -3417,8 +3417,16 @@
 
 </style>
 
-<script async defer src="https://accounts.google.com/gsi/client"></script>
-<script async defer src="https://apis.google.com/js/api.js"></script>
+<script>
+  // Worker-based OAuth — Google scripts no longer needed for auth
+  // Keep minimal gapi stub for compatibility
+  window.gapiLoaded = function() { if(typeof gapiLoaded === 'function') gapiLoaded(); };
+  window.gisLoaded  = function() { if(typeof gisLoaded  === 'function') gisLoaded();  };
+  // Auto-init on load
+  document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => { gapiLoaded(); gisLoaded(); }, 100);
+  });
+</script>
 </head>
 <body>
 
@@ -4066,6 +4074,9 @@ const GOOGLE_CLIENT_ID = '910100038770-e5fm2ohupc4e5s5dalk0offsfk7jstlg.apps.goo
 const GOOGLE_API_KEY = 'AIzaSyBghYlbQiC303ScE4BnyfiREzDf6Zcci8w';
 const GOOGLE_CLIENT_ID_PLACEHOLDER = 'YOUR_GOOGLE_CLIENT_ID_HERE';
 const GOOGLE_API_KEY_PLACEHOLDER = 'YOUR_GOOGLE_API_KEY_HERE';
+const WORKER_BASE_URL = 'https://api.baremetal.fit';
+const DRIVE_BACKUP_FILE = 'baremetal-backup.json';
+const GDRIVE_USER_KEY = 'wt_gdrive_user_id';
 const GOOGLE_DISCOVERY_DOC = 'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest';
 const GOOGLE_DRIVE_SCOPES = 'https://www.googleapis.com/auth/drive.file';
 const DRIVE_BACKUP_FILE = 'workout-tracker-backup.json';
@@ -5407,22 +5418,30 @@ function decorateBareMetalIcons() {
 }
 
 async function maybeSilentReconnect() {
-  if (!state.gdriveReady || !state.gdriveTokenClient || state.gdriveAccessToken || state.gdriveReconnectAttempted || !wasDriveConnectedBefore() || !isDriveAutoRelinkEnabled()) return;
+  if (state.gdriveAccessToken || state.gdriveReconnectAttempted || !wasDriveConnectedBefore() || !isDriveAutoRelinkEnabled()) return;
+  const userId = localStorage.getItem(GDRIVE_USER_KEY);
+  if (!userId) return;
   state.gdriveReconnectAttempted = true;
-  state.gdriveSilentReconnectPending = true;
   setDriveStatus(t('driveStatusReconnecting'), 'info');
   try {
-    // Set a timeout — if silent reconnect doesn't complete in 5 seconds, give up gracefully
-    const timeout = setTimeout(() => {
-      if (state.gdriveSilentReconnectPending) {
-        state.gdriveSilentReconnectPending = false;
-        setDriveStatus(t('driveNotConnectedArmed'), 'info');
-      }
-    }, 5000);
-    state.gdriveTokenClient.requestAccessToken({ prompt: '' });
+    const resp = await fetch(`${WORKER_BASE_URL}/oauth/refresh`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId })
+    });
+    if (!resp.ok) throw new Error('refresh failed');
+    const data = await resp.json();
+    if (data.error || !data.access_token) throw new Error(data.error || 'no token');
+    state.gdriveAccessToken = data.access_token;
+    state.gdriveTokenExpiry = Date.now() + ((data.expires_in || 3600) * 1000);
+    await hydrateDriveUser();
+    setDriveStatus(t('driveStatusReady'), 'ok');
+    updateDriveUiState();
+    maybeSmartAutoBackup('daily');
   } catch (err) {
-    state.gdriveSilentReconnectPending = false;
+    state.gdriveAccessToken = '';
     setDriveStatus(t('driveNotConnectedArmed'), 'info');
+    updateDriveUiState();
   }
 }
 
@@ -5491,68 +5510,50 @@ function updateDriveUiState() {
 }
 
 function gapiLoaded() {
-  gapi.load('client', async () => {
-    try {
-      await gapi.client.init({
-        apiKey: hasGoogleApiKey() ? GOOGLE_API_KEY : undefined,
-        discoveryDocs: [GOOGLE_DISCOVERY_DOC]
-      });
-      state.gapiInited = true;
-      maybeDriveReady();
-    } catch (err) {
-      console.error('gapi init failed', err);
-      setDriveStatus(err?.message || 'Google API init failed.', 'error');
-    }
-  });
+  // Legacy gapi not needed with Worker flow — kept for compatibility
+  state.gapiInited = true;
+  maybeDriveReady();
 }
 
 function gisLoaded() {
-  if (!isGoogleDriveConfigured()) {
-    state.gisInited = false;
-    updateDriveUiState();
-    return;
-  }
-  try {
-    state.gdriveTokenClient = google.accounts.oauth2.initTokenClient({
-      client_id: GOOGLE_CLIENT_ID,
-      scope: GOOGLE_DRIVE_SCOPES,
-      callback: async (resp) => {
-        if (resp.error) {
-          const silentAttempt = !!state.gdriveSilentReconnectPending;
-          state.gdriveSilentReconnectPending = false;
-          if (silentAttempt) {
-            setDriveStatus(t('driveStatusIdle'), 'info');
-            updateDriveUiState();
-            return;
-          }
-          console.error(resp);
-          setDriveStatus(resp.error, 'error');
-          updateDriveUiState();
-          return;
-        }
-        state.gdriveAccessToken = resp.access_token || '';
-        state.gdriveSilentReconnectPending = false;
-        setDriveRemembered(true);
-        if (localStorage.getItem(GDRIVE_AUTO_RELINK_KEY) === null) setDriveAutoRelink(true);
-        gapi.client.setToken({ access_token: state.gdriveAccessToken });
-        await hydrateDriveUser();
-        maybeDriveReady();
-        setDriveStatus(t('driveStatusReady'), 'ok');
-        maybeSmartAutoBackup('daily');
-      }
-    });
-    state.gisInited = true;
-    maybeDriveReady();
-  } catch (err) {
-    console.error('gis init failed', err);
-    setDriveStatus(err?.message || 'Google Identity init failed.', 'error');
-  }
+  state.gisInited = true;
+  maybeDriveReady();
 }
 
 function maybeDriveReady() {
-  state.gdriveReady = state.gapiInited && state.gisInited;
+  state.gdriveReady = true;
   updateDriveUiState();
-  if (state.gdriveReady && isDriveAutoRelinkEnabled()) setTimeout(() => { maybeSilentReconnect(); }, 150);
+  // Check if returning from OAuth callback
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('oauth') === 'success') {
+    const accessToken = params.get('access_token');
+    const userId = params.get('user_id');
+    const expiresIn = parseInt(params.get('expires_in') || '3600');
+    if (accessToken && userId) {
+      state.gdriveAccessToken = accessToken;
+      state.gdriveTokenExpiry = Date.now() + (expiresIn * 1000);
+      localStorage.setItem(GDRIVE_USER_KEY, userId);
+      setDriveRemembered(true);
+      setDriveAutoRelink(true);
+      // Clean URL
+      window.history.replaceState({}, '', window.location.pathname);
+      hydrateDriveUser().then(() => {
+        setDriveStatus(t('driveStatusReady'), 'ok');
+        updateDriveUiState();
+        maybeSmartAutoBackup('daily');
+      });
+      return;
+    }
+  }
+  if (params.get('oauth') === 'error') {
+    window.history.replaceState({}, '', window.location.pathname);
+    setDriveStatus('OAuth failed. Try connecting again.', 'error');
+    return;
+  }
+  // Try silent reconnect via Worker
+  if (isDriveAutoRelinkEnabled() && wasDriveConnectedBefore()) {
+    setTimeout(() => maybeSilentReconnect(), 300);
+  }
 }
 
 async function hydrateDriveUser() {
@@ -5564,6 +5565,7 @@ async function hydrateDriveUser() {
     if (!resp.ok) return;
     const json = await resp.json();
     state.gdriveUserEmail = json.email || '';
+    if (json.sub) localStorage.setItem(GDRIVE_USER_KEY, json.sub);
   } catch (err) {
     console.warn('userinfo failed', err);
   }
@@ -5571,38 +5573,41 @@ async function hydrateDriveUser() {
 }
 
 function connectGoogleDrive(options = {}) {
-  if (!isGoogleDriveConfigured()) {
-    setDriveStatus(t('driveConfigMissing'), 'error');
-    return;
-  }
-  if (!state.gdriveTokenClient) {
-    setDriveStatus(t('driveStatusConnecting'), 'info');
-    return;
-  }
-  state.gdriveSilentReconnectPending = false;
-  setDriveStatus(t('driveStatusConnecting'), 'info');
-  const promptMode = options.forceAccountPicker
-    ? 'select_account consent'
-    : (state.gdriveAccessToken ? '' : 'consent');
-  state.gdriveTokenClient.requestAccessToken({ prompt: promptMode });
+  const userId = localStorage.getItem(GDRIVE_USER_KEY) || generateId();
+  localStorage.setItem(GDRIVE_USER_KEY, userId);
+  const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?` +
+    `client_id=${GOOGLE_CLIENT_ID}` +
+    `&redirect_uri=${encodeURIComponent(WORKER_BASE_URL + '/oauth/callback')}` +
+    `&response_type=code` +
+    `&scope=${encodeURIComponent('https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/userinfo.email')}` +
+    `&state=${userId}` +
+    `&access_type=offline` +
+    `&prompt=consent`;
+  window.location.href = authUrl;
 }
 
 function switchGoogleDriveAccount() {
-  state.gdriveReconnectAttempted = true;
+  localStorage.removeItem(GDRIVE_USER_KEY);
   connectGoogleDrive({ forceAccountPicker: true });
 }
 
 function disconnectGoogleDrive() {
-  if (state.gdriveAccessToken && window.google?.accounts?.oauth2) {
-    google.accounts.oauth2.revoke(state.gdriveAccessToken, () => {});
+  const userId = localStorage.getItem(GDRIVE_USER_KEY);
+  if (userId) {
+    fetch(`${WORKER_BASE_URL}/oauth/logout`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId })
+    }).catch(() => {});
   }
   state.gdriveAccessToken = '';
   state.gdriveUserEmail = '';
   state.gdriveSilentReconnectPending = false;
   state.gdriveReconnectAttempted = true;
+  state.gdriveTokenExpiry = 0;
+  localStorage.removeItem(GDRIVE_USER_KEY);
   setDriveRemembered(false);
   setDriveAutoRelink(false);
-  gapi.client.setToken(null);
   setDriveStatus(t('driveStatusSignedOut'), 'info');
   updateDriveUiState();
 }
@@ -5639,89 +5644,66 @@ function applyBackupPayload(payload) {
 }
 
 async function findDriveBackupFile() {
-  const resp = await gapi.client.drive.files.list({
-    spaces: 'appDataFolder',
-    pageSize: 1,
-    fields: 'files(id,name,modifiedTime)',
-    orderBy: 'modifiedTime desc',
-    q: `name = '${DRIVE_BACKUP_FILE}' and trashed = false`
-  });
-  return resp.result.files?.[0] || null;
+  // No longer needed — Worker handles file lookup
+  return null;
 }
 
 async function uploadBackupToDrive(options = {}) {
-  if (!state.gdriveAccessToken) {
-    connectGoogleDrive();
-    return;
-  }
+  if (!state.gdriveAccessToken) { connectGoogleDrive(); return; }
   if (!options.silent) setDriveStatus(t('driveStatusBackingUp'), 'info');
-  const existing = await findDriveBackupFile();
-  const payloadJson = JSON.stringify(getBackupPayload());
-
-  let resp;
-  if (existing) {
-    resp = await fetch(`https://www.googleapis.com/upload/drive/v3/files/${existing.id}?uploadType=media`, {
-      method: 'PATCH',
-      headers: {
-        Authorization: `Bearer ${state.gdriveAccessToken}`,
-        'Content-Type': 'application/json'
-      },
-      body: payloadJson
-    });
-  } else {
-    const metadata = {
-      name: DRIVE_BACKUP_FILE,
-      parents: ['appDataFolder'],
-      mimeType: 'application/json'
-    };
-    const boundary = 'workouttrackerboundary';
-    const body =
-      `--${boundary}\r\n` +
-      'Content-Type: application/json; charset=UTF-8\r\n\r\n' +
-      `${JSON.stringify(metadata)}\r\n` +
-      `--${boundary}\r\n` +
-      'Content-Type: application/json\r\n\r\n' +
-      `${payloadJson}\r\n` +
-      `--${boundary}--`;
-
-    resp = await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart', {
+  try {
+    const resp = await fetch(`${WORKER_BASE_URL}/drive/backup`, {
       method: 'POST',
-      headers: {
-        Authorization: `Bearer ${state.gdriveAccessToken}`,
-        'Content-Type': `multipart/related; boundary=${boundary}`
-      },
-      body
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        userId: localStorage.getItem(GDRIVE_USER_KEY),
+        accessToken: state.gdriveAccessToken,
+        data: getBackupPayload(),
+        fileName: DRIVE_BACKUP_FILE
+      })
     });
+    if (!resp.ok) throw new Error(await resp.text() || 'Backup failed');
+    const result = await resp.json();
+    if (!result.success) throw new Error('Backup failed');
+    markBackupTimestamp();
+    if (!options.silent) setDriveStatus(t('driveBackupSuccess'), 'ok');
+  } catch (err) {
+    setDriveStatus(err.message || 'Backup failed', 'error');
+    throw err;
   }
-
-  if (!resp.ok) {
-    const msg = await resp.text();
-    throw new Error(msg || 'Backup failed.');
-  }
-  markBackupTimestamp();
-  if (!options.silent) setDriveStatus(t('driveBackupSuccess'), 'ok');
 }
 
 async function restoreBackupFromDrive() {
-  if (!state.gdriveAccessToken) {
-    connectGoogleDrive();
-    return;
-  }
-  if (!await showForgeConfirm({ title: state.lang === 'ja' ? '復元しますか？' : 'Pull Backup?', message: state.lang === 'ja' ? 'Google Drive の最新バックアップでこの端末のデータを上書きします。' : 'Pull the latest Drive backup and overwrite the data on this device?', okText: state.lang === 'ja' ? '復元' : 'Restore', okVariant: 'danger' })) return;
+  if (!state.gdriveAccessToken) { connectGoogleDrive(); return; }
+  if (!await showForgeConfirm({
+    title: state.lang === 'ja' ? '復元しますか？' : 'Pull Backup?',
+    message: state.lang === 'ja' ? 'Google Drive の最新バックアップでこの端末のデータを上書きします。' : 'Pull the latest Drive backup and overwrite the data on this device?',
+    okText: state.lang === 'ja' ? '復元' : 'Restore',
+    okVariant: 'danger'
+  })) return;
   setDriveStatus(t('driveStatusRestoring'), 'info');
-  const existing = await findDriveBackupFile();
-  if (!existing) {
-    setDriveStatus(t('driveNoBackupFound'), 'error');
-    return;
+  try {
+    const resp = await fetch(`${WORKER_BASE_URL}/drive/restore`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        accessToken: state.gdriveAccessToken,
+        fileName: DRIVE_BACKUP_FILE
+      })
+    });
+    if (!resp.ok) throw new Error(await resp.text() || 'Restore failed');
+    const result = await resp.json();
+    if (result.error === 'no_backup_found') {
+      setDriveStatus(t('driveNoBackupFound'), 'error');
+      return;
+    }
+    if (!result.success) throw new Error('Restore failed');
+    applyBackupPayload(result.data);
+    if (result.data?.exportedAt) markBackupTimestamp(new Date(result.data.exportedAt).getTime() || Date.now());
+    setDriveStatus(t('driveRestoreSuccess'), 'ok');
+  } catch (err) {
+    setDriveStatus(err.message || 'Restore failed', 'error');
   }
-  const resp = await fetch(`https://www.googleapis.com/drive/v3/files/${existing.id}?alt=media`, {
-    headers: { Authorization: `Bearer ${state.gdriveAccessToken}` }
-  });
-  if (!resp.ok) throw new Error(await resp.text() || 'Restore failed.');
-  const payload = await resp.json();
-  applyBackupPayload(payload);
-  if (payload?.exportedAt) markBackupTimestamp(new Date(payload.exportedAt).getTime() || Date.now());
-  setDriveStatus(t('driveRestoreSuccess'), 'ok');
 }
 
 function exportBackupJson() {
