@@ -1303,7 +1303,188 @@
     text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 4px;
   }
 
-  /* ── Transformation Tracking ── */
+  /* ── Macro Calculator ── */
+  .macro-calc-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 18px; margin-bottom: 12px;
+    position: relative; overflow: hidden;
+  }
+  .macro-calc-header {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 14px;
+  }
+  .macro-goal-tabs {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 5px; margin-bottom: 16px;
+  }
+  .macro-goal-btn {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 8px; padding: 8px 4px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px; font-weight: 600;
+    letter-spacing: 0.05em; text-transform: uppercase;
+    color: var(--muted); cursor: pointer; text-align: center;
+    -webkit-tap-highlight-color: transparent;
+    transition: all 0.12s; line-height: 1.3;
+  }
+  .macro-goal-btn.active {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(0,229,255,0.08);
+    box-shadow: 0 0 8px rgba(0,229,255,0.15);
+  }
+  .macro-goal-btn.bulk-lean.active {
+    border-color: #22c55e; color: #22c55e;
+    background: rgba(34,197,94,0.08);
+  }
+  .macro-goal-btn.bulk-super.active {
+    border-color: #a855f7; color: #a855f7;
+    background: rgba(168,85,247,0.08);
+  }
+  .macro-goal-btn.fat-loss.active {
+    border-color: #f59e0b; color: #f59e0b;
+    background: rgba(245,158,11,0.08);
+  }
+  .macro-goal-btn.maintenance.active {
+    border-color: var(--accent); color: var(--accent);
+    background: rgba(0,229,255,0.08);
+  }
+
+  .macro-input-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 8px; margin-bottom: 16px;
+  }
+  .macro-input-field { display: flex; flex-direction: column; gap: 5px; }
+  .macro-input-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--muted);
+  }
+  .macro-input-row {
+    display: flex; align-items: center;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border); border-radius: 10px;
+    overflow: hidden; transition: border-color 0.15s;
+  }
+  .macro-input-row:focus-within { border-color: var(--accent); }
+  .macro-input-row input {
+    flex: 1; background: none; border: none; outline: none;
+    color: var(--text); font-family: 'IBM Plex Mono', monospace;
+    font-size: 16px; font-weight: 700;
+    padding: 10px 12px; width: 0;
+  }
+  .macro-input-unit {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px; color: var(--muted);
+    padding: 0 10px 0 0; flex-shrink: 0;
+  }
+
+  .macro-gender-row {
+    display: flex; gap: 8px; margin-bottom: 16px;
+  }
+  .macro-gender-btn {
+    flex: 1; background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border); border-radius: 10px;
+    color: var(--muted); font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px; font-weight: 600;
+    padding: 10px; cursor: pointer; text-align: center;
+    -webkit-tap-highlight-color: transparent;
+    transition: all 0.12s;
+  }
+  .macro-gender-btn.active {
+    border-color: var(--accent); color: var(--accent);
+    background: rgba(0,229,255,0.08);
+  }
+
+  .macro-activity-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 6px; margin-bottom: 16px;
+  }
+  .macro-activity-btn {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border); border-radius: 8px;
+    color: var(--muted); font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px; font-weight: 600; letter-spacing: 0.05em;
+    text-transform: uppercase; padding: 10px 6px; cursor: pointer;
+    text-align: center; line-height: 1.4;
+    -webkit-tap-highlight-color: transparent;
+    transition: all 0.12s;
+  }
+  .macro-activity-btn.active {
+    border-color: var(--accent); color: var(--accent);
+    background: rgba(0,229,255,0.08);
+  }
+
+  /* Results */
+  .macro-results {
+    background: linear-gradient(135deg, rgba(124,58,237,0.12), rgba(0,229,255,0.06));
+    border: 1px solid rgba(0,229,255,0.2);
+    border-radius: 14px; padding: 16px; margin-top: 4px;
+  }
+  .macro-results-day {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 10px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .macro-results-kcal {
+    font-size: 32px; font-weight: 800;
+    color: var(--text); font-family: 'IBM Plex Mono', monospace;
+    line-height: 1; margin-bottom: 4px;
+  }
+  .macro-results-kcal-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; color: var(--muted); margin-bottom: 14px;
+  }
+  .macro-ring-row {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 8px; margin-bottom: 12px;
+  }
+  .macro-ring-item { text-align: center; }
+  .macro-ring-circle {
+    width: 56px; height: 56px; border-radius: 50%;
+    margin: 0 auto 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px; font-weight: 800; color: #fff;
+    position: relative;
+  }
+  .macro-ring-name {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px; text-transform: uppercase;
+    letter-spacing: 0.1em; color: var(--muted);
+    margin-bottom: 2px;
+  }
+  .macro-ring-grams {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 14px; font-weight: 700; color: var(--text);
+  }
+  .macro-ring-pct {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; color: var(--muted);
+  }
+  .macro-divider {
+    height: 1px; background: rgba(255,255,255,0.08);
+    margin: 12px 0;
+  }
+  .macro-results-rest { opacity: 0.75; }
+
+  .macro-tdee-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 6px 0;
+    font-family: 'IBM Plex Mono', monospace; font-size: 11px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .macro-tdee-row:last-child { border-bottom: none; }
+  .macro-tdee-label { color: var(--muted); }
+  .macro-tdee-val { color: var(--text); font-weight: 700; }
   .transform-card {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -3886,7 +4067,7 @@ const GOOGLE_API_KEY = 'AIzaSyBghYlbQiC303ScE4BnyfiREzDf6Zcci8w';
 const GOOGLE_CLIENT_ID_PLACEHOLDER = 'YOUR_GOOGLE_CLIENT_ID_HERE';
 const GOOGLE_API_KEY_PLACEHOLDER = 'YOUR_GOOGLE_API_KEY_HERE';
 const GOOGLE_DISCOVERY_DOC = 'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest';
-const GOOGLE_DRIVE_SCOPES = 'https://www.googleapis.com/auth/drive.appdata';
+const GOOGLE_DRIVE_SCOPES = 'https://www.googleapis.com/auth/drive.file';
 const DRIVE_BACKUP_FILE = 'workout-tracker-backup.json';
 const BACKUP_STORAGE_KEYS = [
   'wt_exercises',
@@ -3898,7 +4079,8 @@ const BACKUP_STORAGE_KEYS = [
   'wt_program_state',
   'wt_measurements',
   'wt_forge_streak',
-  'wt_milestones'
+  'wt_milestones',
+  'wt_macro_profile'
 ];
 const GDRIVE_WAS_CONNECTED_KEY = 'wt_gdrive_was_connected';
 const GDRIVE_AUTO_RELINK_KEY = 'wt_gdrive_auto_relink';
@@ -4031,6 +4213,14 @@ const UI_TEXT = {
     measureTitle: 'Body',
     measureSubtitle: 'Track your physique',
     measureInBody: 'InBody Quick Log',
+    macroCalcTitle: '⚡ Macro Calculator',
+    macroGoalFatLoss: 'Fat Loss',
+    macroGoalMaintain: 'Maintain',
+    macroGoalLeanBulk: 'Lean Bulk',
+    macroGoalSuperBulk: 'Super Bulk',
+    macroTrainingDay: 'Training Day',
+    macroRestDay: 'Rest Day',
+    macroMaintenance: 'Maintenance (TDEE)',
     measureInBodyDesc: 'Log weight, muscle mass and body fat in one shot',
     measureBody: 'Body Composition',
     measureParts: 'Measurements',
@@ -4164,6 +4354,14 @@ const UI_TEXT = {
     measureTitle: 'ボディ',
     measureSubtitle: '体型を記録',
     measureInBody: 'InBodyクイック記録',
+    macroCalcTitle: '⚡ マクロ計算機',
+    macroGoalFatLoss: '減量',
+    macroGoalMaintain: '維持',
+    macroGoalLeanBulk: 'リーンバルク',
+    macroGoalSuperBulk: 'スーパーバルク',
+    macroTrainingDay: 'トレーニング日',
+    macroRestDay: '休息日',
+    macroMaintenance: '維持カロリー (TDEE)',
     measureInBodyDesc: '体重・筋肉量・体脂肪を一度に記録',
     measureBody: '体組成',
     measureParts: '部位別測定',
@@ -4494,6 +4692,282 @@ function getMetricName(metric) {
   return state.lang === 'ja' ? metric.nameJa : metric.name;
 }
 
+// ══════════════════════════════════════════
+//  MACRO CALCULATOR
+// ══════════════════════════════════════════
+
+const MACRO_PROFILE_KEY = 'wt_macro_profile';
+
+const GOAL_CONFIG = {
+  'fat-loss':    { label: 'macroGoalFatLoss',   adjust: -500, proteinMult: 2.2, fatPct: 0.25, color: '#f59e0b' },
+  'maintenance': { label: 'macroGoalMaintain',  adjust: 0,    proteinMult: 2.0, fatPct: 0.28, color: '#00e5ff' },
+  'lean-bulk':   { label: 'macroGoalLeanBulk',  adjust: 300,  proteinMult: 2.0, fatPct: 0.25, color: '#22c55e' },
+  'super-bulk':  { label: 'macroGoalSuperBulk', adjust: 500,  proteinMult: 2.0, fatPct: 0.25, color: '#a855f7' },
+};
+
+const ACTIVITY_LEVELS = [
+  { key: 'light',    mult: 1.375, labelEn: 'Light\n1-2x/wk',   labelJa: '軽め\n週1-2回' },
+  { key: 'moderate', mult: 1.55,  labelEn: 'Moderate\n3-4x/wk', labelJa: '普通\n週3-4回' },
+  { key: 'active',   mult: 1.725, labelEn: 'Active\n5+x/wk',   labelJa: '活発\n週5回以上' },
+];
+
+function getMacroProfile() {
+  return JSON.parse(localStorage.getItem(MACRO_PROFILE_KEY) || JSON.stringify({
+    gender: 'male', age: '', height: '', weight: '', activity: 'moderate', goal: 'maintenance'
+  }));
+}
+function saveMacroProfile(p) {
+  localStorage.setItem(MACRO_PROFILE_KEY, JSON.stringify(p));
+}
+
+function calcMifflinBMR(gender, weight, height, age) {
+  // Mifflin-St Jeor
+  const base = (10 * weight) + (6.25 * height) - (5 * age);
+  return gender === 'male' ? base + 5 : base - 161;
+}
+
+function calcMacros(kcal, weightKg, goal) {
+  const cfg = GOAL_CONFIG[goal];
+  const proteinG = Math.round(weightKg * cfg.proteinMult);
+  const proteinKcal = proteinG * 4;
+  const fatKcal = Math.round(kcal * cfg.fatPct);
+  const fatG = Math.round(fatKcal / 9);
+  const carbKcal = kcal - proteinKcal - fatKcal;
+  const carbG = Math.round(carbKcal / 4);
+  return {
+    protein: { g: proteinG, pct: Math.round((proteinKcal / kcal) * 100) },
+    fat:     { g: fatG,     pct: Math.round((fatKcal / kcal) * 100) },
+    carbs:   { g: Math.max(0, carbG), pct: Math.max(0, Math.round((carbKcal / kcal) * 100)) },
+  };
+}
+
+function renderMacroResults(container, kcal, macros, label, isMain = true) {
+  const l = state.lang;
+  const section = document.createElement('div');
+  section.className = isMain ? 'macro-results' : 'macro-results macro-results-rest';
+  if (!isMain) section.style.cssText = 'background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:14px;padding:16px;margin-top:8px;';
+
+  section.innerHTML = `
+    <div class="macro-results-day">
+      <span>${label}</span>
+      <span style="font-size:11px;opacity:0.6">${l === 'ja' ? 'カロリー' : 'kcal'}</span>
+    </div>
+    <div class="macro-results-kcal">${kcal.toLocaleString()}</div>
+    <div class="macro-results-kcal-label">${l === 'ja' ? 'kcal/日' : 'kcal / day'}</div>
+    <div class="macro-ring-row">
+      ${[
+        { name: l === 'ja' ? 'タンパク質' : 'Protein', ...macros.protein, color: '#00e5ff' },
+        { name: l === 'ja' ? '脂質' : 'Fats',    ...macros.fat,     color: '#f59e0b' },
+        { name: l === 'ja' ? '炭水化物' : 'Carbs', ...macros.carbs,   color: '#a855f7' },
+      ].map(m => `
+        <div class="macro-ring-item">
+          <div class="macro-ring-circle" style="background:${m.color}22;border:3px solid ${m.color};box-shadow:0 0 10px ${m.color}33">
+            <span style="color:${m.color};font-size:12px">${m.pct}%</span>
+          </div>
+          <div class="macro-ring-name">${m.name}</div>
+          <div class="macro-ring-grams">${m.g}g</div>
+        </div>`).join('')}
+    </div>`;
+
+  container.appendChild(section);
+}
+
+function renderMacroCalculator() {
+  // Find or create container in measurements tab
+  let wrap = document.getElementById('macro-calc-wrap');
+  if (!wrap) {
+    const content = document.getElementById('measurements-content');
+    if (!content) return;
+    // Insert after transformation card, before InBody card
+    wrap = document.createElement('div');
+    wrap.id = 'macro-calc-wrap';
+    content.appendChild(wrap);
+  }
+
+  const profile = getMacroProfile();
+  const l = state.lang;
+
+  wrap.innerHTML = '';
+  const card = document.createElement('div');
+  card.className = 'macro-calc-card';
+
+  // ── Header ──
+  const header = document.createElement('div');
+  header.className = 'macro-calc-header';
+  header.textContent = t('macroCalcTitle');
+  card.appendChild(header);
+
+  // ── Goal tabs ──
+  const goalLabel = document.createElement('div');
+  goalLabel.className = 'macro-input-label';
+  goalLabel.style.marginBottom = '8px';
+  goalLabel.textContent = l === 'ja' ? '目標' : 'Goal';
+  card.appendChild(goalLabel);
+
+  const goalTabs = document.createElement('div');
+  goalTabs.className = 'macro-goal-tabs';
+  [
+    { key: 'fat-loss',    cls: 'fat-loss',    en: 'Fat Loss',    ja: '減量' },
+    { key: 'maintenance', cls: 'maintenance', en: 'Maintain',    ja: '維持' },
+    { key: 'lean-bulk',   cls: 'bulk-lean',   en: 'Lean Bulk',   ja: 'リーンバルク' },
+    { key: 'super-bulk',  cls: 'bulk-super',  en: 'Super Bulk',  ja: 'スーパーバルク' },
+  ].forEach(g => {
+    const btn = document.createElement('button');
+    btn.className = `macro-goal-btn ${g.cls}${profile.goal === g.key ? ' active' : ''}`;
+    btn.textContent = l === 'ja' ? g.ja : g.en;
+    btn.addEventListener('click', () => {
+      profile.goal = g.key;
+      saveMacroProfile(profile);
+      renderMacroCalculator();
+    });
+    goalTabs.appendChild(btn);
+  });
+  card.appendChild(goalTabs);
+
+  // ── Gender ──
+  const genderLabel = document.createElement('div');
+  genderLabel.className = 'macro-input-label';
+  genderLabel.style.marginBottom = '8px';
+  genderLabel.textContent = l === 'ja' ? '性別' : 'Gender';
+  card.appendChild(genderLabel);
+
+  const genderRow = document.createElement('div');
+  genderRow.className = 'macro-gender-row';
+  [{ key: 'male', en: '♂ Male', ja: '♂ 男性' }, { key: 'female', en: '♀ Female', ja: '♀ 女性' }].forEach(g => {
+    const btn = document.createElement('button');
+    btn.className = `macro-gender-btn${profile.gender === g.key ? ' active' : ''}`;
+    btn.textContent = l === 'ja' ? g.ja : g.en;
+    btn.addEventListener('click', () => {
+      profile.gender = g.key;
+      saveMacroProfile(profile);
+      renderMacroCalculator();
+    });
+    genderRow.appendChild(btn);
+  });
+  card.appendChild(genderRow);
+
+  // ── Inputs grid ──
+  const inputGrid = document.createElement('div');
+  inputGrid.className = 'macro-input-grid';
+
+  const fields = [
+    { key: 'age',    en: 'Age',    ja: '年齢', unit: l === 'ja' ? '歳' : 'yrs', placeholder: '30', type: 'number', min: 10, max: 99 },
+    { key: 'height', en: 'Height', ja: '身長', unit: 'cm', placeholder: '170', type: 'number', min: 100, max: 250 },
+    { key: 'weight', en: 'Weight', ja: '体重', unit: 'kg', placeholder: '70',  type: 'number', min: 30,  max: 300 },
+  ];
+
+  fields.forEach(f => {
+    const fieldEl = document.createElement('div');
+    fieldEl.className = 'macro-input-field';
+    if (f.key === 'weight') fieldEl.style.gridColumn = '1 / -1';
+
+    fieldEl.innerHTML = `<div class="macro-input-label">${l === 'ja' ? f.ja : f.en}</div>`;
+    const row = document.createElement('div');
+    row.className = 'macro-input-row';
+    const inp = document.createElement('input');
+    inp.type = f.type;
+    inp.inputMode = 'numeric';
+    inp.placeholder = f.placeholder;
+    inp.value = profile[f.key] || '';
+    inp.min = f.min; inp.max = f.max;
+    inp.addEventListener('input', () => {
+      profile[f.key] = inp.value;
+      saveMacroProfile(profile);
+      updateResults();
+    });
+    const unit = document.createElement('span');
+    unit.className = 'macro-input-unit';
+    unit.textContent = f.unit;
+    row.appendChild(inp);
+    row.appendChild(unit);
+    fieldEl.appendChild(row);
+    inputGrid.appendChild(fieldEl);
+  });
+  card.appendChild(inputGrid);
+
+  // ── Activity level ──
+  const actLabel = document.createElement('div');
+  actLabel.className = 'macro-input-label';
+  actLabel.style.marginBottom = '8px';
+  actLabel.textContent = l === 'ja' ? 'アクティビティレベル' : 'Activity Level';
+  card.appendChild(actLabel);
+
+  const actGrid = document.createElement('div');
+  actGrid.className = 'macro-activity-grid';
+  ACTIVITY_LEVELS.forEach(a => {
+    const btn = document.createElement('button');
+    btn.className = `macro-activity-btn${profile.activity === a.key ? ' active' : ''}`;
+    btn.textContent = l === 'ja' ? a.labelJa : a.labelEn;
+    btn.style.whiteSpace = 'pre-line';
+    btn.addEventListener('click', () => {
+      profile.activity = a.key;
+      saveMacroProfile(profile);
+      renderMacroCalculator();
+    });
+    actGrid.appendChild(btn);
+  });
+  card.appendChild(actGrid);
+
+  // ── Results section ──
+  const resultsWrap = document.createElement('div');
+  resultsWrap.id = 'macro-results-wrap';
+  card.appendChild(resultsWrap);
+
+  wrap.appendChild(card);
+
+  // Draw results immediately if data is complete
+  function updateResults() {
+    const rw = document.getElementById('macro-results-wrap');
+    if (!rw) return;
+    rw.innerHTML = '';
+
+    const age = parseFloat(profile.age);
+    const height = parseFloat(profile.height);
+    const weight = parseFloat(profile.weight);
+    const actMult = ACTIVITY_LEVELS.find(a => a.key === profile.activity)?.mult || 1.55;
+    const goal = profile.goal || 'maintenance';
+    const cfg = GOAL_CONFIG[goal];
+
+    if (!age || !height || !weight || age < 10 || height < 100 || weight < 30) {
+      rw.innerHTML = `<div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);text-align:center;padding:16px 0;">
+        ${l === 'ja' ? '年齢・身長・体重を入力してください' : 'Enter age, height and weight to see results'}
+      </div>`;
+      return;
+    }
+
+    const bmr = Math.round(calcMifflinBMR(profile.gender, weight, height, age));
+    const tdee = Math.round(bmr * actMult);
+    const trainingKcal = Math.max(1200, tdee + cfg.adjust);
+    const restKcal     = Math.max(1200, tdee + (cfg.adjust > 0 ? Math.round(cfg.adjust * 0.5) : cfg.adjust));
+
+    const trainingMacros = calcMacros(trainingKcal, weight, goal);
+    const restMacros     = calcMacros(restKcal,     weight, goal);
+
+    // TDEE breakdown
+    const tdeeSection = document.createElement('div');
+    tdeeSection.style.cssText = 'background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:12px;padding:12px 14px;margin-bottom:10px;';
+    tdeeSection.innerHTML = `
+      <div class="macro-tdee-row">
+        <span class="macro-tdee-label">BMR</span>
+        <span class="macro-tdee-val">${bmr.toLocaleString()} kcal</span>
+      </div>
+      <div class="macro-tdee-row">
+        <span class="macro-tdee-label">${l === 'ja' ? '維持カロリー (TDEE)' : 'Maintenance (TDEE)'}</span>
+        <span class="macro-tdee-val">${tdee.toLocaleString()} kcal</span>
+      </div>
+      <div class="macro-tdee-row">
+        <span class="macro-tdee-label">${l === 'ja' ? '目標調整' : 'Goal adjustment'}</span>
+        <span class="macro-tdee-val" style="color:${cfg.adjust > 0 ? 'var(--success)' : cfg.adjust < 0 ? 'var(--error)' : 'var(--muted)'}">${cfg.adjust > 0 ? '+' : ''}${cfg.adjust} kcal</span>
+      </div>`;
+    rw.appendChild(tdeeSection);
+
+    renderMacroResults(rw, trainingKcal, trainingMacros, l === 'ja' ? t('macroTrainingDay') : 'Training Day', true);
+    renderMacroResults(rw, restKcal,     restMacros,     l === 'ja' ? t('macroRestDay')     : 'Rest Day',      false);
+  }
+
+  updateResults();
+}
+
 function renderMeasurementsTab() {
   const container = document.getElementById('measurements-content');
   if (!container) return;
@@ -4580,6 +5054,9 @@ function renderMeasurementsTab() {
   MEASURE_METRICS.filter(m => m.group === 'parts').forEach(metric => {
     container.appendChild(buildMetricCard(metric, data));
   });
+
+  // ── Macro Calculator ──
+  renderMacroCalculator();
 }
 
 function buildMetricCard(metric, data) {
@@ -5544,6 +6021,208 @@ function buildMapsAestheticProgram() {
 
 const BARE_METAL_PROGRAM = buildMapsAestheticProgram();
 
+// ══════════════════════════════════════════
+//  BARE METAL FAT LOSS PROGRAM
+// ══════════════════════════════════════════
+
+const FAT_LOSS_PROGRAM_ID = 'bare-metal-fat-loss';
+
+const FAT_LOSS_GUIDE = {
+  equipment: 'Gym access required. Machine alternatives listed for each exercise.',
+  equipmentJa: 'ジム設備が必要です。各種目にマシン代替種目を記載しています。',
+  phases: [
+    {
+      phase: 'Phase I',
+      title: 'Rebuild & Adapt',
+      titleJa: '再構築・適応',
+      weeks: [1, 2, 3],
+      objective: 'Reintroduce training, avoid burnout, build consistency.',
+      objectiveJa: 'トレーニングを再開し、バーンアウトを避け、継続習慣を構築します。',
+      expect: 'Light soreness, improved movement, body waking back up.',
+      expectJa: '軽い筋肉痛、動作の改善、体の目覚め。',
+      frequency: { foundational: '3x/week full body. At least 1 rest day between sessions.', foundationalJa: '週3回全身。セッション間に最低1日の休息。', focus: '8,000–10,000 steps daily.', focusJa: '毎日8,000〜10,000歩。' },
+      setsReps: { foundational: '2 sets · 8–12 reps · Light weight · 5–6/10 effort.', foundationalJa: '2セット・8〜12回・軽い重量・努力度5〜6/10。', focus: '', focusJa: '' },
+      rest: { foundational: '60–90 seconds between sets.', foundationalJa: 'セット間60〜90秒。', focus: '', focusJa: '' }
+    },
+    {
+      phase: 'Phase II',
+      title: 'Build Strength & Burn',
+      titleJa: '筋力強化・脂肪燃焼',
+      weeks: [4, 5, 6, 7, 8],
+      objective: 'Increase strength while maintaining a calorie deficit.',
+      objectiveJa: 'カロリー不足を維持しながら筋力を向上させます。',
+      expect: 'Strength gains, steady fat loss, better muscle tone.',
+      expectJa: '筋力向上、着実な脂肪燃焼、筋肉のトーンアップ。',
+      frequency: { foundational: '3x/week full body. Optional cardio 2–3x/week.', foundationalJa: '週3回全身。週2〜3回のオプション有酸素。', focus: '8,000–10,000 steps + optional incline walking 20–30 min.', focusJa: '8,000〜10,000歩＋オプション傾斜ウォーク20〜30分。' },
+      setsReps: { foundational: 'Compounds: 3 sets · 6–10 reps. Isolation: 2–3 sets · 10–15 reps. Effort: 6–7/10.', foundationalJa: 'コンパウンド: 3セット・6〜10回。アイソレーション: 2〜3セット・10〜15回。努力度6〜7/10。', focus: '', focusJa: '' },
+      rest: { foundational: 'Compounds: 90–120 sec. Isolation: 60–90 sec.', foundationalJa: 'コンパウンド: 90〜120秒。アイソレーション: 60〜90秒。', focus: '', focusJa: '' }
+    },
+    {
+      phase: 'Phase III',
+      title: 'Optimize & Get Lean',
+      titleJa: '最適化・脂肪燃焼最大化',
+      weeks: [9, 10, 11, 12],
+      objective: 'Maximize fat loss while maintaining strength.',
+      objectiveJa: '筋力を維持しながら脂肪燃焼を最大化します。',
+      expect: 'Visible definition, stronger lifts under fatigue, best results.',
+      expectJa: '際立った輪郭、疲労下でも強いリフト、最高の結果。',
+      frequency: { foundational: '3x/week Upper/Lower/Upper split.', foundationalJa: '週3回アッパー/ローワー/アッパー分割。', focus: '8,000–10,000 steps + cardio 2–3x/week.', focusJa: '8,000〜10,000歩＋週2〜3回の有酸素。' },
+      setsReps: { foundational: 'Main lifts (RPT): 3 sets · 4–6 / 6–8 / 8–10 reps. Accessories: 2 sets · 10–12 reps. Effort: 7–8/10.', foundationalJa: 'メインリフト (RPT): 3セット・4〜6/6〜8/8〜10回。アクセサリー: 2セット・10〜12回。努力度7〜8/10。', focus: '', focusJa: '' },
+      rest: { foundational: 'Main lifts: 2–3 min. Accessories: 60–90 sec.', foundationalJa: 'メインリフト: 2〜3分。アクセサリー: 60〜90秒。', focus: '', focusJa: '' }
+    }
+  ]
+};
+
+const FAT_LOSS_PHASE_LIBRARY = {
+  1: {
+    phase: 'Phase I', title: 'Rebuild & Adapt', titleJa: '再構築・適応',
+    weeks: [1, 2, 3],
+    nutrition: '~2,000 kcal · High protein · Slight deficit',
+    nutritionJa: '約2,000kcal・高タンパク・軽い赤字',
+    workouts: [
+      {
+        day: 1, name: 'Full Body A',
+        exercises: [
+          { name: 'Goblet Squat', sets: 2, targetReps: '10', targetNote: 'Light weight. Focus on form.' },
+          { name: 'Incline Push-up', sets: 2, targetReps: '8', targetNote: 'Hands on bench if needed.' },
+          { name: 'Lat Pulldown', sets: 2, targetReps: '10', targetNote: 'Full stretch at top.' },
+          { name: 'Dumbbell Shoulder Press', sets: 2, targetReps: '10', targetNote: 'Controlled tempo.' },
+          { name: 'Plank', sets: 2, targetReps: '20 sec', targetNote: 'Brace core. Breathe.' },
+        ]
+      },
+      {
+        day: 2, name: 'Full Body B',
+        exercises: [
+          { name: 'Leg Press', sets: 2, targetReps: '10', targetNote: 'Feet shoulder width.' },
+          { name: 'Machine Chest Press', sets: 2, targetReps: '10', targetNote: 'Full range of motion.' },
+          { name: 'Seated Cable Row', sets: 2, targetReps: '10', targetNote: 'Squeeze shoulder blades.' },
+          { name: 'Dumbbell Curl', sets: 2, targetReps: '10', targetNote: 'Supinate at top.' },
+          { name: 'Tricep Pushdown', sets: 2, targetReps: '10', targetNote: 'Elbows pinned to sides.' },
+        ]
+      },
+      {
+        day: 3, name: 'Full Body C',
+        exercises: [
+          { name: 'Bodyweight Squat', sets: 2, targetReps: '12', targetNote: 'Slow and controlled.' },
+          { name: 'Dumbbell Bench Press', sets: 2, targetReps: '10', targetNote: 'Control the descent.' },
+          { name: 'Lat Pulldown', sets: 2, targetReps: '10', targetNote: 'Wide grip.' },
+          { name: 'Dumbbell Lateral Raise', sets: 2, targetReps: '12', targetNote: 'Thumbs slightly down.' },
+          { name: 'Glute Bridge', sets: 2, targetReps: '12', targetNote: 'Drive hips up. Squeeze glutes.' },
+        ]
+      }
+    ]
+  },
+  2: {
+    phase: 'Phase II', title: 'Build Strength & Burn', titleJa: '筋力強化・脂肪燃焼',
+    weeks: [4, 5, 6, 7, 8],
+    nutrition: '~2,000 kcal · Adjust if needed · High protein',
+    nutritionJa: '約2,000kcal・必要に応じて調整・高タンパク',
+    workouts: [
+      {
+        day: 1, name: 'Full Body A',
+        exercises: [
+          { name: 'Barbell Bench Press', sets: 3, targetReps: '6-8, 8-10, 10-12', targetNote: 'Reverse pyramid: heaviest set first.' },
+          { name: 'Lat Pulldown', sets: 3, targetReps: '8-10', targetNote: 'Full stretch at top.' },
+          { name: 'Goblet Squat', sets: 3, targetReps: '10', targetNote: 'Add weight from Phase I.' },
+          { name: 'Dumbbell Shoulder Press', sets: 3, targetReps: '10', targetNote: 'Controlled tempo.' },
+          { name: 'Plank', sets: 2, targetReps: '30 sec', targetNote: 'Increase from 20 sec.' },
+        ]
+      },
+      {
+        day: 2, name: 'Full Body B',
+        exercises: [
+          { name: 'Romanian Deadlift (Barbell)', sets: 3, targetReps: '10', targetNote: 'Hip hinge. Feel the hamstrings.' },
+          { name: 'Leg Press', sets: 3, targetReps: '10', targetNote: 'Add load each week.' },
+          { name: 'Seated Cable Row', sets: 3, targetReps: '10', targetNote: 'Pause and squeeze.' },
+          { name: 'Dumbbell Curl', sets: 3, targetReps: '10', targetNote: 'Slow eccentric.' },
+          { name: 'Standing Calf Raises', sets: 3, targetReps: '12-15', targetNote: 'Full range, hold at top.' },
+        ]
+      },
+      {
+        day: 3, name: 'Full Body C',
+        exercises: [
+          { name: 'Incline Dumbbell Press', sets: 3, targetReps: '10', targetNote: '30–45° incline.' },
+          { name: 'Lat Pulldown', sets: 3, targetReps: '10', targetNote: 'Close grip variation.' },
+          { name: 'Push-up', sets: 3, targetReps: 'Near max', targetNote: 'Stop 2 reps before failure.' },
+          { name: 'Dumbbell Lateral Raise', sets: 3, targetReps: '12-15', targetNote: 'Light weight, strict form.' },
+          { name: 'Tricep Pushdown', sets: 3, targetReps: '10-12', targetNote: 'Full extension.' },
+        ]
+      }
+    ]
+  },
+  3: {
+    phase: 'Phase III', title: 'Optimize & Get Lean', titleJa: '最適化・脂肪燃焼最大化',
+    weeks: [9, 10, 11, 12],
+    nutrition: 'Tighter deficit if needed · Keep protein high',
+    nutritionJa: '必要に応じてより厳しい制限・高タンパク維持',
+    workouts: [
+      {
+        day: 1, name: 'Upper 1',
+        exercises: [
+          { name: 'Dumbbell Shoulder Press', sets: 3, targetReps: '4-6 / 6-8 / 8-10', targetNote: 'RPT: Heaviest set first. Drop weight each set.' },
+          { name: 'Lat Pulldown', sets: 3, targetReps: '4-6 / 6-8 / 8-10', targetNote: 'RPT style.' },
+          { name: 'Close Grip Bench Press', sets: 2, targetReps: '8-10', targetNote: 'Elbows close to body.' },
+          { name: 'Dumbbell Curl', sets: 2, targetReps: '10', targetNote: 'Squeeze at top.' },
+          { name: 'Dumbbell Lateral Raise', sets: 2, targetReps: '12-15', targetNote: 'Controlled tempo.' },
+        ]
+      },
+      {
+        day: 2, name: 'Lower',
+        exercises: [
+          { name: 'Bulgarian Split Squat', sets: 3, targetReps: '8-10', targetNote: 'Each leg. Add weight from Phase II.' },
+          { name: 'Romanian Deadlift (Barbell)', sets: 3, targetReps: '8-10', targetNote: 'Slow eccentric. Feel every rep.' },
+          { name: 'Leg Extension (Machine)', sets: 2, targetReps: '10-12', targetNote: 'Full extension at top.' },
+          { name: 'Standing Calf Raises', sets: 2, targetReps: '10-12', targetNote: 'Pause at top.' },
+        ]
+      },
+      {
+        day: 3, name: 'Upper 2',
+        exercises: [
+          { name: 'Incline Barbell Press', sets: 3, targetReps: '4-6 / 6-8 / 8-10', targetNote: 'RPT: heaviest first.' },
+          { name: 'Barbell Bench Press', sets: 2, targetReps: '8-10', targetNote: 'Controlled descent.' },
+          { name: 'Tricep Pushdown', sets: 2, targetReps: '10-12', targetNote: 'Full extension.' },
+          { name: 'Hammer Curl', sets: 2, targetReps: '10', targetNote: 'Neutral grip. Slow down.' },
+          { name: 'Rear Delt Fly (Machine)', sets: 2, targetReps: '12-15', targetNote: 'Light weight. Feel the rear delts.' },
+        ]
+      }
+    ]
+  }
+};
+
+function buildFatLossProgram() {
+  const workouts = {};
+  Object.entries(FAT_LOSS_PHASE_LIBRARY).forEach(([phaseNumber, phaseDef]) => {
+    phaseDef.weeks.forEach(week => {
+      phaseDef.workouts.forEach(workout => {
+        const key = `${phaseNumber}-${week}-${workout.day}`;
+        workouts[key] = {
+          phase: Number(phaseNumber),
+          week,
+          day: workout.day,
+          name: `Bare Metal Fat Loss · W${week}D${workout.day}`,
+          subtitle: `${phaseDef.phase} · Week ${week} · ${workout.name} · ${phaseDef.title}`,
+          nutrition: phaseDef.nutrition,
+          nutritionJa: phaseDef.nutritionJa,
+          exercises: workout.exercises
+        };
+      });
+    });
+  });
+  return { id: FAT_LOSS_PROGRAM_ID, name: 'Bare Metal Fat Loss Program', guide: FAT_LOSS_GUIDE, workouts };
+}
+
+const FAT_LOSS_PROGRAM = buildFatLossProgram();
+
+// ── Multi-program registry ──
+const ALL_PROGRAMS = {
+  [BARE_METAL_PROGRAM_ID]: BARE_METAL_PROGRAM,
+  [FAT_LOSS_PROGRAM_ID]:   FAT_LOSS_PROGRAM,
+};
+
+function getProgramById(id) {
+  return ALL_PROGRAMS[id] || null;
+}
+
 function getProgramState() {
   return JSON.parse(localStorage.getItem(PROGRAM_STORAGE_KEY) || 'null');
 }
@@ -5551,9 +6230,11 @@ function saveProgramState(value) {
   if (value) localStorage.setItem(PROGRAM_STORAGE_KEY, JSON.stringify(value));
   else localStorage.removeItem(PROGRAM_STORAGE_KEY);
 }
-function createInitialProgramState() {
+function createInitialProgramState(programId = null) {
+  const ps = getProgramState();
+  const id = programId || ps?.programId || BARE_METAL_PROGRAM_ID;
   return {
-    programId: BARE_METAL_PROGRAM_ID,
+    programId: id,
     phase: 1,
     week: 1,
     day: 1,
@@ -5566,57 +6247,80 @@ function getProgramKeyFromRef(ref) {
 }
 function getCurrentProgramKey() {
   const ps = getProgramState();
-  if (!ps || ps.programId !== BARE_METAL_PROGRAM_ID) return null;
+  if (!ps) return null;
   return getProgramKeyFromRef(ps);
 }
 function getProgramPhaseMeta(phase) {
+  const ps = getProgramState();
+  if (!ps) return null;
+  if (ps.programId === FAT_LOSS_PROGRAM_ID) return FAT_LOSS_PHASE_LIBRARY[String(phase)] || null;
   return PROGRAM_PHASE_LIBRARY[String(phase)] || null;
 }
 function getCurrentProgramWorkout() {
   const ps = getProgramState();
-  if (!ps || ps.programId !== BARE_METAL_PROGRAM_ID) return null;
-  const key = getProgramKeyFromRef(ps);
-  return BARE_METAL_PROGRAM.workouts[key] || null;
+  if (!ps) return null;
+  const prog = getProgramById(ps.programId);
+  return prog ? prog.workouts[getProgramKeyFromRef(ps)] || null : null;
 }
 function getProgramWorkoutByRef(ref) {
-  return BARE_METAL_PROGRAM.workouts[getProgramKeyFromRef(ref)] || null;
+  if (!ref) return null;
+  const prog = getProgramById(ref.programId || BARE_METAL_PROGRAM_ID);
+  return prog ? prog.workouts[getProgramKeyFromRef(ref)] || null : null;
 }
 function getNextProgramRef(ref) {
   if (!ref) return null;
-  const phaseDef = PROGRAM_PHASE_LIBRARY[String(ref.phase)];
+  const progId = ref.programId || BARE_METAL_PROGRAM_ID;
+  const phaseLib = progId === FAT_LOSS_PROGRAM_ID ? FAT_LOSS_PHASE_LIBRARY : PROGRAM_PHASE_LIBRARY;
+  const phaseDef = phaseLib[String(ref.phase)];
   const daysInWeek = phaseDef ? phaseDef.workouts.length : 3;
-  if (ref.day < daysInWeek) return { phase: ref.phase, week: ref.week, day: ref.day + 1 };
+  const totalWeeks = progId === FAT_LOSS_PROGRAM_ID ? 12 : 10;
+  if (ref.day < daysInWeek) return { ...ref, day: ref.day + 1 };
   const nextWeek = ref.week + 1;
-  if (nextWeek > 10) return null;
-  const nextPhase = nextWeek <= 3 ? 1 : nextWeek <= 7 ? 2 : 3;
-  return { phase: nextPhase, week: nextWeek, day: 1 };
+  if (nextWeek > totalWeeks) return null;
+  let nextPhase;
+  if (progId === FAT_LOSS_PROGRAM_ID) {
+    nextPhase = nextWeek <= 3 ? 1 : nextWeek <= 8 ? 2 : 3;
+  } else {
+    nextPhase = nextWeek <= 3 ? 1 : nextWeek <= 7 ? 2 : 3;
+  }
+  return { programId: progId, phase: nextPhase, week: nextWeek, day: 1 };
 }
 function getPreviousProgramRef(ref) {
   if (!ref) return null;
-  if (ref.day > 1) return { phase: ref.phase, week: ref.week, day: ref.day - 1 };
+  if (ref.day > 1) return { ...ref, day: ref.day - 1 };
   const prevWeek = ref.week - 1;
   if (prevWeek < 1) return null;
-  const prevPhase = prevWeek <= 3 ? 1 : prevWeek <= 7 ? 2 : 3;
-  const prevPhaseDef = PROGRAM_PHASE_LIBRARY[String(prevPhase)];
+  const progId = ref.programId || BARE_METAL_PROGRAM_ID;
+  const phaseLib = progId === FAT_LOSS_PROGRAM_ID ? FAT_LOSS_PHASE_LIBRARY : PROGRAM_PHASE_LIBRARY;
+  let prevPhase;
+  if (progId === FAT_LOSS_PROGRAM_ID) {
+    prevPhase = prevWeek <= 3 ? 1 : prevWeek <= 8 ? 2 : 3;
+  } else {
+    prevPhase = prevWeek <= 3 ? 1 : prevWeek <= 7 ? 2 : 3;
+  }
+  const prevPhaseDef = phaseLib[String(prevPhase)];
   const prevDaysInWeek = prevPhaseDef ? prevPhaseDef.workouts.length : 3;
-  return { phase: prevPhase, week: prevWeek, day: prevDaysInWeek };
+  return { programId: progId, phase: prevPhase, week: prevWeek, day: prevDaysInWeek };
 }
 function getProgramCompletionCount(ps = getProgramState()) {
   return Object.keys(ps?.completedDays || {}).length;
 }
 function getProgramTotalWorkouts() {
-  return Object.keys(BARE_METAL_PROGRAM.workouts).length;
+  const ps = getProgramState();
+  if (!ps) return 30;
+  const prog = getProgramById(ps.programId);
+  return prog ? Object.keys(prog.workouts).length : 30;
 }
 function normalizeProgramState(ps) {
-  if (!ps || ps.programId !== BARE_METAL_PROGRAM_ID) return createInitialProgramState();
+  if (!ps) return createInitialProgramState();
+  const prog = getProgramById(ps.programId);
+  if (!prog) return createInitialProgramState();
   ps.completedDays = ps.completedDays || {};
   let guard = 0;
-  while (ps.completedDays[getProgramKeyFromRef(ps)] && guard < 50) {
+  while (ps.completedDays[getProgramKeyFromRef(ps)] && guard < 60) {
     const next = getNextProgramRef(ps);
     if (!next) break;
-    ps.phase = next.phase;
-    ps.week = next.week;
-    ps.day = next.day;
+    ps.phase = next.phase; ps.week = next.week; ps.day = next.day;
     guard += 1;
   }
   if (!getProgramWorkoutByRef(ps)) {
@@ -5749,7 +6453,7 @@ async function startProgramWorkout(forceFresh = false) {
     id: generateId(),
     name: workout.name,
     startTime: new Date().toISOString(),
-    programRef: { programId: BARE_METAL_PROGRAM_ID, phase: programState.phase, week: programState.week, day: programState.day },
+    programRef: { programId: programState.programId, phase: programState.phase, week: programState.week, day: programState.day },
     exercises: workout.exercises.map(buildProgramWorkoutExercise)
   };
   saveProgramState(programState);
@@ -5757,8 +6461,9 @@ async function startProgramWorkout(forceFresh = false) {
   showTab('workout');
 }
 function markProgramWorkoutComplete(active) {
-  if (!active?.programRef || active.programRef.programId !== BARE_METAL_PROGRAM_ID) return;
+  if (!active?.programRef) return;
   const ps = normalizeProgramState(getProgramState());
+  if (!ps || ps.programId !== active.programRef.programId) return;
   ps.completedDays = ps.completedDays || {};
   const currentKey = getProgramKeyFromRef(active.programRef);
   ps.completedDays[currentKey] = { completedAt: new Date().toISOString(), workoutId: active.id };
@@ -5776,16 +6481,20 @@ function markProgramWorkoutComplete(active) {
 }
 function isProgramDayComplete() {
   const ps = getProgramState();
-  if (!ps || ps.programId !== BARE_METAL_PROGRAM_ID) return false;
+  if (!ps) return false;
   return !!ps?.completedDays?.[getProgramKeyFromRef(ps)];
 }
 function openProgramGuide() {
   const body = document.getElementById('program-guide-body');
   if (!body) return;
   const ja = state.lang === 'ja';
+  const ps = getProgramState();
+  const prog = getProgramById(ps?.programId);
+  const guide = prog?.guide || MAPS_AESTHETIC_GUIDE;
+
   body.innerHTML = `
-    <div class="settings-help" style="margin-top:0;margin-bottom:14px;">${esc(ja ? MAPS_AESTHETIC_GUIDE.equipmentJa : MAPS_AESTHETIC_GUIDE.equipment)}</div>
-    ${MAPS_AESTHETIC_GUIDE.phases.map(phase => `
+    <div class="settings-help" style="margin-top:0;margin-bottom:14px;">${esc(ja ? guide.equipmentJa : guide.equipment)}</div>
+    ${guide.phases.map(phase => `
       <div class="settings-card" style="padding:14px;margin-bottom:12px;">
         <div class="section-label">${esc(phase.phase)} · ${esc(ja ? phase.titleJa : phase.title)}</div>
         <div class="settings-help" style="margin-top:0;"><strong>${ja ? '期間' : 'Weeks'}:</strong> ${phase.weeks.join(', ')}</div>
@@ -6971,9 +7680,23 @@ const PROGRAM_LIBRARY = [
     totalSessions: 30,
     level: 'Intermediate',
     levelJa: '中級',
-    icon: 'analytics'
+    icon: 'analytics',
+    tag: null
+  },
+  {
+    id: 'bare-metal-fat-loss',
+    name: 'Bare Metal Fat Loss Program',
+    nameJa: 'Bare Metal 脂肪燃焼プログラム',
+    description: '12-week return-to-gym fat loss — Rebuild, Strengthen, Get Lean.',
+    descriptionJa: '12週間ジム復帰脂肪燃焼 — 再構築・筋力強化・絞る。',
+    weeks: 12,
+    sessionsPerWeek: 3,
+    totalSessions: 36,
+    level: 'Beginner–Intermediate',
+    levelJa: '初級〜中級',
+    icon: 'analytics',
+    tag: 'Fat Loss'
   }
-  // Future programs can be added here
 ];
 
 // ══════════════════════════════════════════
@@ -7945,9 +8668,15 @@ function renderWorkoutTab() {
 
   const programControls = document.getElementById('program-workout-controls');
   if (programControls) {
-    if (active.programRef && active.programRef.programId === BARE_METAL_PROGRAM_ID) {
+    if (active.programRef && getProgramById(active.programRef.programId)) {
       programControls.classList.remove('hidden');
+      // Show nutrition note if fat loss program
+      const workout = getProgramWorkoutByRef(active.programRef);
+      const nutritionNote = workout?.nutrition
+        ? `<div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--accent);text-align:center;padding:6px 0;letter-spacing:0.1em;">🥗 ${state.lang === 'ja' ? workout.nutritionJa : workout.nutrition}</div>`
+        : '';
       programControls.innerHTML = `
+        ${nutritionNote}
         <button class="btn-secondary" id="btn-program-skip-workout">${state.lang === 'ja' ? '⏭ この日をスキップ' : '⏭ Skip This Day'}</button>
         <button class="btn-danger" id="btn-program-restart-workout">${state.lang === 'ja' ? '💀 W1D1に戻す' : '💀 Reforge From W1D1'}</button>`;
       document.getElementById('btn-program-skip-workout')?.addEventListener('click', async () => { await skipProgramDay(); });
@@ -8031,6 +8760,22 @@ function renderActiveProgramBlock() {
   progText.textContent = `${progressCount} / ${total} ${state.lang === 'ja' ? 'セッション完了' : 'sessions complete'} · ${pct}%`;
   card.appendChild(progText);
 
+  // Macro calorie hint for fat loss program
+  if (ps.programId === FAT_LOSS_PROGRAM_ID) {
+    const mp = getMacroProfile();
+    const macroEl = document.createElement('div');
+    macroEl.style.cssText = 'font-family:IBM Plex Mono,monospace;font-size:10px;padding:8px 0 4px;';
+    if (mp.weight && mp.age && mp.height) {
+      const actMult = ACTIVITY_LEVELS.find(a => a.key === mp.activity)?.mult || 1.55;
+      const bmr = Math.round(calcMifflinBMR(mp.gender, parseFloat(mp.weight), parseFloat(mp.height), parseFloat(mp.age)));
+      const target = Math.max(1200, Math.round(bmr * actMult) - 500);
+      macroEl.innerHTML = `<span style="color:var(--accent)">🥗 ${state.lang === 'ja' ? '目標カロリー' : 'Calorie Target'}: ~${target.toLocaleString()} kcal/day</span>`;
+    } else {
+      macroEl.innerHTML = `<span style="color:var(--muted)">🥗 ${state.lang === 'ja' ? 'BodyタブでマクロCalculatorを設定' : 'Set up Macro Calculator in Body tab for calorie target'}</span>`;
+    }
+    card.appendChild(macroEl);
+  }
+
   // Actions
   const actions = document.createElement('div');
   actions.className = 'active-program-actions';
@@ -8069,6 +8814,8 @@ function renderProgramLibrary() {
   wrap.innerHTML = '';
 
   const ps = getProgramStateOrFresh();
+  const macroProfile = getMacroProfile();
+  const hasMacros = macroProfile.weight && macroProfile.age && macroProfile.height;
 
   const label = document.createElement('div');
   label.className = 'program-lib-label';
@@ -8079,16 +8826,30 @@ function renderProgramLibrary() {
     const isActive = ps.programId === prog.id;
     const card = document.createElement('div');
     card.className = 'program-lib-card' + (isActive ? ' active-prog' : '');
+
+    // Macro link for fat loss program
+    let macroHint = '';
+    if (prog.id === FAT_LOSS_PROGRAM_ID && hasMacros) {
+      const actMult = ACTIVITY_LEVELS.find(a => a.key === macroProfile.activity)?.mult || 1.55;
+      const bmr = Math.round(calcMifflinBMR(macroProfile.gender, parseFloat(macroProfile.weight), parseFloat(macroProfile.height), parseFloat(macroProfile.age)));
+      const tdee = Math.round(bmr * actMult);
+      const target = Math.max(1200, tdee - 500);
+      macroHint = `<div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--accent);margin-top:3px;">🥗 ${state.lang === 'ja' ? '目標カロリー' : 'Target'}: ~${target.toLocaleString()} kcal/day</div>`;
+    } else if (prog.id === FAT_LOSS_PROGRAM_ID && !hasMacros) {
+      macroHint = `<div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted);margin-top:3px;">🥗 ${state.lang === 'ja' ? 'マクロ計算機で目標カロリーを設定' : 'Set up Macro Calc for calorie target'}</div>`;
+    }
+
     card.innerHTML = `
-      <div class="program-lib-card-icon">${getMenuIconSvg(prog.icon)}</div>
+      <div class="program-lib-card-icon" style="${prog.id === FAT_LOSS_PROGRAM_ID ? 'background:linear-gradient(135deg,#f59e0b,#ef4444)' : ''}">${getMenuIconSvg(prog.icon)}</div>
       <div class="program-lib-info">
         <div class="program-lib-name">${state.lang === 'ja' ? prog.nameJa : prog.name}</div>
         <div class="program-lib-meta">${prog.weeks} ${state.lang === 'ja' ? '週' : 'wks'} · ${prog.sessionsPerWeek}x/${state.lang === 'ja' ? '週' : 'wk'} · ${state.lang === 'ja' ? prog.levelJa : prog.level}</div>
+        ${macroHint}
       </div>
-      ${isActive ? `<span class="program-lib-badge">${state.lang === 'ja' ? '実行中' : 'Active'}</span>` : ''}`;
+      ${isActive ? `<span class="program-lib-badge">${state.lang === 'ja' ? '実行中' : 'Active'}</span>` : prog.tag ? `<span class="program-lib-badge" style="color:#f59e0b;border-color:rgba(245,158,11,0.4);background:rgba(245,158,11,0.08)">${prog.tag}</span>` : ''}`;
 
     card.addEventListener('click', async () => {
-      if (isActive) return; // already active
+      if (isActive) return;
       const hasProgress = getProgramCompletionCount(ps) > 0;
       if (hasProgress) {
         if (!await showForgeConfirm({
@@ -8098,7 +8859,6 @@ function renderProgramLibrary() {
           okVariant: 'danger'
         })) return;
       }
-      // Activate new program
       const newPs = { programId: prog.id, phase: 1, week: 1, day: 1, completedDays: {} };
       saveProgramState(newPs);
       renderWorkoutEmptyState();
