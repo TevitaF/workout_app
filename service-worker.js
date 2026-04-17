@@ -1,4 +1,4 @@
-const CACHE_NAME = 'baremetal-v1';
+const CACHE_NAME = 'baremetal-v3';
 const STATIC_ASSETS = [
   './',
   './index.html',

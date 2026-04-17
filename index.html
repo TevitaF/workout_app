@@ -4473,6 +4473,7 @@ function showForgePrompt(options = {}) {
 //  GOOGLE DRIVE BACKUP CONFIG
 // ══════════════════════════════════════════
 
+const GOOGLE_CLIENT_ID = '910100038770-e5fm2ohupc4e5s5dalk0offsfk7jstlg.apps.googleusercontent.com';
 const WORKER_BASE_URL = 'https://api.baremetal.fit';
 const DRIVE_BACKUP_FILE = 'baremetal-backup.json';
 const GDRIVE_USER_KEY = 'wt_gdrive_user_id';
@@ -5048,7 +5049,7 @@ const MEASURE_METRICS = [
 const STREAK_KEY = 'wt_forge_streak';
 
 function getStreakData() {
-  return JSON.parse(localStorage.getItem(STREAK_KEY) || '{"current":0,"longest":0,"lastDate":null}');
+  return safeParse(localStorage.getItem(STREAK_KEY), {"current":0,"longest":0,"lastDate":null});
 }
 
 function saveStreakData(data) {
@@ -5114,7 +5115,7 @@ function getForgeStreakFromSessions() {
 }
 
 function getMeasurements() {
-  return JSON.parse(localStorage.getItem(MEASURE_STORAGE_KEY) || '{}');
+  return safeParse(localStorage.getItem(MEASURE_STORAGE_KEY), {});
 }
 function saveMeasurements(data) {
   localStorage.setItem(MEASURE_STORAGE_KEY, JSON.stringify(data));
@@ -5158,9 +5159,9 @@ const ACTIVITY_LEVELS = [
 ];
 
 function getMacroProfile() {
-  return JSON.parse(localStorage.getItem(MACRO_PROFILE_KEY) || JSON.stringify({
+  return safeParse(localStorage.getItem(MACRO_PROFILE_KEY), {
     gender: 'male', age: '', height: '', weight: '', activity: 'moderate', goal: 'maintenance'
-  }));
+  });
 }
 function saveMacroProfile(p) {
   localStorage.setItem(MACRO_PROFILE_KEY, JSON.stringify(p));
@@ -6000,7 +6001,15 @@ async function hydrateDriveUser() {
 function connectGoogleDrive(options = {}) {
   const userId = localStorage.getItem(GDRIVE_USER_KEY) || generateId();
   localStorage.setItem(GDRIVE_USER_KEY, userId);
-  window.location.href = `${WORKER_BASE_URL}/oauth/start?userId=${encodeURIComponent(userId)}`;
+  const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?` +
+    `client_id=${GOOGLE_CLIENT_ID}` +
+    `&redirect_uri=${encodeURIComponent(WORKER_BASE_URL + '/oauth/callback')}` +
+    `&response_type=code` +
+    `&scope=${encodeURIComponent('https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/userinfo.email')}` +
+    `&state=${userId}` +
+    `&access_type=offline` +
+    `&prompt=consent`;
+  window.location.href = authUrl;
 }
 
 function switchGoogleDriveAccount() {
@@ -6992,7 +7001,7 @@ function getProgramById(id) {
 }
 
 function getProgramState() {
-  return JSON.parse(localStorage.getItem(PROGRAM_STORAGE_KEY) || 'null');
+  return safeParse(localStorage.getItem(PROGRAM_STORAGE_KEY), null);
 }
 function saveProgramState(value) {
   if (value) localStorage.setItem(PROGRAM_STORAGE_KEY, JSON.stringify(value));
@@ -7414,10 +7423,14 @@ function openProgramDetail(progId) {
 //  DATA LAYER
 // ══════════════════════════════════════════
 
-function getExercises()  { return JSON.parse(localStorage.getItem('wt_exercises') || '[]'); }
-function getTemplates()  { return JSON.parse(localStorage.getItem('wt_templates') || '[]'); }
-function getSessions()   { return JSON.parse(localStorage.getItem('wt_sessions')  || '[]'); }
-function getActive()     { return JSON.parse(localStorage.getItem('wt_active')    || 'null'); }
+function safeParse(str, fallback) {
+  try { return JSON.parse(str) ?? fallback; } catch { return fallback; }
+}
+
+function getExercises()  { return safeParse(localStorage.getItem('wt_exercises'), []); }
+function getTemplates()  { return safeParse(localStorage.getItem('wt_templates'), []); }
+function getSessions()   { return safeParse(localStorage.getItem('wt_sessions'),  []); }
+function getActive()     { return safeParse(localStorage.getItem('wt_active'),    null); }
 
 function saveExercises(d) { localStorage.setItem('wt_exercises', JSON.stringify(d)); }
 function saveTemplates(d) { localStorage.setItem('wt_templates', JSON.stringify(d)); }
@@ -7523,7 +7536,7 @@ function localISOString(date = new Date()) {
 
 function getOnboardingProfile() {
   try {
-    return JSON.parse(localStorage.getItem(ONBOARDING_STORAGE_KEY) || 'null');
+    return safeParse(localStorage.getItem(ONBOARDING_STORAGE_KEY), null);
   } catch {
     return null;
   }
@@ -9166,7 +9179,7 @@ const SMALL_ACK_SPECIAL = {
 };
 
 function getMilestonesData() {
-  return JSON.parse(localStorage.getItem(MILESTONE_KEY) || '{"achieved":[]}');
+  return safeParse(localStorage.getItem(MILESTONE_KEY), {"achieved":[]});
 }
 function saveMilestonesData(data) {
   localStorage.setItem(MILESTONE_KEY, JSON.stringify(data));
