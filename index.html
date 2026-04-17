@@ -73,6 +73,7 @@
     overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
     padding: 16px 16px calc(var(--nav-height) + var(--safe-bottom) + 16px);
+    width: 100%;
   }
   .tab-panel.active { display: block; }
 
@@ -1255,6 +1256,260 @@
   }
   .forge-hq-no-program-sub {
     font-size: 12px; color: var(--muted); margin-bottom: 14px;
+  }
+
+  /* ── PERSONALIZED WELCOME CARD ── */
+  .personalized-welcome-card {
+    background: linear-gradient(135deg, rgba(0,229,255,0.11), rgba(124,58,237,0.13));
+    border: 1px solid rgba(0,229,255,0.24);
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 12px;
+    position: relative;
+    overflow: hidden;
+  }
+  .personalized-welcome-card::after {
+    content: '';
+    position: absolute;
+    inset: auto -18% -42% auto;
+    width: 180px;
+    height: 180px;
+    background: radial-gradient(circle, rgba(0,229,255,0.11), transparent 66%);
+    pointer-events: none;
+  }
+  .personalized-welcome-kicker,
+  .adaptive-empty-kicker {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+  .personalized-welcome-title {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--text);
+    line-height: 1.2;
+    margin-bottom: 6px;
+  }
+  .personalized-welcome-message {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.55;
+    margin-bottom: 14px;
+  }
+  .personalized-welcome-meta {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+    margin-bottom: 14px;
+  }
+  .personalized-welcome-chip {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 8px;
+    padding: 8px 6px;
+    min-width: 0;
+  }
+  .personalized-welcome-chip-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 8px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 3px;
+  }
+  .personalized-welcome-chip-value {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text);
+    overflow-wrap: anywhere;
+  }
+  .personalized-welcome-actions,
+  .onboarding-actions {
+    display: grid;
+    gap: 8px;
+    position: relative;
+    z-index: 1;
+  }
+  .adaptive-empty-card {
+    background: rgba(255,255,255,0.025);
+    border: 1px dashed rgba(0,229,255,0.18);
+    border-radius: 12px;
+    padding: 14px;
+    margin-bottom: 10px;
+  }
+  .adaptive-empty-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .adaptive-empty-copy {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  /* ── ONBOARDING SYSTEM ── */
+  .onboarding-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 260;
+    background: rgba(5,5,9,0.92);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 18px 14px;
+    animation: fadeInOverlay 0.22s ease;
+  }
+  .onboarding-sheet {
+    width: min(100%, 520px);
+    max-height: calc(100dvh - 36px);
+    overflow-y: auto;
+    background: linear-gradient(180deg, rgba(19,19,26,0.98), rgba(10,10,15,0.98));
+    border: 1px solid rgba(0,229,255,0.24);
+    border-radius: 18px;
+    padding: 20px 18px;
+    box-shadow: 0 -12px 50px rgba(0,0,0,0.45), 0 0 28px rgba(0,229,255,0.12);
+    position: relative;
+    animation: onboardingSheetIn 0.3s cubic-bezier(0.4,0,0.2,1);
+    overscroll-behavior: contain;
+  }
+  @keyframes onboardingSheetIn {
+    from { transform: translateY(22px); opacity: 0; }
+    to   { transform: translateY(0); opacity: 1; }
+  }
+  @keyframes onboardingStepIn {
+    from { transform: translateY(10px); opacity: 0; }
+    to   { transform: translateY(0); opacity: 1; }
+  }
+  .onboarding-step-content {
+    animation: onboardingStepIn 0.22s cubic-bezier(0.4,0,0.2,1);
+  }
+  .onboarding-progress {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 5px;
+    margin-bottom: 18px;
+  }
+  .onboarding-progress span {
+    height: 4px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.08);
+    transition: background 0.2s, box-shadow 0.2s;
+  }
+  .onboarding-progress span.active {
+    background: var(--accent);
+    box-shadow: 0 0 8px rgba(0,229,255,0.35);
+  }
+  .onboarding-kicker {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 10px;
+  }
+  .onboarding-title {
+    font-size: 24px;
+    font-weight: 900;
+    line-height: 1.12;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+  .onboarding-copy {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.65;
+    margin-bottom: 20px;
+  }
+  .onboarding-options {
+    display: grid;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .onboarding-option {
+    width: 100%;
+    text-align: left;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--text);
+    padding: 13px 14px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: background 0.16s, border-color 0.16s, color 0.16s, transform 0.12s;
+  }
+  .onboarding-option:active { transform: scale(0.99); }
+  .onboarding-option.active {
+    border-color: rgba(0,229,255,0.55);
+    background: rgba(0,229,255,0.10);
+    color: var(--accent);
+  }
+  .onboarding-summary {
+    display: grid;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+  .onboarding-summary-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    background: rgba(255,255,255,0.035);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+  }
+  .onboarding-summary-row span:first-child { color: var(--muted); }
+  .onboarding-summary-row span:last-child { color: var(--text); font-weight: 700; text-align: right; }
+  @media (prefers-reduced-motion: reduce) {
+    .onboarding-overlay,
+    .onboarding-sheet,
+    .onboarding-step-content {
+      animation: none;
+    }
+    .onboarding-progress span,
+    .onboarding-option {
+      transition: none;
+    }
+  }
+  @media (min-width: 640px) {
+    .tab-panel {
+      max-width: 760px;
+      margin: 0 auto;
+      padding-left: 24px;
+      padding-right: 24px;
+    }
+    .bottom-nav {
+      left: 50%;
+      right: auto;
+      width: min(100%, 760px);
+      transform: translateX(-50%);
+      border-left: 1px solid var(--border);
+      border-right: 1px solid var(--border);
+    }
+    .history-detail-body,
+    #calendar-page > div:last-child,
+    #measure-detail-page .history-detail-body {
+      max-width: 760px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .onboarding-overlay { align-items: center; }
+    .onboarding-sheet { padding: 26px; border-radius: 18px; }
+    .onboarding-actions { grid-template-columns: 1fr 1fr; }
   }
   .monthly-recap-card {
     background: linear-gradient(135deg, rgba(124,58,237,0.15), rgba(0,229,255,0.07));
@@ -3550,6 +3805,7 @@
     </div>
 
     <div id="home-forge-hq"></div>
+    <div id="home-personalized-welcome"></div>
     <div id="home-stats-row"></div>
     <div id="home-monthly-recap"></div>
     <div id="home-weekly-review"></div>
@@ -3693,6 +3949,19 @@
           </div>
         </div>
         <div class="settings-help" data-i18n="languageHelp">Choose the language you want to use in the app. Your choice will be remembered.</div>
+      </div>
+
+      <div class="settings-card">
+        <div class="section-label" data-i18n="onboardingSettingsLabel">Start Sequence</div>
+        <div class="settings-row">
+          <div>
+            <div class="settings-label" data-i18n="rerunOnboardingTitle">Rerun Onboarding</div>
+            <div class="settings-help" data-i18n="rerunOnboardingHelp">Reset your answers and run the start sequence again. Workouts, programs, and body data stay intact.</div>
+          </div>
+          <button class="btn-secondary" id="btn-reset-onboarding" type="button">
+            <span data-i18n="rerunOnboardingButton">Reset Start Sequence</span>
+          </button>
+        </div>
       </div>
 
       <div class="settings-card">
@@ -4204,10 +4473,6 @@ function showForgePrompt(options = {}) {
 //  GOOGLE DRIVE BACKUP CONFIG
 // ══════════════════════════════════════════
 
-const GOOGLE_CLIENT_ID = '910100038770-e5fm2ohupc4e5s5dalk0offsfk7jstlg.apps.googleusercontent.com';
-const GOOGLE_API_KEY = 'AIzaSyBghYlbQiC303ScE4BnyfiREzDf6Zcci8w';
-const GOOGLE_CLIENT_ID_PLACEHOLDER = 'YOUR_GOOGLE_CLIENT_ID_HERE';
-const GOOGLE_API_KEY_PLACEHOLDER = 'YOUR_GOOGLE_API_KEY_HERE';
 const WORKER_BASE_URL = 'https://api.baremetal.fit';
 const DRIVE_BACKUP_FILE = 'baremetal-backup.json';
 const GDRIVE_USER_KEY = 'wt_gdrive_user_id';
@@ -4224,7 +4489,8 @@ const BACKUP_STORAGE_KEYS = [
   'wt_measurements',
   'wt_forge_streak',
   'wt_milestones',
-  'wt_macro_profile'
+  'wt_macro_profile',
+  'wt_onboarding_profile'
 ];
 const GDRIVE_WAS_CONNECTED_KEY = 'wt_gdrive_was_connected';
 const GDRIVE_AUTO_RELINK_KEY = 'wt_gdrive_auto_relink';
@@ -4264,6 +4530,13 @@ const UI_TEXT = {
     languageLabel: 'Language',
     languagePreference: 'App Language',
     languageHelp: 'Choose the language you want to use in the app. Your choice will be remembered.',
+    onboardingSettingsLabel: 'Start Sequence',
+    rerunOnboardingTitle: 'Rerun Onboarding',
+    rerunOnboardingHelp: 'Reset your answers and run the start sequence again. Workouts, programs, and body data stay intact.',
+    rerunOnboardingButton: 'Reset Start Sequence',
+    rerunOnboardingConfirmTitle: 'Rerun Start Sequence?',
+    rerunOnboardingConfirmMessage: 'Your onboarding answers will reset. Your workouts, programs, measurements, and backups will stay intact.',
+    rerunOnboardingConfirmOk: 'Rerun',
     driveBackupLabel: 'Forge Vault Link',
     driveBackupTitle: 'Drive Vault',
     driveBackupHelp: 'Forge a secure Google Drive vault for backups, restores, and auto-relink on this device.',
@@ -4416,6 +4689,13 @@ const UI_TEXT = {
     languageLabel: '言語',
     languagePreference: 'アプリの言語',
     languageHelp: 'アプリで使う言語を選んでください。選択は保存されます。',
+    onboardingSettingsLabel: '起動シーケンス',
+    rerunOnboardingTitle: 'オンボーディングを再実行',
+    rerunOnboardingHelp: '回答をリセットして、起動シーケンスをもう一度行います。ワークアウト、プログラム、身体データはそのまま残ります。',
+    rerunOnboardingButton: '起動シーケンスをリセット',
+    rerunOnboardingConfirmTitle: '起動シーケンスを再実行しますか？',
+    rerunOnboardingConfirmMessage: 'オンボーディングの回答をリセットします。ワークアウト、プログラム、測定、バックアップはそのまま残ります。',
+    rerunOnboardingConfirmOk: '再実行',
     driveBackupLabel: '保管庫リンク',
     driveBackupTitle: 'Drive 保管庫',
     driveBackupHelp: 'この端末で自動再接続しつつ、Google Drive に安全な保管庫を作ってバックアップと復元を行います。',
@@ -5616,18 +5896,8 @@ async function maybeSmartAutoBackup(reason = 'manual') {
   }
 }
 
-function hasRealConfigValue(value, placeholder = '') {
-  const normalized = String(value || '').trim();
-  return !!normalized && normalized !== placeholder;
-}
-
-function isGoogleDriveConfigured() {
-  return hasRealConfigValue(GOOGLE_CLIENT_ID, GOOGLE_CLIENT_ID_PLACEHOLDER);
-}
-
-function hasGoogleApiKey() {
-  return hasRealConfigValue(GOOGLE_API_KEY, GOOGLE_API_KEY_PLACEHOLDER);
-}
+function isGoogleDriveConfigured() { return true; }
+function hasGoogleApiKey() { return true; }
 
 function setDriveStatus(message, type = 'info') {
   const el = document.getElementById('gdrive-status');
@@ -5730,15 +6000,7 @@ async function hydrateDriveUser() {
 function connectGoogleDrive(options = {}) {
   const userId = localStorage.getItem(GDRIVE_USER_KEY) || generateId();
   localStorage.setItem(GDRIVE_USER_KEY, userId);
-  const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?` +
-    `client_id=${GOOGLE_CLIENT_ID}` +
-    `&redirect_uri=${encodeURIComponent(WORKER_BASE_URL + '/oauth/callback')}` +
-    `&response_type=code` +
-    `&scope=${encodeURIComponent('https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/userinfo.email')}` +
-    `&state=${userId}` +
-    `&access_type=offline` +
-    `&prompt=consent`;
-  window.location.href = authUrl;
+  window.location.href = `${WORKER_BASE_URL}/oauth/start?userId=${encodeURIComponent(userId)}`;
 }
 
 function switchGoogleDriveAccount() {
@@ -6883,6 +7145,7 @@ async function skipProgramDay(options = {}) {
     if (!ok) return false;
     saveActive(null);
     stopTimer();
+    stopRestTimer();
   } else {
     const ok = await showForgeConfirm({
       title: state.lang === 'ja' ? 'プログラム日を飛ばす' : 'Advance Program Day?',
@@ -7197,6 +7460,11 @@ const state = {
   restRemaining: 90,
   restActive: false,
   restTarget: null,
+  restEndsAt: 0,
+  restAlertedSeconds: new Set(),
+  restAudioContext: null,
+  restAudioStop: null,
+  restAudioUnlocked: false,
   restKeypadContext: null,
   restKeypadValue: '',
   historyFilterDate: null,
@@ -7213,7 +7481,298 @@ const state = {
   gdriveTokenClient: null,
   gdriveReconnectAttempted: false,
   gdriveSilentReconnectPending: false,
+  onboardingStep: 0,
+  onboardingDraft: null,
 };
+
+// ════════════════════════════════════════════════════════════════════════════
+//  ONBOARDING SYSTEM
+// ════════════════════════════════════════════════════════════════════════════
+
+const ONBOARDING_STORAGE_KEY = 'wt_onboarding_profile';
+
+const ONBOARDING_OPTIONS = {
+  goal: [
+    { value: 'fat_loss', en: 'Fat Loss', ja: '脂肪を落とす' },
+    { value: 'build_muscle', en: 'Build Muscle', ja: '筋肉を増やす' },
+    { value: 'consistency', en: 'Get Consistent', ja: '継続を作る' },
+    { value: 'general_fitness', en: 'General Fitness', ja: '総合的な体力' }
+  ],
+  experience: [
+    { value: 'beginner', en: 'Beginner', ja: '初級' },
+    { value: 'intermediate', en: 'Intermediate', ja: '中級' },
+    { value: 'advanced', en: 'Advanced', ja: '上級' }
+  ],
+  trainingStyle: [
+    { value: 'gym', en: 'Gym', ja: 'ジム' },
+    { value: 'home', en: 'Home', ja: '自宅' },
+    { value: 'both', en: 'Both', ja: '両方' }
+  ],
+  weeklyTarget: [
+    { value: 2, en: '2 sessions', ja: '週2回' },
+    { value: 3, en: '3 sessions', ja: '週3回' },
+    { value: 4, en: '4 sessions', ja: '週4回' },
+    { value: 5, en: '5 sessions', ja: '週5回' }
+  ]
+};
+
+function localISOString(date = new Date()) {
+  const offsetMs = date.getTimezoneOffset() * 60000;
+  return new Date(date.getTime() - offsetMs).toISOString().slice(0, -1);
+}
+
+function getOnboardingProfile() {
+  try {
+    return JSON.parse(localStorage.getItem(ONBOARDING_STORAGE_KEY) || 'null');
+  } catch {
+    return null;
+  }
+}
+
+function saveOnboardingProfile(profile) {
+  localStorage.setItem(ONBOARDING_STORAGE_KEY, JSON.stringify(profile));
+  if ([2,3,4,5].includes(Number(profile.weeklyTarget))) setWeeklyTarget(Number(profile.weeklyTarget));
+}
+
+function isOnboardingComplete() {
+  return !!getOnboardingProfile()?.completed;
+}
+
+function labelForOnboardingValue(group, value) {
+  const item = (ONBOARDING_OPTIONS[group] || []).find(opt => opt.value === value);
+  if (!item) return String(value || '');
+  return state.lang === 'ja' ? item.ja : item.en;
+}
+
+function getRecommendedStart(profile = getOnboardingProfile()) {
+  const goal = profile?.goal || 'general_fitness';
+  if (goal === 'fat_loss') {
+    return {
+      primary: 'program_fat_loss',
+      secondary: 'forge_own',
+      programId: FAT_LOSS_PROGRAM_ID,
+      title: state.lang === 'ja' ? '脂肪燃焼プログラム' : 'Fat Loss Program',
+      secondaryTitle: state.lang === 'ja' ? '自分だけの道' : 'Forge Your Own Path'
+    };
+  }
+  if (goal === 'build_muscle') {
+    return {
+      primary: 'program_muscle',
+      secondary: 'forge_own',
+      programId: BARE_METAL_PROGRAM_ID,
+      title: state.lang === 'ja' ? 'MAPS Aesthetic' : 'MAPS Aesthetic',
+      secondaryTitle: state.lang === 'ja' ? '自分だけの道' : 'Forge Your Own Path'
+    };
+  }
+  if (goal === 'consistency') {
+    return {
+      primary: 'forge_own',
+      secondary: 'choose_program',
+      programId: null,
+      title: state.lang === 'ja' ? '自分だけの道' : 'Forge Your Own Path',
+      secondaryTitle: state.lang === 'ja' ? 'プログラムを選ぶ' : 'Choose a Program'
+    };
+  }
+  return {
+    primary: 'choose_program',
+    secondary: 'forge_own',
+    programId: null,
+    title: state.lang === 'ja' ? 'プログラムを選ぶ' : 'Choose a Program',
+    secondaryTitle: state.lang === 'ja' ? '自分だけの道' : 'Forge Your Own Path'
+  };
+}
+
+function goToOnboardingAction(action, profile = getOnboardingProfile()) {
+  const rec = getRecommendedStart(profile);
+  const programId = action === 'program_fat_loss'
+    ? FAT_LOSS_PROGRAM_ID
+    : action === 'program_muscle'
+      ? BARE_METAL_PROGRAM_ID
+      : rec.programId;
+
+  if (action === 'forge_own') {
+    startWorkout();
+    return;
+  }
+  showTab('workout');
+  setTimeout(() => {
+    document.getElementById('subtab-programs')?.click();
+    if (programId) openProgramDetail(programId);
+  }, 0);
+}
+
+function completeOnboarding(action) {
+  const draft = state.onboardingDraft || {};
+  const profile = {
+    completed: true,
+    completedAt: localISOString(),
+    goal: draft.goal || 'general_fitness',
+    experience: draft.experience || 'beginner',
+    trainingStyle: draft.trainingStyle || 'both',
+    weeklyTarget: Number(draft.weeklyTarget || 3)
+  };
+  saveOnboardingProfile(profile);
+  closeOnboarding();
+  renderHomeTab();
+  if (action) goToOnboardingAction(action, profile);
+}
+
+function getOnboardingScreen() {
+  const draft = state.onboardingDraft || {};
+  const ja = state.lang === 'ja';
+  const rec = getRecommendedStart(draft);
+  const screens = [
+    {
+      kicker: ja ? '起動シーケンス' : 'Start Sequence',
+      title: ja ? '炉をあなた仕様に整える。' : 'Set the forge to your starting line.',
+      copy: ja
+        ? 'いくつか答えるだけで、最初の方向性を固めます。完璧な情報はいりません。今の自分に合う一歩を選びましょう。'
+        : 'A few answers will set your starting direction. No stats, no intimidation - just the next disciplined move.'
+    },
+    {
+      field: 'goal',
+      kicker: ja ? '目標' : 'Goal',
+      title: ja ? '今、何を追う？' : 'What are you chasing right now?',
+      copy: ja ? '今の目的を一つ選べ。後から変えてもいい。' : 'Pick the target that matters most right now. You can reforge later.',
+      options: ONBOARDING_OPTIONS.goal
+    },
+    {
+      field: 'experience',
+      kicker: ja ? '経験値' : 'Experience',
+      title: ja ? 'どこから始める？' : 'Where are you starting from?',
+      copy: ja ? '難しさではなく、案内の量を合わせます。' : 'This tunes the amount of guidance, not your ceiling.',
+      options: ONBOARDING_OPTIONS.experience
+    },
+    {
+      field: 'trainingStyle',
+      kicker: ja ? '環境' : 'Training Style',
+      title: ja ? '普段どこで鍛える？' : 'How do you train most of the time?',
+      copy: ja ? 'ジム、自宅、両方。現実に合う道を選びます。' : 'Gym, home, or both. The best path is the one you can actually hit.',
+      options: ONBOARDING_OPTIONS.trainingStyle
+    },
+    {
+      field: 'weeklyTarget',
+      kicker: ja ? '週間目標' : 'Weekly Target',
+      title: ja ? '週に何回なら現実的に打てる？' : 'How many sessions can you realistically hit each week?',
+      copy: ja ? '背伸びより継続。ここはホームの週間目標にも同期されます。' : 'Choose discipline over fantasy. This syncs to your weekly target.',
+      options: ONBOARDING_OPTIONS.weeklyTarget
+    },
+    {
+      kicker: ja ? '推奨スタート' : 'Recommended Start',
+      title: ja ? `${rec.title} から始めよう。` : `Start with ${rec.title}.`,
+      copy: ja
+        ? '強制はしません。方向を示すだけです。選ぶのはあなた、鍛えるのもあなた。'
+        : 'No program is forced. Bare Metal points the blade; you choose the strike.',
+      summary: true,
+      recommendation: rec
+    }
+  ];
+  return screens[state.onboardingStep] || screens[0];
+}
+
+function renderOnboarding() {
+  let overlay = document.getElementById('onboarding-overlay');
+  if (!overlay) {
+    overlay = document.createElement('div');
+    overlay.id = 'onboarding-overlay';
+    overlay.className = 'onboarding-overlay';
+    overlay.innerHTML = '<div class="onboarding-sheet" id="onboarding-sheet"></div>';
+    document.body.appendChild(overlay);
+  }
+
+  const sheet = document.getElementById('onboarding-sheet');
+  const screen = getOnboardingScreen();
+  const draft = state.onboardingDraft || {};
+  const ja = state.lang === 'ja';
+  const progress = Array.from({ length: 6 }, (_, i) => `<span class="${i <= state.onboardingStep ? 'active' : ''}"></span>`).join('');
+  const optionHtml = screen.options ? `
+    <div class="onboarding-options">
+      ${screen.options.map(opt => {
+        const isActive = draft[screen.field] === opt.value;
+        return `<button class="onboarding-option ${isActive ? 'active' : ''}" data-field="${screen.field}" data-value="${opt.value}">${ja ? opt.ja : opt.en}</button>`;
+      }).join('')}
+    </div>` : '';
+  const summaryHtml = screen.summary ? `
+    <div class="onboarding-summary">
+      <div class="onboarding-summary-row"><span>${ja ? '目標' : 'Goal'}</span><span>${labelForOnboardingValue('goal', draft.goal)}</span></div>
+      <div class="onboarding-summary-row"><span>${ja ? '経験' : 'Experience'}</span><span>${labelForOnboardingValue('experience', draft.experience)}</span></div>
+      <div class="onboarding-summary-row"><span>${ja ? '環境' : 'Style'}</span><span>${labelForOnboardingValue('trainingStyle', draft.trainingStyle)}</span></div>
+      <div class="onboarding-summary-row"><span>${ja ? '週間目標' : 'Weekly Target'}</span><span>${labelForOnboardingValue('weeklyTarget', Number(draft.weeklyTarget || 3))}</span></div>
+    </div>` : '';
+  const actionsHtml = screen.summary ? `
+    <div class="onboarding-actions">
+      <button class="btn-primary" id="onboarding-primary"><div class="shimmer"></div>▶ ${screen.recommendation.title}</button>
+      <button class="btn-secondary" id="onboarding-secondary">${screen.recommendation.secondaryTitle}</button>
+    </div>` : `
+    <div class="onboarding-actions">
+      ${state.onboardingStep > 0 ? `<button class="btn-secondary" id="onboarding-back">${ja ? '戻る' : 'Back'}</button>` : ''}
+      <button class="btn-primary" id="onboarding-next"><div class="shimmer"></div>${state.onboardingStep === 0 ? (ja ? '始める' : 'Begin') : (ja ? '次へ' : 'Next')}</button>
+    </div>`;
+
+  sheet.innerHTML = `
+    <div class="onboarding-progress">${progress}</div>
+    <div class="onboarding-step-content" data-step="${state.onboardingStep}">
+      <div class="onboarding-kicker">${screen.kicker}</div>
+      <div class="onboarding-title">${screen.title}</div>
+      <div class="onboarding-copy">${screen.copy}</div>
+      ${optionHtml}
+      ${summaryHtml}
+      ${actionsHtml}
+    </div>`;
+
+  sheet.querySelectorAll('.onboarding-option').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const field = btn.dataset.field;
+      let value = btn.dataset.value;
+      if (field === 'weeklyTarget') value = Number(value);
+      state.onboardingDraft[field] = value;
+      renderOnboarding();
+    });
+  });
+  sheet.querySelector('#onboarding-back')?.addEventListener('click', () => {
+    state.onboardingStep = Math.max(0, state.onboardingStep - 1);
+    renderOnboarding();
+  });
+  sheet.querySelector('#onboarding-next')?.addEventListener('click', () => {
+    const field = screen.field;
+    if (field && typeof state.onboardingDraft[field] === 'undefined') return;
+    state.onboardingStep = Math.min(5, state.onboardingStep + 1);
+    renderOnboarding();
+  });
+  sheet.querySelector('#onboarding-primary')?.addEventListener('click', () => completeOnboarding(screen.recommendation.primary));
+  sheet.querySelector('#onboarding-secondary')?.addEventListener('click', () => completeOnboarding(screen.recommendation.secondary));
+}
+
+function openOnboarding() {
+  state.onboardingStep = 0;
+  state.onboardingDraft = {
+    goal: 'general_fitness',
+    experience: 'beginner',
+    trainingStyle: 'both',
+    weeklyTarget: getWeeklyTarget()
+  };
+  renderOnboarding();
+}
+
+function closeOnboarding() {
+  document.getElementById('onboarding-overlay')?.remove();
+}
+
+function maybeShowOnboarding() {
+  if (!isOnboardingComplete()) openOnboarding();
+}
+
+async function resetAndRerunOnboarding() {
+  const confirmed = await showForgeConfirm({
+    title: t('rerunOnboardingConfirmTitle'),
+    message: t('rerunOnboardingConfirmMessage'),
+    okText: t('rerunOnboardingConfirmOk')
+  });
+  if (!confirmed) return;
+  localStorage.removeItem(ONBOARDING_STORAGE_KEY);
+  renderHomeTab();
+  openOnboarding();
+}
 
 // ══════════════════════════════════════════
 //  TIMER
@@ -7319,6 +7878,8 @@ function saveRestKeypad() {
   setRestSeconds(exerciseIdx, setIdx, secs);
   if (state.restTarget && state.restTarget.exerciseIdx === exerciseIdx && state.restTarget.setIdx === setIdx) {
     state.restRemaining = secs;
+    state.restEndsAt = Date.now() + secs * 1000;
+    state.restAlertedSeconds = new Set();
   }
   const latest = getActive();
   if (latest) renderExerciseCard(exerciseIdx, latest);
@@ -7328,28 +7889,155 @@ function saveRestKeypad() {
 function promptSetRestDuration(exerciseIdx, setIdx) {
   openRestKeypad(exerciseIdx, setIdx);
 }
+
+function vibrateRestCue(pattern) {
+  if (!navigator.vibrate) return;
+  try {
+    navigator.vibrate(0);
+    navigator.vibrate(pattern);
+  } catch (err) {
+    console.warn('Rest timer vibration unavailable', err);
+  }
+}
+
+function getRestAudioContext() {
+  const AudioCtx = window.AudioContext || window.webkitAudioContext;
+  if (!AudioCtx) return null;
+  if (!state.restAudioContext) state.restAudioContext = new AudioCtx();
+  if (state.restAudioContext.state === 'suspended') {
+    state.restAudioContext.resume().catch(() => {});
+  }
+  return state.restAudioContext;
+}
+
+function unlockRestAlerts() {
+  const ctx = getRestAudioContext();
+  if (!ctx || state.restAudioUnlocked) return;
+  const prime = () => {
+    try {
+      const gain = ctx.createGain();
+      const osc = ctx.createOscillator();
+      gain.gain.setValueAtTime(0.0001, ctx.currentTime);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + 0.03);
+      setTimeout(() => {
+        try { gain.disconnect(); } catch {}
+      }, 80);
+      state.restAudioUnlocked = true;
+    } catch (err) {
+      console.warn('Rest timer audio unlock failed', err);
+    }
+  };
+  if (ctx.state === 'suspended') {
+    ctx.resume().then(prime).catch(() => {});
+  } else {
+    prime();
+  }
+}
+
+function playRestBeep(kind = 'countdown') {
+  const ctx = getRestAudioContext();
+  if (!ctx) return;
+  const run = () => {
+    if (state.restAudioStop) state.restAudioStop();
+
+    const now = ctx.currentTime;
+    const duration = kind === 'finish' ? 0.55 : 0.16;
+    const gain = ctx.createGain();
+    const osc = ctx.createOscillator();
+    const osc2 = kind === 'finish' ? ctx.createOscillator() : null;
+
+    osc.type = kind === 'finish' ? 'square' : 'sine';
+    osc.frequency.setValueAtTime(kind === 'finish' ? 520 : 1100, now);
+    if (osc2) {
+      osc2.type = 'sawtooth';
+      osc2.frequency.setValueAtTime(760, now);
+      osc2.connect(gain);
+    }
+
+    gain.gain.setValueAtTime(0.0001, now);
+    gain.gain.exponentialRampToValueAtTime(kind === 'finish' ? 0.9 : 0.75, now + 0.012);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+    gain.connect(ctx.destination);
+    osc.connect(gain);
+
+    osc.start(now);
+    if (osc2) osc2.start(now);
+    osc.stop(now + duration + 0.03);
+    if (osc2) osc2.stop(now + duration + 0.03);
+
+    state.restAudioStop = () => {
+      try { osc.stop(); } catch {}
+      try { if (osc2) osc2.stop(); } catch {}
+      try { gain.disconnect(); } catch {}
+      state.restAudioStop = null;
+    };
+    setTimeout(() => {
+      if (state.restAudioStop) state.restAudioStop();
+    }, Math.ceil((duration + 0.08) * 1000));
+  };
+
+  try {
+    if (ctx.state === 'suspended') {
+      ctx.resume().then(run).catch(err => console.warn('Rest timer audio unavailable', err));
+      return;
+    }
+    run();
+  } catch (err) {
+    console.warn('Rest timer audio unavailable', err);
+  }
+}
+
+function triggerRestTimerCue(second) {
+  if (!state.restActive || state.restAlertedSeconds.has(second)) return;
+  state.restAlertedSeconds.add(second);
+  // Rest-specific alerts: three strong countdown cues, then one longer finish cue.
+  if (second === 3 || second === 2 || second === 1) {
+    vibrateRestCue(220);
+    playRestBeep('countdown');
+  } else if (second === 0) {
+    vibrateRestCue(750);
+    playRestBeep('finish');
+  }
+}
+
+function triggerDueRestTimerCues(previousRemaining, nextRemaining) {
+  const dueSecond = [0, 1, 2, 3].find(second => previousRemaining > second && nextRemaining <= second);
+  if (dueSecond != null) triggerRestTimerCue(dueSecond);
+}
+
 function startRestTimer(exerciseIdx, setIdx) {
   stopRestTimer();
+  unlockRestAlerts();
   const active = getActive();
   const set = active?.exercises?.[exerciseIdx]?.sets?.[setIdx];
   if (!set) return;
   state.restTarget = { exerciseIdx, setIdx };
   state.restRemaining = getSetRestSeconds(set);
+  state.restEndsAt = Date.now() + state.restRemaining * 1000;
   state.restActive = true;
+  state.restAlertedSeconds = new Set();
+  getRestAudioContext();
   updateRestTimerDisplay();
   state.restInterval = setInterval(() => {
-    state.restRemaining--;
+    const previousRemaining = state.restRemaining;
+    state.restRemaining = Math.max(0, Math.ceil((state.restEndsAt - Date.now()) / 1000));
+    triggerDueRestTimerCues(previousRemaining, state.restRemaining);
     updateRestTimerDisplay();
     if (state.restRemaining <= 0) {
-      stopRestTimer();
-      if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
+      stopRestTimer({ keepAudio: true });
     }
   }, 1000);
 }
-function stopRestTimer() {
+function stopRestTimer(options = {}) {
   if (state.restInterval) { clearInterval(state.restInterval); state.restInterval = null; }
+  if (!options.keepAudio && state.restAudioStop) state.restAudioStop();
   state.restActive = false;
   state.restTarget = null;
+  state.restEndsAt = 0;
+  state.restAlertedSeconds = new Set();
   document.querySelectorAll('.rest-row').forEach(row => {
     row.classList.remove('active', 'urgent');
     const exIdx = Number(row.dataset.restEx);
@@ -7392,6 +8080,8 @@ function adjustRestTimer(delta, exerciseIdx = null, setIdx = null) {
   saveActive(active);
   if (state.restActive && state.restTarget && state.restTarget.exerciseIdx === exerciseIdx && state.restTarget.setIdx === setIdx) {
     state.restRemaining = Math.max(1, state.restRemaining + delta);
+    state.restEndsAt = Date.now() + state.restRemaining * 1000;
+    if (delta > 0) state.restAlertedSeconds = new Set();
   }
   const latest = getActive();
   if (latest) renderExerciseCard(exerciseIdx, latest);
@@ -7871,24 +8561,25 @@ async function saveHistoryEditorAsTemplate() {
 
 function detectPRsAgainstSessions(active, sessions) {
   const prs = [];
-  active.exercises.forEach(ex => {
-    const doneSets = (ex.sets || []).filter(s => s.done && s.weight > 0 && s.reps > 0 && !s.warmup);
+  (active.exercises || []).forEach(ex => {
+    const doneSets = (ex.sets || []).filter(s => s.done && Number(s.weight) > 0 && Number(s.reps) > 0 && !s.warmup);
     if (!doneSets.length) return;
-    const best = Math.max(...doneSets.map(s => estimated1RM(s.weight, s.reps)));
+    const best = getBestEstimated1RMFromSets(doneSets);
+    if (!Number.isFinite(best) || best <= 0) return;
     let historicalBest = 0;
     sessions.forEach(sess => {
       (sess.exercises || []).forEach(hex => {
         if (hex.exerciseId === ex.exerciseId || hex.name === ex.name) {
           (hex.sets || []).forEach(s => {
-            if (s.done && s.weight > 0 && s.reps > 0 && !s.warmup) {
-              historicalBest = Math.max(historicalBest, estimated1RM(s.weight, s.reps));
+            if (s.done && Number(s.weight) > 0 && Number(s.reps) > 0 && !s.warmup) {
+              historicalBest = Math.max(historicalBest, estimated1RM(Number(s.weight), Number(s.reps)));
             }
           });
         }
       });
     });
     if (best > historicalBest) {
-      const bestSet = doneSets.reduce((a,b) => estimated1RM(a.weight,a.reps) > estimated1RM(b.weight,b.reps) ? a : b);
+      const bestSet = doneSets.reduce((a,b) => estimated1RM(Number(a.weight), Number(a.reps)) > estimated1RM(Number(b.weight), Number(b.reps)) ? a : b);
       prs.push({ name: ex.name, weight: bestSet.weight, reps: bestSet.reps, estimated1RM: Math.round(best) });
     }
   });
@@ -8119,6 +8810,7 @@ async function discardWorkout() {
   if (!await showForgeConfirm({ title: state.lang === 'ja' ? 'ワークアウト破棄' : 'Abort Session?', message: state.lang === 'ja' ? 'このセッションを破棄します。進行中の内容は失われます。' : 'Kill this session. Nothing from this run will survive.', okText: state.lang === 'ja' ? '破棄' : 'Abort', okVariant: 'danger' })) return;
   saveActive(null);
   stopTimer();
+  stopRestTimer();
   renderWorkoutTab();
   showTab('home');
 }
@@ -8131,6 +8823,7 @@ function finishWorkout() {
   if (titleEl) active.name = titleEl.value.trim() || active.name;
   active.endTime = new Date().toISOString();
   saveActive(active);
+  stopRestTimer();
   const prs = detectPRs(active);
   renderSummaryModal(active, prs);
   openModal('modal-summary');
@@ -8145,6 +8838,7 @@ function saveWorkout(active) {
   markProgramWorkoutComplete(active);
   saveActive(null);
   stopTimer();
+  stopRestTimer();
   closeModal('modal-summary');
   state.expandedHistorySessions.clear();
   showTab('home');
@@ -8226,7 +8920,7 @@ function toggleSetDone(exerciseIdx, setIdx) {
   set.done = !set.done;
   saveActive(active);
   renderExerciseCard(exerciseIdx, active);
-  if (set.done && setIdx < active.exercises[exerciseIdx].sets.length - 1) {
+  if (set.done) {
     startRestTimer(exerciseIdx, setIdx);
   } else if (!set.done && state.restTarget && state.restTarget.exerciseIdx === exerciseIdx && state.restTarget.setIdx === setIdx) {
     stopRestTimer();
@@ -8248,14 +8942,24 @@ function estimated1RM(weight, reps) {
   return weight * (1 + reps / 30);
 }
 
+function getBestEstimated1RMFromSets(sets) {
+  return (sets || []).reduce((best, set) => {
+    const weight = Number(set.weight);
+    const reps = Number(set.reps);
+    if (!Number.isFinite(weight) || !Number.isFinite(reps) || weight <= 0 || reps <= 0) return best;
+    return Math.max(best, estimated1RM(weight, reps));
+  }, 0);
+}
+
 function detectPRs(active) {
   const sessions = getSessions();
   const prs = [];
 
-  active.exercises.forEach(ex => {
-    const doneSets = ex.sets.filter(s => s.done && s.weight > 0 && s.reps > 0);
+  (active.exercises || []).forEach(ex => {
+    const doneSets = (ex.sets || []).filter(s => s.done && Number(s.weight) > 0 && Number(s.reps) > 0 && !s.warmup);
     if (!doneSets.length) return;
-    const best = Math.max(...doneSets.map(s => estimated1RM(s.weight, s.reps)));
+    const best = getBestEstimated1RMFromSets(doneSets);
+    if (!Number.isFinite(best) || best <= 0) return;
 
     // Best historical for this exercise (excluding current)
     let historicalBest = 0;
@@ -8263,8 +8967,8 @@ function detectPRs(active) {
       (sess.exercises || []).forEach(hex => {
         if (hex.exerciseId === ex.exerciseId || hex.name === ex.name) {
           (hex.sets || []).forEach(s => {
-            if (s.done && s.weight > 0 && s.reps > 0) {
-              historicalBest = Math.max(historicalBest, estimated1RM(s.weight, s.reps));
+            if (s.done && Number(s.weight) > 0 && Number(s.reps) > 0 && !s.warmup) {
+              historicalBest = Math.max(historicalBest, estimated1RM(Number(s.weight), Number(s.reps)));
             }
           });
         }
@@ -8272,7 +8976,7 @@ function detectPRs(active) {
     });
 
     if (best > historicalBest) {
-      const bestSet = doneSets.reduce((a,b) => estimated1RM(a.weight,a.reps) > estimated1RM(b.weight,b.reps) ? a : b);
+      const bestSet = doneSets.reduce((a,b) => estimated1RM(Number(a.weight), Number(a.reps)) > estimated1RM(Number(b.weight), Number(b.reps)) ? a : b);
       prs.push({ name: ex.name, weight: bestSet.weight, reps: bestSet.reps });
     }
   });
@@ -8903,7 +9607,13 @@ function getWeeklyTarget() {
   return parseInt(localStorage.getItem(WEEKLY_TARGET_KEY) || '3', 10);
 }
 function setWeeklyTarget(n) {
-  localStorage.setItem(WEEKLY_TARGET_KEY, n);
+  const target = Math.max(2, Math.min(5, parseInt(n, 10) || 3));
+  localStorage.setItem(WEEKLY_TARGET_KEY, target);
+  const profile = getOnboardingProfile();
+  if (profile?.completed && profile.weeklyTarget !== target) {
+    profile.weeklyTarget = target;
+    localStorage.setItem(ONBOARDING_STORAGE_KEY, JSON.stringify(profile));
+  }
 }
 
 function getWeekSessions(offsetWeeks = 0) {
@@ -9116,7 +9826,7 @@ function generateCoachingSuggestions() {
       if (!exerciseMap.has(key)) exerciseMap.set(key, { name: ex.name, id: ex.exerciseId, sessions: [] });
       const doneSets = (ex.sets || []).filter(s => s.done && !s.warmup && s.weight > 0 && s.reps > 0);
       if (doneSets.length > 0) {
-        const best1RM = Math.max(...doneSets.map(s => estimated1RM(Number(s.weight), Number(s.reps))));
+        const best1RM = getBestEstimated1RMFromSets(doneSets);
         const bestSet = doneSets.reduce((a, b) => Number(b.weight) > Number(a.weight) ? b : a);
         exerciseMap.get(key).sessions.push({
           date: sess.startTime,
@@ -9221,6 +9931,148 @@ function renderCoachingCard() {
     </div>`;
 }
 
+// ════════════════════════════════════════════════════════════════════════════
+//  PERSONALIZED WELCOME CARD
+// ════════════════════════════════════════════════════════════════════════════
+
+function getPersonalizedHomeMessage(profile, sessionCount) {
+  const ja = state.lang === 'ja';
+  const goal = profile?.goal || 'general_fitness';
+  const experience = profile?.experience || 'beginner';
+  const target = Number(profile?.weeklyTarget || getWeeklyTarget());
+
+  if (sessionCount === 0) {
+    return ja
+      ? `最初の一打で十分。週${target}回のリズムを作り、鉄を温めよう。`
+      : `One first strike is enough. Build the ${target}x/week rhythm and heat the iron.`;
+  }
+  if (sessionCount < 3) {
+    if (experience === 'advanced') {
+      return ja
+        ? '立ち上げは短く、記録は正確に。早めにパフォーマンスの線を引こう。'
+        : 'Keep the ramp clean and the log sharp. Establish your performance line early.';
+    }
+    return ja
+      ? '完璧より継続。次のセッションをロックインして、鎖を切らすな。'
+      : 'Forget perfect. Lock in the next session and keep the chain alive.';
+  }
+  if (goal === 'fat_loss') {
+    return experience === 'beginner'
+      ? (ja ? 'まずは継続。週間目標を打ち、数字は後から締まっていく。' : 'Start with consistency. Hit your weekly target and let the numbers tighten over time.')
+      : (ja ? 'ペースを守りながら出力を落とすな。燃やすのは脂肪、残すのは強さ。' : 'Hold the pace without bleeding output. Burn fat, keep strength.');
+  }
+  if (goal === 'build_muscle') {
+    return experience === 'advanced'
+      ? (ja ? '進捗を硬く追え。出力を押し上げ、ボリュームを支配しろ。' : 'Track progression hard. Push performance and own your volume.')
+      : (ja ? 'フォーム、回数、積み上げ。小さな上乗せが筋肉を鍛造する。' : 'Form, reps, accumulation. Small additions forge new muscle.');
+  }
+  if (goal === 'consistency') {
+    return ja
+      ? '派手さはいらない。次の一回を守り、約束を積み上げろ。'
+      : 'No flash required. Protect the next session and stack the promise.';
+  }
+  return experience === 'advanced'
+    ? (ja ? '全体を見て、弱点を潰す。数字が動く場所に火を入れろ。' : 'Scan the whole machine and attack the weak links. Put heat where the numbers can move.')
+    : (ja ? '強さ、習慣、体力を一つずつ鍛造する。まずは次の一回。' : 'Forge strength, habit, and capacity one session at a time. Start with the next one.');
+}
+
+function getPersonalizedHomeTitle(profile, sessionCount) {
+  const ja = state.lang === 'ja';
+  if (sessionCount === 0) return ja ? '最初のセッションを鍛造しよう' : 'Forge the first session';
+  if (sessionCount < 3) return ja ? '土台を熱いうちに固める' : 'Set the base while it is hot';
+  const goal = profile?.goal || 'general_fitness';
+  const map = {
+    fat_loss: ja ? '絞るための一貫性' : 'Consistency for the cut',
+    build_muscle: ja ? '成長のための記録' : 'Progression for growth',
+    consistency: ja ? '鎖をつなぐ' : 'Keep the chain alive',
+    general_fitness: ja ? '全身を鍛造する' : 'Forge the whole machine'
+  };
+  return map[goal] || map.general_fitness;
+}
+
+function renderPersonalizedWelcomeCard() {
+  const el = document.getElementById('home-personalized-welcome');
+  if (!el) return;
+
+  const profile = getOnboardingProfile();
+  if (!profile?.completed) { el.innerHTML = ''; return; }
+
+  const sessions = getSessions();
+  const rec = getRecommendedStart(profile);
+  const sessionCount = sessions.length;
+  const ja = state.lang === 'ja';
+  const primaryAction = rec.primary;
+  const primaryLabel = primaryAction === 'forge_own'
+    ? (ja ? '▶ 自分だけの道を切り開く' : '▶ Forge Your Own Path')
+    : primaryAction === 'choose_program'
+      ? (ja ? '▶ プログラムを見る' : '▶ View Programs')
+      : (ja ? '▶ 推奨プログラムを見る' : '▶ View Recommended Program');
+
+  el.innerHTML = `
+    <div class="personalized-welcome-card">
+      <div class="personalized-welcome-kicker">${ja ? 'パーソナル指令' : 'Personal Directive'}</div>
+      <div class="personalized-welcome-title">${getPersonalizedHomeTitle(profile, sessionCount)}</div>
+      <div class="personalized-welcome-message">${getPersonalizedHomeMessage(profile, sessionCount)}</div>
+      <div class="personalized-welcome-meta">
+        <div class="personalized-welcome-chip">
+          <div class="personalized-welcome-chip-label">${ja ? '目標' : 'Goal'}</div>
+          <div class="personalized-welcome-chip-value">${labelForOnboardingValue('goal', profile.goal)}</div>
+        </div>
+        <div class="personalized-welcome-chip">
+          <div class="personalized-welcome-chip-label">${ja ? '経験' : 'Level'}</div>
+          <div class="personalized-welcome-chip-value">${labelForOnboardingValue('experience', profile.experience)}</div>
+        </div>
+        <div class="personalized-welcome-chip">
+          <div class="personalized-welcome-chip-label">${ja ? '週目標' : 'Target'}</div>
+          <div class="personalized-welcome-chip-value">${profile.weeklyTarget}x</div>
+        </div>
+      </div>
+      <div class="personalized-welcome-actions">
+        <button class="btn-primary" id="home-welcome-action"><div class="shimmer"></div>${primaryLabel}</button>
+      </div>
+    </div>`;
+
+  el.querySelector('#home-welcome-action')?.addEventListener('click', () => goToOnboardingAction(primaryAction, profile));
+}
+
+// ════════════════════════════════════════════════════════════════════════════
+//  ADAPTIVE HOME LOGIC
+// ════════════════════════════════════════════════════════════════════════════
+
+function renderAdaptiveHomeLogic() {
+  const profile = getOnboardingProfile();
+  const sessions = getSessions();
+  const ja = state.lang === 'ja';
+  const isVeryNew = sessions.length < 3;
+  const isBeginner = (profile?.experience || 'beginner') === 'beginner';
+  const isAdvanced = profile?.experience === 'advanced';
+
+  const weeklyEl = document.getElementById('home-weekly-review');
+  const coachingEl = document.getElementById('home-coaching');
+
+  if (isVeryNew && weeklyEl) {
+    weeklyEl.innerHTML = `
+      <div class="adaptive-empty-card">
+        <div class="adaptive-empty-kicker">${ja ? 'レポート準備中' : 'Report Warming Up'}</div>
+        <div class="adaptive-empty-title">${ja ? 'まずは3セッションを鍛造' : 'Forge 3 sessions first'}</div>
+        <div class="adaptive-empty-copy">${isAdvanced
+          ? (ja ? '十分なデータが揃ったら、出力とボリュームをすぐ前面に出します。' : 'Once there is enough data, performance and volume move to the front.')
+          : (ja ? '今は複雑さよりリズム。セッションを積めば週次レポートが開きます。' : 'Rhythm before complexity. Stack sessions and the weekly report unlocks.')}</div>
+      </div>`;
+  }
+
+  if (isVeryNew && isBeginner && coachingEl) {
+    coachingEl.innerHTML = `
+      <div class="adaptive-empty-card">
+        <div class="adaptive-empty-kicker">${ja ? 'コーチング' : 'Coaching'}</div>
+        <div class="adaptive-empty-title">${ja ? '最初は次の一回だけを見る' : 'For now, watch the next rep'}</div>
+        <div class="adaptive-empty-copy">${ja
+          ? '記録が増えるほど提案は鋭くなります。今はフォームと継続を優先。'
+          : 'Suggestions sharpen as your log grows. For now, prioritize form and consistency.'}</div>
+      </div>`;
+  }
+}
+
 function renderHomeTab() {
   const now = new Date();
   const days = state.lang === 'ja' ? ['日','月','火','水','木','金','土'] : ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
@@ -9281,10 +10133,12 @@ function renderHomeTab() {
 
   // Phase 2 + 3
   renderForgeHQ();
+  renderPersonalizedWelcomeCard();
   renderMonthlyRecap();
   renderWeeklyReview();
   renderConsistencyTracker();
   renderCoachingCard();
+  renderAdaptiveHomeLogic();
 }
 
 // ══════════════════════════════════════════
@@ -10511,45 +11365,44 @@ function buildSetRow(set, setIdx, exerciseIdx, previousSet = null, totalSets = 0
   row.appendChild(checkBtn);
   frag.appendChild(row);
 
-  if (setIdx < totalSets - 1) {
-    const restRow = document.createElement('div');
-    const activeRest = !!(state.restActive && state.restTarget && state.restTarget.exerciseIdx === exerciseIdx && state.restTarget.setIdx === setIdx);
-    restRow.className = 'rest-row' + (activeRest ? ' active' : '') + (activeRest && state.restRemaining <= 10 && state.restRemaining > 0 ? ' urgent' : '');
-    restRow.dataset.restEx = exerciseIdx;
-    restRow.dataset.restSet = setIdx;
+  // Each set owns a rest control, including the final set. The active timer target
+  // follows this same exercise/set pair so rendering and countdown logic stay aligned.
+  const restRow = document.createElement('div');
+  const activeRest = !!(state.restActive && state.restTarget && state.restTarget.exerciseIdx === exerciseIdx && state.restTarget.setIdx === setIdx);
+  restRow.className = 'rest-row' + (activeRest ? ' active' : '') + (activeRest && state.restRemaining <= 10 && state.restRemaining > 0 ? ' urgent' : '') + (setIdx === totalSets - 1 ? ' final' : '');
+  restRow.dataset.restEx = exerciseIdx;
+  restRow.dataset.restSet = setIdx;
 
-    const minusBtn = document.createElement('button');
-    minusBtn.className = 'rest-adjust-btn';
-    minusBtn.textContent = '-15';
-    minusBtn.addEventListener('click', () => adjustRestTimer(-15, exerciseIdx, setIdx));
+  const minusBtn = document.createElement('button');
+  minusBtn.className = 'rest-adjust-btn';
+  minusBtn.textContent = '-15';
+  minusBtn.addEventListener('click', () => adjustRestTimer(-15, exerciseIdx, setIdx));
 
-    const timeBtn = document.createElement('button');
-    timeBtn.className = 'rest-center-btn';
-    timeBtn.textContent = activeRest ? formatRestSecondsLabel(state.restRemaining) : formatRestSecondsLabel(getSetRestSeconds(set));
-    timeBtn.addEventListener('click', () => promptSetRestDuration(exerciseIdx, setIdx));
+  const timeBtn = document.createElement('button');
+  timeBtn.className = 'rest-center-btn';
+  timeBtn.textContent = activeRest ? formatRestSecondsLabel(state.restRemaining) : formatRestSecondsLabel(getSetRestSeconds(set));
+  timeBtn.addEventListener('click', () => promptSetRestDuration(exerciseIdx, setIdx));
 
-    const plusBtn = document.createElement('button');
-    plusBtn.className = 'rest-adjust-btn';
-    plusBtn.textContent = '+15';
-    plusBtn.addEventListener('click', () => adjustRestTimer(15, exerciseIdx, setIdx));
+  const plusBtn = document.createElement('button');
+  plusBtn.className = 'rest-adjust-btn';
+  plusBtn.textContent = '+15';
+  plusBtn.addEventListener('click', () => adjustRestTimer(15, exerciseIdx, setIdx));
 
-    const controls = document.createElement('div');
-    controls.className = 'rest-inline-controls';
-    controls.appendChild(minusBtn);
-    controls.appendChild(plusBtn);
+  const controls = document.createElement('div');
+  controls.className = 'rest-inline-controls';
+  controls.appendChild(minusBtn);
+  controls.appendChild(plusBtn);
 
-    const leftLine = document.createElement('div');
-    leftLine.className = 'rest-line';
-    const rightLine = document.createElement('div');
-    rightLine.className = 'rest-line';
+  const leftLine = document.createElement('div');
+  leftLine.className = 'rest-line';
+  const rightLine = document.createElement('div');
+  rightLine.className = 'rest-line';
 
-    restRow.appendChild(leftLine);
-    restRow.appendChild(timeBtn);
-    restRow.appendChild(rightLine);
-    restRow.appendChild(controls);
-    frag.appendChild(restRow);
-  }
-
+  restRow.appendChild(leftLine);
+  restRow.appendChild(timeBtn);
+  restRow.appendChild(rightLine);
+  restRow.appendChild(controls);
+  frag.appendChild(restRow);
   return frag;
 }
 
@@ -10782,7 +11635,9 @@ function openHistoryDetail(sessId) {
     const doneSets = (ex.sets || []).filter(s => s.done && (s.weight > 0 || s.reps > 0));
     if (!doneSets.length) return;
 
-    const best1RM = Math.max(...doneSets.map(s => calc1RM(Number(s.weight || 0), Number(s.reps || 0))));
+    const best1RM = doneSets.reduce((best, set) => {
+      return Math.max(best, calc1RM(Number(set.weight || 0), Number(set.reps || 0)));
+    }, 0);
 
     const exEl = document.createElement('div');
     exEl.className = 'history-detail-ex';
@@ -11427,6 +12282,7 @@ function renderSummaryModal(active, prs) {
     if (await showForgeConfirm({ title: state.lang === 'ja' ? '破棄しますか？' : 'Scrap This Draft?', message: state.lang === 'ja' ? 'このワークアウトを破棄します。' : 'Discard this unfinished workout draft?', okText: state.lang === 'ja' ? '破棄' : 'Scrap It', okVariant: 'danger' })) {
       saveActive(null);
       stopTimer();
+      stopRestTimer();
       closeModal('modal-summary');
       showTab('home');
     }
@@ -11615,6 +12471,8 @@ function esc(str) {
 document.addEventListener('DOMContentLoaded', () => {
   migrateSessionMetadata();
   applyTranslations();
+  document.addEventListener('pointerdown', unlockRestAlerts, { passive: true });
+  document.addEventListener('touchstart', unlockRestAlerts, { passive: true });
   document.getElementById('lang-en')?.addEventListener('click', () => setLang('en'));
   document.getElementById('lang-ja')?.addEventListener('click', () => setLang('ja'));
   document.getElementById('btn-gdrive-connect')?.addEventListener('click', () => connectGoogleDrive());
@@ -11666,11 +12524,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   decorateBareMetalIcons();
   setTimeout(() => { maybeSmartAutoBackup('daily'); }, 2500);
+  setTimeout(maybeShowOnboarding, 250);
 
   // Bottom nav
   document.querySelectorAll('.bottom-nav button[data-tab]').forEach(btn => {
     btn.addEventListener('click', () => showTab(btn.dataset.tab));
   });
+  document.getElementById('btn-reset-onboarding')?.addEventListener('click', resetAndRerunOnboarding);
 
   // Start workout buttons
   document.getElementById('btn-start-blank').addEventListener('click', async () => { await startWorkout(); });
